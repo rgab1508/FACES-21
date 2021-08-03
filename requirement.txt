@@ -1,0 +1,37 @@
+things that are required on the website:
+1) Registration portal ( register all the students )
+   a) Full Name
+   b) Branch and semester
+   c) Roll Number - Primary KEY
+   d) email id
+   e) email id OTP confirmation
+   f) phone number
+   g) phone number otp confirmation - x
+   h) password
+2) Login Portal: email(roll No) + password combo
+3) Events list : According to the list of events and the best possible aesthetic output with a overview list and a comprehensive information view for each event
+4) covid and event protocols- popup on login to select to agree for rules and regulations of the event
+5) Event registration- selection of events by Student, registering for event, updating in db, visibility on the admin panel on who selected what, redirect to payment method(managed by college)
+
+We will be using the MERN stack for development of the website. Here is the code for last years website
+https://github.com/srividya-p/ETAMAX-21
+please use whatever is useful in the new website
+
+Website development timeline and plan:
+1) approval of fest: either online or offline
+2) structuring of website
+
+list of events
+register user + login portal with profile
+authenticate user- phone number, email
+event reminder protocol
+payment redirect
+payment receipt confirmation protocol
+
+3) website testing phase: thorough testing for 5 days and approval from required teacher. Along side with server aquisition and domain connection
+
+4) website registration: students will register for faces
+
+5) students will participate in faces
+
+The approximate timeline for the same is listed for as 15 -17 days
