@@ -7,7 +7,7 @@ function Logo(props) {
   return (
     <Box {...props}>
       <Text fontSize="25pt" fontWeight="bolder">
-        FACES-21
+        {props.visible && "FACES-21"}
       </Text>
     </Box>
   );
@@ -24,12 +24,12 @@ function MenuToggle({ toggle, isOpen }) {
           document.getElementById("navbar").style.height = "60vh";
           setTimeout(() => toggle(), 200);
         } else {
-          document.getElementById("navbar").style.height = "15vh";
+          document.getElementById("navbar").style.height = "19vh";
           toggle();
         }
       }}
       sx={{ transition: "0.3s" }}
-      bg="blue.600"
+      bg="green.600"
       borderRadius="5px"
       p="5px"
     >
@@ -47,7 +47,7 @@ function MenuItems({ children, isLast, to = "/", ...rest }) {
         display="block"
         p="5px"
         borderRadius="10px"
-        bg={{ base: "blue.600", sm: "transparent" }}
+        bg={{ base: "green.600", sm: "transparent" }}
         {...rest}
       >
         {children}
@@ -61,6 +61,9 @@ function DrawerNavbar({ isOpen }) {
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
       flexBasis={{ base: "100%", md: "auto" }}
+      bg={{ base: "green.500", md: "transparent" }}
+      p={{ base: "20px", md: "0px" }}
+      borderRadius="15px"
     >
       <ScaleFade initialScale={0.5} in={isOpen}>
         <Stack
@@ -70,19 +73,37 @@ function DrawerNavbar({ isOpen }) {
           direction={["column", "row", "row", "row"]}
           pt={[4, 4, 0, 0]}
         >
-          <MenuItems fontWeight="bold" fontSize="15pt" to="/">
+          <MenuItems
+            _hover={{ bg: "green.300" }}
+            fontWeight="bold"
+            fontSize="15pt"
+            to="/"
+            sx={{ transition: "background 0.2s" }}
+          >
             Home
           </MenuItems>
-          <MenuItems fontWeight="bold" fontSize="15pt" to="/">
+          <MenuItems
+            _hover={{ bg: "green.300" }}
+            fontWeight="bold"
+            fontSize="15pt"
+            to="/"
+            sx={{ transition: "background 0.2s" }}
+          >
             Profile
           </MenuItems>
-          <MenuItems fontWeight="bold" fontSize="15pt" to="/">
+          <MenuItems
+            _hover={{ bg: "green.300" }}
+            fontWeight="bold"
+            fontSize="15pt"
+            to="/"
+            sx={{ transition: "background 0.2s" }}
+          >
             Events
           </MenuItems>
           <MenuItems
             p="15px"
             color="white"
-            bg="blue.400"
+            bg="green.300"
             fontSize="15pt"
             to="/"
             isLast
@@ -97,7 +118,21 @@ function DrawerNavbar({ isOpen }) {
   );
 }
 
-const NavbarContainer = ({ children, props }) => {
+const NavbarContainer = (props) => {
+  const [background, setBackground] = useState("transparent");
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      let y = window.scrollY;
+      if (y >= 500) {
+        setBackground("green.400");
+        props.setVisible(true);
+      } else {
+        setBackground("transparent");
+        props.setVisible(false);
+      }
+    });
+  }, []);
+
   return (
     <Flex
       as="nav"
@@ -105,27 +140,28 @@ const NavbarContainer = ({ children, props }) => {
       id="navbar"
       justify="space-between"
       wrap="wrap"
-      p={8}
+      p="20px"
       w="100%"
-      bg={["blue.500", "blue.400", "blue.200", "blue.100"]}
-      color={["white", "white", "blue.500", "blue.500"]}
-      boxShadow="sm"
-      maxH={{ base: "60vh", sm: "25vh", md: "15vh" }}
-      sx={{ transition: " background 0.3s, height 0.4s" }}
+      bg={`${background}`}
+      color={["white", "white", "white", "white"]}
+      maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
+      sx={{ transition: " background 0.2s, height 0.4s" }}
+      position="fixed"
       {...props}
     >
-      {children}
+      {props.children}
     </Flex>
   );
 };
 
 export default function Navbar(props) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     window.onresize = () => {
-      if (window.innerWidth >= 800) {
+      if (window.innerWidth >= 768) {
         setIsOpen(true);
       } else {
         setIsOpen(false);
@@ -134,8 +170,12 @@ export default function Navbar(props) {
   }, []);
 
   return (
-    <NavbarContainer {...props}>
-      <Logo w="auto" color={["white", "white", "blue.500", "blue.500"]} />
+    <NavbarContainer setVisible={setVisible} {...props}>
+      <Logo
+        w="auto"
+        visible={visible}
+        color={["white", "white", "white", "white"]}
+      />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <DrawerNavbar isOpen={isOpen} />
     </NavbarContainer>
