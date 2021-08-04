@@ -1,5 +1,4 @@
-import { ChakraProvider, omitThemingProps } from "@chakra-ui/react";
-import "../styles/globals.css";
+import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../theme/themes";
 
 function MyApp({ Component, pageProps }) {
