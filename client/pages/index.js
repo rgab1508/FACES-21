@@ -70,6 +70,9 @@ export default function Home(props) {
                     <Text fontSize="20pt" color="white">
                       {evt.categ}
                     </Text>
+                    <Text fontSize="20pt" color="white">
+                      {evt.time}
+                    </Text>
                   </Flex>
                 </Flex>
               ))}
