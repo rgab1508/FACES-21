@@ -105,7 +105,7 @@ function DrawerNavbar({ isOpen }) {
             color="white"
             bg="green.300"
             fontSize="15pt"
-            to="/"
+            to="/login"
             isLast
             borderRadius="10px"
             fontWeight="bold"
@@ -124,7 +124,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("green.400");
+        setBackground("green.500");
         props.setVisible(true);
       } else {
         setBackground("transparent");
@@ -147,6 +147,7 @@ const NavbarContainer = (props) => {
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
       sx={{ transition: " background 0.2s, height 0.4s" }}
       position="fixed"
+      zIndex="1"
       {...props}
     >
       {props.children}

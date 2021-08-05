@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Center } from "@chakra-ui/react";
+import { Box, Flex, Text, Center, Select, Image } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 
@@ -53,26 +53,49 @@ export default function Home(props) {
             bg="green.100"
             h="auto"
           >
+            <Box mb={10} w="50%" borderRadius="5px" border="1px solid white">
+              <Select
+                bg="white"
+                _focus={{ outline: "none!important" }}
+                placeholder="Select day"
+                position="relative"
+                zIndex="0"
+              >
+                <option value="">Day 1</option>
+                <option value="">Day 2</option>
+                <option value="">Day 3</option>
+              </Select>
+            </Box>
             <Flex flexDirection="column" w="80%" gridGap="3">
               {events.map((evt, key) => (
                 <Flex key={key} flex={1}>
                   {key % 2 == 0 ? <Box w="60%" /> : null}
                   <Flex
-                    flexDirection="column"
                     borderRadius="10px"
                     w="40%"
                     bg="green.500"
-                    p="15px"
+                    boxShadow="xl"
+                    maxH="23vh"
                   >
-                    <Text fontSize="20pt" color="white">
-                      {evt.title}
-                    </Text>
-                    <Text fontSize="20pt" color="white">
-                      {evt.categ}
-                    </Text>
-                    <Text fontSize="20pt" color="white">
-                      {evt.time}
-                    </Text>
+                    <Flex flexDirection="column" w="50%" p="15px">
+                      <Text fontWeight="bold" fontSize="20pt" color="white">
+                        {evt.title}
+                      </Text>
+                      <Text fontSize="20pt" color="white">
+                        {evt.categ}
+                      </Text>
+                      <Text fontSize="20pt" color="white">
+                        {evt.time}
+                      </Text>
+                    </Flex>
+                    <Flex
+                      w="50%"
+                      background={`url(https://picsum.photos/200/300)`}
+                      backgroundSize="cover"
+                      backgroundPosition="center"
+                      backgroundRepeat="no-repeat"
+                      borderRadius="10px"
+                    />
                   </Flex>
                 </Flex>
               ))}

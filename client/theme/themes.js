@@ -7,6 +7,7 @@ import "@fontsource/titillium-web/900.css";
 const theme = extendTheme({
   fonts: {
     body: "Titillium Web",
+    heading: "Titillium Web",
   },
 });
 
