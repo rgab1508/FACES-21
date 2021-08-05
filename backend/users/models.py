@@ -6,17 +6,18 @@ from django.utils import timezone
 from .managers import UserManager
 
 
-DEPARTMENTS = (
-  ("COMP", "Computer"),
-  ("IT", "IT"),
-  ("EXTC", "EXTC"),
-  ("MECH", "Mechanical"),
-  ("ELEC", "Electrical"),
-  ("OTHER", "Other")
-)
+
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+  DEPARTMENTS = (
+    ("COMP", "Computer"),
+    ("IT", "IT"),
+    ("EXTC", "EXTC"),
+    ("MECH", "Mechanical"),
+    ("ELEC", "Electrical"),
+    ("OTHER", "Other")
+  )
   roll_no = models.IntegerField(_("Roll Number"),unique=True, blank=False)
   email = models.EmailField(_('email address'),unique=True, max_length=254)
   name = models.CharField(_('Name'), max_length=256, blank=False)
@@ -39,4 +40,13 @@ class User(AbstractBaseUser, PermissionsMixin):
   objects = UserManager()
 
   def __str__(self) -> str:
-      return f"{self.roll_no} -> {self.email}"
+      return f"{self.roll_no}#{self.email}"
+
+
+class Team(models.Model):
+  team_code = models.CharField(_("Team Code"), max_length=6,unique=True, blank=False)
+  team_name = models.CharField(_("Team Name"), max_length=256,blank=False)
+  members = models.ManyToManyField(User, related_name='teams')
+
+  def __str__(self) -> str:
+    return f"{self.team_name}#{self.team_code}"
