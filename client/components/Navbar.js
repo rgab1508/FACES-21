@@ -86,7 +86,7 @@ function DrawerNavbar({ isOpen }) {
             _hover={{ bg: "green.300" }}
             fontWeight="bold"
             fontSize="15pt"
-            to="/"
+            to="/profile"
             sx={{ transition: "background 0.2s" }}
           >
             Profile
@@ -95,7 +95,7 @@ function DrawerNavbar({ isOpen }) {
             _hover={{ bg: "green.300" }}
             fontWeight="bold"
             fontSize="15pt"
-            to="/"
+            to="/events"
             sx={{ transition: "background 0.2s" }}
           >
             Events
