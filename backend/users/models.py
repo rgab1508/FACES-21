@@ -1,13 +1,11 @@
-from events.models import Event
+from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
+from events.models import Event
 from .managers import UserManager
-
-
-
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -45,10 +43,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Team(models.Model):
-  team_code = models.CharField(_("Team Code"), max_length=6,unique=True, blank=False)
+  team_code = models.UUIDField(_("Team Code"), default=uuid4, unique=True)
   team_name = models.CharField(_("Team Name"), max_length=256,blank=False)
   event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participants")
   members = models.ManyToManyField(User, related_name='teams')
+ 
 
   def __str__(self) -> str:
     return f"{self.team_name}#{self.team_code}"

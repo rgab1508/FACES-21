@@ -1,5 +1,7 @@
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from uuid import uuid4
 
 class Event(models.Model):
 
@@ -14,7 +16,7 @@ class Event(models.Model):
     ("F", "Fun" )
   )
 
-  event_code = models.CharField(_("Event Code"),max_length=6, unique=True,blank=False)
+  event_code = models.UUIDField(_("Event Code"),max_length=6,default=uuid4, unique=True)
   day = models.SmallIntegerField(_("Day"), choices=DAYS, blank=False)
   start = models.TimeField(_("Start Time"), max_length=5, blank=False)
   end = models.TimeField(_("End Time"), max_length=5, blank=False)
@@ -33,6 +35,4 @@ class Event(models.Model):
 
   def __str__(self) -> str:
     return f"{self.title}#{self.event_code}"
-
-
 
