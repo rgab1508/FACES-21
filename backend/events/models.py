@@ -20,8 +20,8 @@ class Event(models.Model):
 
   event_code = models.CharField(_("Event Code"),max_length=6, unique=True,blank=False)
   day = models.SmallIntegerField(_("Day"), choices=DAYS, blank=False)
-  start = models.CharField(_("Start"), max_length=5, blank=False)
-  end = models.CharField(_("Start"), max_length=5, blank=False)
+  start = models.TimeField(_("Start Time"), max_length=5, blank=False)
+  end = models.TimeField(_("End Time"), max_length=5, blank=False)
   title = models.CharField(_("Event Title"), max_length=256,blank=False)
   description = models.TextField(_("Event Description"), blank=False)
   image = models.ImageField(_("Event Banner"), upload_to="uploads/")
