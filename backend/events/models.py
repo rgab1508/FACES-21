@@ -1,10 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from users.models import Team
-
-
-
 class Event(models.Model):
 
   DAYS = (
@@ -38,13 +34,5 @@ class Event(models.Model):
   def __str__(self) -> str:
     return f"{self.title}#{self.event_code}"
 
-
-class Participation(models.Model):
-  part_code = models.CharField(_("Participation Code"),max_length=6, unique=True,blank=False)
-  event = models.ForeignKey(Event,on_delete=models.CASCADE, related_name='participants')
-  team = models.ForeignKey(Team, on_delete=models.CASCADE)
-
-  def __str__(self) -> str:
-    return self.part_code
 
 

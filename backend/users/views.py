@@ -1,4 +1,5 @@
 from django.http.response import JsonResponse
+from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -8,6 +9,18 @@ from rest_framework.authentication import TokenAuthentication
 
 from .models import User
 from .serializers import UserSerializer
+
+
+class UserDetail(APIView):
+  permission_classes = [IsAuthenticated]
+  def get(self, request):
+    serializer = UserSerializer(request.user)
+    res = {
+      "user": serializer.data
+    }
+    return JsonResponse(res, status=200)
+
+
 
 class RegisterView(APIView):
   def post(self, request):
