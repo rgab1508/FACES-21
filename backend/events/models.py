@@ -24,7 +24,7 @@ class Event(models.Model):
   end = models.CharField(_("Start"), max_length=5, blank=False)
   title = models.CharField(_("Event Title"), max_length=256,blank=False)
   description = models.TextField(_("Event Description"), blank=False)
-  image = models.ImageField(_("Event Banner"))
+  image = models.ImageField(_("Event Banner"), upload_to="uploads/")
   seats = models.IntegerField(_("Event Seats"),blank=False,default=0)
   max_seats = models.IntegerField(_("Maximum Event Seats"),blank=False,default=0)
   category = models.CharField(_("Category"), choices=CATEGORIES, max_length=1, blank=False)
