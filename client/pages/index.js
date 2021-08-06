@@ -69,22 +69,32 @@ export default function Home(props) {
             <Flex flexDirection="column" w="80%" gridGap="3">
               {events.map((evt, key) => (
                 <Flex key={key} flex={1}>
-                  {key % 2 == 0 ? <Box w="60%" /> : null}
+                  {key % 2 == 0 ? <Box w={{ lg: "60%" }} /> : null}
                   <Flex
                     borderRadius="10px"
-                    w="40%"
+                    w={{ base: "100%", lg: "40%" }}
                     bg="green.500"
                     boxShadow="xl"
                     maxH="23vh"
                   >
                     <Flex flexDirection="column" w="50%" p="15px">
-                      <Text fontWeight="bold" fontSize="20pt" color="white">
+                      <Text
+                        fontWeight="bold"
+                        fontSize={{ base: "auto", lg: "20pt" }}
+                        color="white"
+                      >
                         {evt.title}
                       </Text>
-                      <Text fontSize="20pt" color="white">
+                      <Text
+                        fontSize={{ base: "auto", lg: "20pt" }}
+                        color="white"
+                      >
                         {evt.categ}
                       </Text>
-                      <Text fontSize="20pt" color="white">
+                      <Text
+                        fontSize={{ base: "auto", lg: "20pt" }}
+                        color="white"
+                      >
                         {evt.time}
                       </Text>
                     </Flex>
