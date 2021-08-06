@@ -28,7 +28,7 @@ class Event(models.Model):
   seats = models.IntegerField(_("Event Seats"),blank=False,default=0)
   max_seats = models.IntegerField(_("Maximum Event Seats"),blank=False,default=0)
   category = models.CharField(_("Category"), choices=CATEGORIES, max_length=1, blank=False)
-  is_seminar = models.BooleanField(_("Is Evenet a Seminar"), default=False, blank=False)
+  is_seminar = models.BooleanField(_("Is Event a Seminar"), default=False, blank=False)
   team_size = models.IntegerField(_("Team Size"), default=1)
   is_team_size_strict = models.BooleanField(_("Is Team Size Strict"), blank=False)
   entry_fee = models.IntegerField(_("Entry Fee"), blank=False)
