@@ -100,7 +100,7 @@ export default function Home(props) {
                     </Flex>
                     <Flex
                       w="50%"
-                      background={`url(https://picsum.photos/200/300)`}
+                      background={`url(https://source.unsplash.com/random/200x300)`}
                       backgroundSize="cover"
                       backgroundPosition="center"
                       backgroundRepeat="no-repeat"
