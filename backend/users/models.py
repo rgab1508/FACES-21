@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Team(models.Model):
-  team_code = models.UUIDField(_("Team Code"), default=uuid4, unique=True)
+  team_code = models.CharField(_("Team Code"), default=uuid4,max_length=36, unique=True)
   team_name = models.CharField(_("Team Name"), max_length=256,blank=False)
   event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participants")
   members = models.ManyToManyField(User, related_name='teams')

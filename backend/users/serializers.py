@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
   
 
 class TeamSerializer(serializers.ModelSerializer):
+  members = UserSerializer(read_only=True, many=True)
   class Meta:
     model = Team
     fields = ['id', 'team_code', 'team_name', 'members']
