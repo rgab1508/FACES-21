@@ -91,15 +91,13 @@ function DrawerNavbar({ isOpen }) {
           >
             Profile
           </MenuItems>
-          <MenuItems
-            _hover={{ bg: "green.300" }}
-            fontWeight="bold"
-            fontSize="15pt"
-            to="/events"
-            sx={{ transition: "background 0.2s" }}
-          >
-            Events
-          </MenuItems>
+         <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="transparent"   _hover={{ bg: "green.300" }} fontWeight="bold"fontSize="15pt"  sx={{ transition: "background 0.2s" }}>  Events </MenuButton>
+          <MenuList background="transparent" >
+            <MenuItem fontWeight="bold" _hover={{ bg: "green.300" }} fontSize="15pt" textColor="white" to="/events" sx={{ transition: "background 0.2s" }}>Cultural</MenuItem>
+            <MenuItem fontWeight="bold" _hover={{ bg: "green.300" }} fontSize="15pt" textColor="white" to="/events" sx={{ transition: "background 0.2s" }}>Sports</MenuItem>
+          </MenuList>
+          </Menu>
           <MenuItems
             p="15px"
             color="white"
