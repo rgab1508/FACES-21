@@ -89,6 +89,8 @@ export default function Home(props) {
                     w={{ base: "100%", lg: "40%" }}
                     bg="green.500"
                     boxShadow="xl"
+                    _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
+                    sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
                     maxH="23vh"
                   >
                     <Flex flexDirection="column" w="50%" p="15px">
@@ -114,7 +116,7 @@ export default function Home(props) {
                     </Flex>
                     <Flex
                       w="50%"
-                      background={`url(https://source.unsplash.com/random/200x300)`}
+                      background={`url(https://faces21.herokuapp.com${evt.image})`}
                       backgroundSize="cover"
                       backgroundPosition="center"
                       backgroundRepeat="no-repeat"
