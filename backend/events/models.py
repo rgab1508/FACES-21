@@ -12,8 +12,7 @@ class Event(models.Model):
   )
   CATEGORIES = (
     ("C","Cultural"),
-    ("T", "Technical"),
-    ("F", "Fun" )
+    ("S", "Sports"),
   )
 
   event_code = models.CharField(_("Event Code"),max_length=36,default=uuid4, unique=True)
