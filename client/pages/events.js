@@ -5,6 +5,7 @@ import {
   Text,
   useDisclosure,
   Select,
+  Badge,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
@@ -18,8 +19,6 @@ export default function Events(props) {
   const [events, setEvents] = useState(props.events);
   const [filterQuery, setFilterQuery] = useState("");
   const [extraQuery, setExtraQuery] = useState("");
-
-  console.log(events);
 
   useEffect(() => {
     let newEvents;
@@ -71,6 +70,11 @@ export default function Events(props) {
         <Center flexDirection="column" w="100%" h="80vh" bg="rgb(0,60,0,0.4)">
           <Text p="10px" color="white" fontWeight="bold" fontSize="60pt">
             Events we have
+          </Text>
+          <Text w="60%" p="10px" color="white" fontSize="20pt">
+            FACES offers you a variety of events to choose from. Feel free to
+            pick any event of your choice, but make sure you follow the
+            registration criteria.
           </Text>
         </Center>
         <Center py="80px" bg="green.100" flexDirection="column" gridGap="5">
@@ -138,29 +142,75 @@ export default function Events(props) {
                   setEvent(event);
                   onOpen();
                 }}
+                boxShadow="lg"
+                sx={{ transition: "box-shadow 0.3s" }}
+                _hover={{ boxShadow: "2xl" }}
               >
                 <Box p="15px" w="50%">
                   <Text color="white" fontWeight="bold" fontSize="20pt">
                     {event.title}
                   </Text>
+                  <Text w="100%" noOfLines={2} color="white" fontSize="16pt">
+                    {event.description}
+                  </Text>
                   <Text
                     w="100%"
-                    noOfLines={3}
-                    isTruncated
+                    noOfLines={2}
                     color="white"
+                    fontWeight="bold"
                     fontSize="16pt"
                   >
-                    {event.description}
+                    {event.start} - {event.end}
                   </Text>
                 </Box>
                 <Box
-                  background={`url(https://faces21.herokuapp.com/media/${event.image})`}
+                  background={`url(https://faces21.herokuapp.com${event.image})`}
                   backgroundSize="cover"
                   backgroundPosition="center"
                   backgroundRepeat="no-repeat"
                   borderRadius="10px"
                   w="50%"
-                ></Box>
+                >
+                  <Flex
+                    p="10px"
+                    bg="rgb(52, 130, 39,0.4)"
+                    h="100%"
+                    w="100%"
+                    flexDirection="column"
+                    borderRadius="10px"
+                    gridGap="2"
+                  >
+                    <Badge
+                      ml="auto"
+                      bg="purple.700"
+                      color="white"
+                      fontSize="14pt"
+                      borderRadius="5px"
+                    >
+                      Day - {event.day}
+                    </Badge>
+                    <Badge
+                      ml="auto"
+                      bg={event.category == "S" ? "blue.700" : "red.700"}
+                      color="white"
+                      fontSize="14pt"
+                      borderRadius="5px"
+                    >
+                      {event.category == "S" ? "Sports" : "Cultural"}
+                    </Badge>
+                    {event.team_size > 1 ? (
+                      <Badge
+                        ml="auto"
+                        bg="yellow.500"
+                        color="white"
+                        fontSize="14pt"
+                        borderRadius="5px"
+                      >
+                        Group
+                      </Badge>
+                    ) : null}
+                  </Flex>
+                </Box>
               </Flex>
             );
           })}

@@ -1,17 +1,27 @@
-import { Box, Flex, Text, Center, Select, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, Center, Select } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
+import { useEffect, useState } from "react";
 
 export default function Home(props) {
-  const events = [
-    { title: "He meet", time: "10:00 AM", categ: "Cultural" },
-    { title: "Badminton", time: "10:30 AM", categ: "Sports" },
-    { title: "Feast", time: "11:00 AM", categ: "Fun" },
-    { title: "Fresher's party", time: "12:00 PM", categ: "Fun" },
-    { title: "Kabbaddi", time: "1:00 PM", categ: "Sports" },
-    { title: "Crystal Maze", time: "2:00 PM", categ: "Fun" },
-    { title: "DJ Party", time: "4:00 PM", categ: "Fun" },
-  ];
+  const [events, setEvents] = useState(props.events);
+  const [dayQuery, setDayQuery] = useState("1");
+
+  useEffect(() => {
+    let newEvents;
+    if (dayQuery == 1) {
+      newEvents = props.events.filter((event) => event.day == 1);
+      setEvents(newEvents);
+    } else if (dayQuery == 2) {
+      newEvents = props.events.filter((event) => event.day == 2);
+      setEvents(newEvents);
+    } else if (dayQuery == 3) {
+      newEvents = props.events.filter((event) => event.day == 3);
+      setEvents(newEvents);
+    } else {
+      setEvents(props.events);
+    }
+  }, [dayQuery]);
 
   return (
     <>
@@ -59,11 +69,15 @@ export default function Home(props) {
                 _focus={{ outline: "none!important" }}
                 placeholder="Select day"
                 position="relative"
+                value={dayQuery}
+                onChange={(e) => {
+                  setDayQuery(e.target.value);
+                }}
                 zIndex="0"
               >
-                <option value="">Day 1</option>
-                <option value="">Day 2</option>
-                <option value="">Day 3</option>
+                <option value="1">Day 1</option>
+                <option value="2">Day 2</option>
+                <option value="3">Day 3</option>
               </Select>
             </Box>
             <Flex flexDirection="column" w="80%" gridGap="3">
@@ -89,13 +103,13 @@ export default function Home(props) {
                         fontSize={{ base: "auto", lg: "20pt" }}
                         color="white"
                       >
-                        {evt.categ}
+                        {evt.category == "S" ? "Sports" : "Cultural"}
                       </Text>
                       <Text
                         fontSize={{ base: "auto", lg: "20pt" }}
                         color="white"
                       >
-                        {evt.time}
+                        {evt.start}
                       </Text>
                     </Flex>
                     <Flex
@@ -115,4 +129,16 @@ export default function Home(props) {
       </Layout>
     </>
   );
+}
+
+export async function getStaticProps(context) {
+  const res = await fetch("https://faces21.herokuapp.com/api/e").then(
+    (response) => response.json()
+  );
+
+  return {
+    props: {
+      events: res.events,
+    },
+  };
 }

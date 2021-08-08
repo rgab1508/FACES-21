@@ -15,9 +15,15 @@ import {
 
 export default function EventPopup(props) {
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} size={"5xl"}>
+    <Modal
+      closeOnEsc={false}
+      closeOnOverlayClick={false}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
+      size={"5xl"}
+    >
       <ModalOverlay />
-      <ModalContent bg="green.300">
+      <ModalContent bg="green.600">
         <ModalHeader>
           <Text color="white">Event</Text>
         </ModalHeader>
