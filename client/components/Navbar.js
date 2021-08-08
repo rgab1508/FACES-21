@@ -1,5 +1,16 @@
-import { Box, Text, Flex, Stack, Fade, ScaleFade } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Text,
+  Flex,
+  Stack,
+  ScaleFade,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuButton,
+  Button,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -7,7 +18,7 @@ function Logo(props) {
   return (
     <Box {...props}>
       <Text fontSize="25pt" fontWeight="bolder">
-        {props.visible && "FACES-21"}
+        {props.visible == 1 && "FACES-21"}
       </Text>
     </Box>
   );
@@ -91,12 +102,42 @@ function DrawerNavbar({ isOpen }) {
           >
             Profile
           </MenuItems>
-         <Menu>
-          <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="transparent"   _hover={{ bg: "green.300" }} fontWeight="bold"fontSize="15pt"  sx={{ transition: "background 0.2s" }}>  Events </MenuButton>
-          <MenuList background="transparent" >
-            <MenuItem fontWeight="bold" _hover={{ bg: "green.300" }} fontSize="15pt" textColor="white" to="/events" sx={{ transition: "background 0.2s" }}>Cultural</MenuItem>
-            <MenuItem fontWeight="bold" _hover={{ bg: "green.300" }} fontSize="15pt" textColor="white" to="/events" sx={{ transition: "background 0.2s" }}>Sports</MenuItem>
-          </MenuList>
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              colorScheme="transparent"
+              _hover={{ bg: "green.300" }}
+              fontWeight="bold"
+              fontSize="15pt"
+              sx={{ transition: "background 0.2s" }}
+              _focus={{ outline: "none!important" }}
+            >
+              {" "}
+              Events{" "}
+            </MenuButton>
+            <MenuList background="green.300">
+              <MenuItem
+                fontWeight="bold"
+                _hover={{ bg: "green.300" }}
+                fontSize="15pt"
+                textColor="white"
+                sx={{ transition: "background 0.2s" }}
+                _focus={{ bg: "green.400" }}
+              >
+                <Link href="/events">Cultural</Link>
+              </MenuItem>
+              <MenuItem
+                fontWeight="bold"
+                _hover={{ bg: "green.300" }}
+                fontSize="15pt"
+                textColor="white"
+                sx={{ transition: "background 0.2s" }}
+                _focus={{ bg: "green.400" }}
+              >
+                <Link href="/events">Sports</Link>
+              </MenuItem>
+            </MenuList>
           </Menu>
           <MenuItems
             p="15px"
@@ -118,15 +159,16 @@ function DrawerNavbar({ isOpen }) {
 
 const NavbarContainer = (props) => {
   const [background, setBackground] = useState("transparent");
+  const { setVisible, ...rest } = props;
   useEffect(() => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
         setBackground("green.500");
-        props.setVisible(true);
+        setVisible(1);
       } else {
         setBackground("transparent");
-        props.setVisible(false);
+        setVisible(0);
       }
     });
   }, []);
@@ -146,7 +188,7 @@ const NavbarContainer = (props) => {
       sx={{ transition: " background 0.2s, height 0.4s" }}
       position="fixed"
       zIndex="1"
-      {...props}
+      {...rest}
     >
       {props.children}
     </Flex>
@@ -156,7 +198,7 @@ const NavbarContainer = (props) => {
 export default function Navbar(props) {
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(0);
 
   useEffect(() => {
     window.onresize = () => {

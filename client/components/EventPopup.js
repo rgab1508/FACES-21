@@ -30,6 +30,9 @@ export default function EventPopup(props) {
           <Text color="white" fontSize="17pt" fontWeight="bold">
             {props.event.title}
           </Text>
+          <Text color="white" fontSize="17pt">
+            {props.event.description}
+          </Text>
         </ModalBody>
         <ModalFooter>
           <ButtonGroup>

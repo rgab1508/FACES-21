@@ -1,49 +1,53 @@
-import { Flex, Box, Center, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Center,
+  Text,
+  useDisclosure,
+  Select,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import EventPopup from "../components/EventPopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 export default function Events(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [event, setEvent] = useState();
+  const [events, setEvents] = useState(props.events);
+  const [filterQuery, setFilterQuery] = useState("");
+  const [extraQuery, setExtraQuery] = useState("");
 
-  var events = [
-    {
-      day: "",
-      start: "",
-      end: "",
-      title: "Hello world",
-      description:
-        "This is important to remember. Love isn't like pie. You don't need to divide it among all your friends and loved ones. No matter how much love you give, you can always give more. It doesn't run out, so don't try to hold back giving it as if it may one day run out. Give it freely and as much as you want.",
-      image: "",
-      seats: "",
-      maxSeats: "",
-      category: "",
-      isSeminar: false,
-      teamSize: 5,
-      isTeamSizeStrict: false,
-      entryFee: "",
-      prizeMoney: "",
-    },
-    {
-      day: "",
-      start: "",
-      end: "",
-      title: "I am back",
-      description:
-        "It was a scrape that he hardly noticed. Sure, there was a bit of blood but it was minor compared to most of the other cuts and bruises he acquired on his adventures. There was no way he could know that the rock that produced the cut had alien genetic material on it that was now racing through his bloodstream. He felt perfectly normal and continued his adventure with no knowledge of what was about to happen to him.",
-      image: "",
-      seats: "",
-      maxSeats: "",
-      category: "",
-      isSeminar: false,
-      teamSize: 5,
-      isTeamSizeStrict: false,
-      entryFee: "",
-      prizeMoney: "",
-    },
-  ];
+  console.log(events);
+
+  useEffect(() => {
+    let newEvents;
+    if (extraQuery == "S") {
+      newEvents = props.events.filter((e) => e.category == "S");
+      setEvents(newEvents);
+    } else if (extraQuery == "C") {
+      newEvents = props.events.filter((e) => e.category == "C");
+      setEvents(newEvents);
+    } else if (extraQuery == 1) {
+      newEvents = props.events.filter((e) => e.day == 1);
+      setEvents(newEvents);
+    } else if (extraQuery == 2) {
+      newEvents = props.events.filter((e) => e.day == 2);
+      setEvents(newEvents);
+    } else if (extraQuery == 3) {
+      newEvents = props.events.filter((e) => e.day == 3);
+      setEvents(newEvents);
+    } else if (extraQuery == "Solo") {
+      newEvents = props.events.filter((e) => e.team_size <= 1);
+      setEvents(newEvents);
+    } else if (extraQuery == "Group") {
+      newEvents = props.events.filter((e) => e.team_size > 1);
+      setEvents(newEvents);
+    } else {
+      setEvents(props.events);
+    }
+  }, [extraQuery]);
 
   return (
     <>
@@ -70,6 +74,57 @@ export default function Events(props) {
           </Text>
         </Center>
         <Center py="80px" bg="green.100" flexDirection="column" gridGap="5">
+          <Flex gridGap="5">
+            <Select
+              icon={<ChevronDownIcon />}
+              value={filterQuery}
+              variant="filled"
+              placeholder="Select option"
+              onChange={(event) => {
+                setFilterQuery(event.target.value);
+              }}
+              w="30vw"
+            >
+              <option value="Day">Day</option>
+              <option value="Participant">Participant type</option>
+              <option value="Event">Event category</option>
+            </Select>
+            {filterQuery != "" && (
+              <Select
+                w="30vw"
+                variant="filled"
+                placeholder={
+                  filterQuery == "Day"
+                    ? "Select day"
+                    : filterQuery == "Participant"
+                    ? "Select category"
+                    : "Select event category"
+                }
+                value={extraQuery}
+                onChange={(event) => {
+                  setExtraQuery(event.target.value);
+                }}
+              >
+                {filterQuery == "Day" ? (
+                  <>
+                    <option value={1}>Day - 1</option>
+                    <option value={2}>Day - 2</option>
+                    <option value={3}>Day - 3</option>
+                  </>
+                ) : filterQuery == "Participant" ? (
+                  <>
+                    <option value="Solo">Solo</option>
+                    <option value="Group">Group</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="S">Sports</option>
+                    <option value="C">Cultural</option>
+                  </>
+                )}
+              </Select>
+            )}
+          </Flex>
           {events.map(function (event, index) {
             return (
               <Flex
@@ -99,7 +154,7 @@ export default function Events(props) {
                   </Text>
                 </Box>
                 <Box
-                  background={`url(https://source.unsplash.com/random)`}
+                  background={`url(https://faces21.herokuapp.com/media/${event.image})`}
                   backgroundSize="cover"
                   backgroundPosition="center"
                   backgroundRepeat="no-repeat"
