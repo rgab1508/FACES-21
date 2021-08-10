@@ -1,5 +1,16 @@
-import { Box, Text, Flex, Stack, Fade, ScaleFade } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Text,
+  Flex,
+  Stack,
+  ScaleFade,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuButton,
+  Button,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -7,7 +18,7 @@ function Logo(props) {
   return (
     <Box {...props}>
       <Text fontSize="25pt" fontWeight="bolder">
-        {props.visible && "FACES-21"}
+        {props.visible == 1 && "FACES-21"}
       </Text>
     </Box>
   );
@@ -91,7 +102,9 @@ function DrawerNavbar({ isOpen }) {
           >
             Profile
           </MenuItems>
-          <MenuItems
+          <Menu>
+            
+            <MenuItems
             _hover={{ bg: "green.300" }}
             fontWeight="bold"
             fontSize="15pt"
@@ -100,6 +113,8 @@ function DrawerNavbar({ isOpen }) {
           >
             Events
           </MenuItems>
+           
+          </Menu>
           <MenuItems
             p="15px"
             color="white"
@@ -120,15 +135,16 @@ function DrawerNavbar({ isOpen }) {
 
 const NavbarContainer = (props) => {
   const [background, setBackground] = useState("transparent");
+  const { setVisible, ...rest } = props;
   useEffect(() => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
         setBackground("green.500");
-        props.setVisible(true);
+        setVisible(1);
       } else {
         setBackground("transparent");
-        props.setVisible(false);
+        setVisible(0);
       }
     });
   }, []);
@@ -148,7 +164,7 @@ const NavbarContainer = (props) => {
       sx={{ transition: " background 0.2s, height 0.4s" }}
       position="fixed"
       zIndex="1"
-      {...props}
+      {...rest}
     >
       {props.children}
     </Flex>
@@ -158,7 +174,7 @@ const NavbarContainer = (props) => {
 export default function Navbar(props) {
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(0);
 
   useEffect(() => {
     window.onresize = () => {
