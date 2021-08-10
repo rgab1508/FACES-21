@@ -23,6 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   department = models.CharField(_('Department'),max_length=10, choices=DEPARTMENTS, blank=False)
   semester = models.SmallIntegerField(_("Semester"), blank=False)
   phone_no = models.CharField(_("Phone Number"), blank=False, max_length=10)
+  is_phone_no_verified = models.BooleanField(_("Is Phone Number Verified"), default=False)
   
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)

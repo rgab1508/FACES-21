@@ -17,20 +17,20 @@ class OTPVerify(APIView):
   permission_classes = [IsAuthenticated]
   def post(self, request):
     secret = request.data["secret"]
-    phone_no = request.data["phone_no"]
-    user = request.user
-
-
-    user.phone_no = phone_no
 
     if secret != settings.OTP_VERIFY_SECRET:
-      return JsonResponse({"message": "Something went Wrong", "success": False}, status=400)
+      return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
+    
+    phone_no = request.data["phone_no"]
+    user = request.user
+    user.phone_no = phone_no
+    user.is_phone_no_verified = True
 
     try:
       user.save()
-      return JsonResponse({"message": "Phone Number Added Succesfully","success": True}, status=200)
+      return JsonResponse({"detail": "Phone Number Added Succesfully","success": True}, status=200)
     except:
-      return JsonResponse({"message": "Something went Wrong", "success": False}, status=400)
+      return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
 
 
 class UserDetail(APIView):

@@ -1,3 +1,4 @@
+from users.permissions import IsPhoneNoVerified
 from users.models import User
 from users.models import Team
 from uuid import uuid4
@@ -29,10 +30,10 @@ class EventDetailVIew(APIView):
       }
       return JsonResponse({"success": True, "event": data}, status=200)
     except Event.DoesNotExist:
-      return JsonResponse({"message": "Event Doesn't Exists", "success": False}, status=400)
+      return JsonResponse({"detail": "Event Doesn't Exists", "success": False}, status=400)
     
 class EventRegiterView(APIView):
-  permission_classes = [IsAuthenticated]
+  permission_classes = [IsAuthenticated, IsPhoneNoVerified]
 
   def post(self, request):
     user = request.user
@@ -42,17 +43,17 @@ class EventRegiterView(APIView):
     try:
       event = Event.objects.get(event_code=event_code)
     except Event.DoesNotExist:
-      return JsonResponse({"message": "Event Doesn't Exists", "success": False}, status=400)
+      return JsonResponse({"detail": "Event Doesn't Exists", "success": False}, status=400)
 
 
     if event.seats == event.max_seats:
-      return JsonResponse({"message": "Event Doesn't have Seats Left!", "success": False}, status=400)
+      return JsonResponse({"detail": "Event Doesn't have Seats Left!", "success": False}, status=400)
     
     if event.team_size == 1:
       # Event is Solo Event
       e = user.teams.filter(event=event).first()
       if e:
-        return JsonResponse({"message": "You have Already Registered For this Event", "success": False}, status=400)
+        return JsonResponse({"detail": "You have Already Registered For this Event", "success": False}, status=400)
       
       # create a Team of One
       t = Team()
@@ -73,27 +74,27 @@ class EventRegiterView(APIView):
         t.save()
         event.save()
         user.save()
-        return JsonResponse({"message": "Event Registered Sucessfully!", "success": True}, status=200)
+        return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
 
       except:
         t.delete()
-        return JsonResponse({"message": "Something Went Wrong!", "success": False}, status=400)
+        return JsonResponse({"detail": "Something Went Wrong!", "success": False}, status=400)
 
     else:
       # Event is Team Event
       e = user.teams.filter(event=event).first()
       if e:
-        return JsonResponse({"message": "You have Already Registered For this Event", "success": False}, status=400)
+        return JsonResponse({"detail": "You have Already Registered For this Event", "success": False}, status=400)
       
       team_name = request.data['team_name']
       members = request.data["members"]
 
 
       if event.is_team_size_strict and len(members) != event.team_size:        
-        return JsonResponse({"message": f"Event Has a Strict Team Size of {event.team_size}", "success": False}, status=400)
+        return JsonResponse({"detail": f"Event Has a Strict Team Size of {event.team_size}", "success": False}, status=400)
 
       if len(set(members)) != len(members):
-        return JsonResponse({"message": "Team have Repeated Members, Please ensure they are Unique!", "success": False}, status=400)
+        return JsonResponse({"detail": "Team have Repeated Members, Please ensure they are Unique!", "success": False}, status=400)
       
       t = Team()
       t.event = event
@@ -109,7 +110,7 @@ class EventRegiterView(APIView):
 
         except User.DoesNotExist:
           t.delete()
-          return JsonResponse({"message": "Roll Number is Not Valid or Doesn't Exists", "success": False}, status=400)
+          return JsonResponse({"detail": "Roll Number is Not Valid or Doesn't Exists", "success": False}, status=400)
       
       # add to moneyOwed
       user.money_owed += event.entry_fee
@@ -121,7 +122,7 @@ class EventRegiterView(APIView):
         t.save()
         event.save()
         user.save()
-        return JsonResponse({"message": "Event Registered Sucessfully!", "success": True}, status=200)
+        return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
       except:
         t.delete()
-        return JsonResponse({"message": "Something Went Wrong!", "success": False}, status=400)
+        return JsonResponse({"detail": "Something Went Wrong!", "success": False}, status=400)
