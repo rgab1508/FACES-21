@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   name = models.CharField(_('Name'), max_length=256, blank=False)
   department = models.CharField(_('Department'),max_length=10, choices=DEPARTMENTS, blank=False)
   semester = models.SmallIntegerField(_("Semester"), blank=False)
-  phone_no = models.CharField(_("Phone Number"), blank=False, unique=True, max_length=10)
+  phone_no = models.CharField(_("Phone Number"), blank=False, max_length=10)
   
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)

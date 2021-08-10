@@ -25,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-+!hgi7mynxzcvaimm2%+g)6u8bi04ow!50zh%!*h3n_kq0c9z^'
 
+OTP_VERIFY_SECRET = os.getenv("OTP_VERIFY_SECRET", "BRUH")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

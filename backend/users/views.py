@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http.response import JsonResponse
 from rest_framework import serializers
 from rest_framework.views import APIView
@@ -9,6 +10,27 @@ from rest_framework.authentication import TokenAuthentication
 
 from .models import User
 from .serializers import UserSerializer
+
+
+
+class OTPVerify(APIView):
+  permission_classes = [IsAuthenticated]
+  def post(self, request):
+    secret = request.data["secret"]
+    phone_no = request.data["phone_no"]
+    user = request.user
+
+
+    user.phone_no = phone_no
+
+    if secret != settings.OTP_VERIFY_SECRET:
+      return JsonResponse({"message": "Something went Wrong", "success": False}, status=400)
+
+    try:
+      user.save()
+      return JsonResponse({"message": "Phone Number Added Succesfully","success": True}, status=200)
+    except:
+      return JsonResponse({"message": "Something went Wrong", "success": False}, status=400)
 
 
 class UserDetail(APIView):
