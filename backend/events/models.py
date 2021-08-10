@@ -6,9 +6,9 @@ from uuid import uuid4
 class Event(models.Model):
 
   DAYS = (
-    (1, 1),
-    (2, 2),
-    (3, 3)
+    (1, "One"),
+    (2, "Two"),
+    (3, "Three")
   )
   CATEGORIES = (
     ("C","Cultural"),
