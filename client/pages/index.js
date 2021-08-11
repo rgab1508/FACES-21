@@ -2,6 +2,7 @@ import { Box, Flex, Text, Center, Select } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
+import styles from "../components/Orenda.module.css";
 
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
@@ -47,10 +48,13 @@ export default function Home(props) {
             flexDirection="column"
             w="100%"
             h="80vh"
-            gridGap="3"
+            gridGap="0"
           >
             <Text fontSize="60pt" color="white" fontWeight="bold">
               FACES-21
+            </Text>
+            <Text className={styles.orenda} color="white">
+              orenda
             </Text>
             <Text color="white" fontSize="20pt">
               Peace love and plants

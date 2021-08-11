@@ -1,0 +1,9 @@
+@font-face {
+  font-family: Orenda;
+  src: url(../theme/Orenda-1GPW4.otf);
+}
+
+.orenda {
+  font-family: "Orenda", sans-serif;
+  font-weight: 300;
+}
