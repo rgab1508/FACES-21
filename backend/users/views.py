@@ -1,3 +1,5 @@
+import os
+import uuid
 from django.conf import settings
 from django.http.response import JsonResponse
 from rest_framework import serializers
@@ -11,6 +13,7 @@ from rest_framework.authentication import TokenAuthentication
 from .models import User
 from .serializers import UserSerializer
 
+import csv
 
 
 class OTPVerify(APIView):
@@ -79,3 +82,37 @@ class LogoutView(APIView):
     request.user.auth_token.delete()
     return JsonResponse({"success": True},status=200)
    
+
+class MakeUsersView(APIView):
+  """
+    This route populates the DB with users
+  """
+  permission_classes = [IsAdminUser]
+
+  def post(self, request):
+
+    with open(os.getenv("PATH_TO_DATA")) as data_file:
+      reader = csv.reader(data_file)
+
+      for row in reader:
+        [name, roll_no, email] = row
+        roll_no = int(roll_no)
+
+        user = User()
+        user.roll_no = roll_no
+        user.email = email
+        text_password = str(uuid.uuid4())[-8:]
+        user.set_password(text_password)
+
+        try:
+          user.save()
+          # send email
+          return JsonResponse({"success": True}, status=200)
+
+        except:
+          return JsonResponse({"success": False}, status=200)
+
+
+
+
+    return JsonResponse({"success": True}, status=200)
