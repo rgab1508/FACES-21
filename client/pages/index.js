@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Center, Select } from "@chakra-ui/react";
+import { Box, Flex, Text, Center, Select, Heading } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
@@ -50,9 +50,9 @@ export default function Home(props) {
             h="80vh"
             gridGap="3"
           >
-            <Text fontSize="40pt" color="white" fontWeight="bold">
+            <Heading fontSize="45pt" color="white" fontWeight="bold">
               FACES-21
-            </Text>
+            </Heading>
             <Text
               className={styles.scriptina}
               fontWeight="bold"

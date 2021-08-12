@@ -12,6 +12,16 @@ import {
 import Navbar from "../components/Navbar";
 
 export default function Login(props) {
+  var rollNo, password;
+
+  async function handleLogin(e) {
+    await fetch("https://faces21.herokuapp.com/api/u/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: { username: rollNo, password: password },
+    }).then((res) => console.log(res.json()));
+  }
+
   return (
     <>
       <Head>
@@ -52,6 +62,10 @@ export default function Login(props) {
             </FormLabel>
             <Input
               placeholder="Roll No"
+              value={rollNo}
+              onChange={(e) => {
+                rollNo = e.target.value;
+              }}
               variant="filled"
               type="number"
               _focus={{ bg: "green.200" }}
@@ -63,13 +77,19 @@ export default function Login(props) {
             </FormLabel>
             <Input
               placeholder="*******"
+              value={password}
+              onChange={(e) => {
+                password = e.target.value;
+              }}
               variant="filled"
               mb={10}
               type="password"
               _focus={{ bg: "green.200" }}
             />
           </FormControl>
-          <Button colorScheme="green">Login</Button>
+          <Button onClick={handleLogin} colorScheme="green">
+            Login
+          </Button>
         </Flex>
       </Center>
     </>
