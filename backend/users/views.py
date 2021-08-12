@@ -2,6 +2,7 @@ import os
 import uuid
 from django.conf import settings
 from django.http.response import JsonResponse
+import requests
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -118,11 +119,20 @@ class MakeUsersView(APIView):
   permission_classes = [IsAdminUser]
 
   def post(self, request):
+    url = 'https://drive.google.com/uc?id=1lseqlHKIm79MPTj2DPjbYFDmw0JUXVbH&export=download'
 
-    with open(os.getenv("PATH_TO_DATA")) as data_file:
-      reader = csv.reader(data_file)
 
-      for row in reader:
+    with requests.Session() as s:
+      download = s.get(url)
+
+      decoded_content = download.content.decode('utf-8')
+
+      cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+      my_list = list(cr)
+      for row in my_list:
+          print(row)
+
+      for row in my_list:
         [name, roll_no, email] = row
         roll_no = int(roll_no)
 

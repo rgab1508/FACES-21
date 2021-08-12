@@ -48,6 +48,7 @@ class Team(models.Model):
   team_name = models.CharField(_("Team Name"), max_length=256,blank=False)
   event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participants")
   members = models.ManyToManyField(User, related_name='teams')
+  verified = models.BooleanField(_("Verified"), default=False)
  
 
   def __str__(self) -> str:
