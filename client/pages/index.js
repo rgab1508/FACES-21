@@ -48,16 +48,19 @@ export default function Home(props) {
             flexDirection="column"
             w="100%"
             h="80vh"
-            gridGap="0"
+            gridGap="3"
           >
-            <Text fontSize="60pt" color="white" fontWeight="bold">
+            <Text fontSize="40pt" color="white" fontWeight="bold">
               FACES-21
             </Text>
-            <Text className={styles.orenda} color="white">
-              orenda
-            </Text>
-            <Text color="white" fontSize="20pt">
-              Peace love and plants
+            <Text
+              className={styles.scriptina}
+              fontWeight="bold"
+              color="white"
+              fontSize="80pt"
+              textAlign="center"
+            >
+              Orenda
             </Text>
           </Center>
           <Center
