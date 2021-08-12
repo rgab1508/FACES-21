@@ -1,9 +1,13 @@
 @font-face {
-  font-family: Orenda;
-  src: url(../theme/Orenda-1GPW4.otf);
+  font-family: Scriptina;
+  src: url(../theme/Scriptina\ Pro.otf);
 }
 
 .orenda {
   font-family: "Orenda", sans-serif;
   font-weight: 300;
+}
+
+.scriptina {
+  font-family: "Scriptina";
 }
