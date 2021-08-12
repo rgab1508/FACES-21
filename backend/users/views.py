@@ -47,6 +47,34 @@ class UserDetail(APIView):
 
 
 
+class UserUpdate(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def post(self, request):
+    user = request.user
+    DEPARTMENTS = ("COMP", "IT", "EXTC", "MECH", "ELEC", "OTHER")
+    
+    name = request.data['name']
+    department = request.data['department']
+    semester = request.data['semester']
+
+    if name == "" or department not in DEPARTMENTS or semester < 0 or semester > 8:
+      return JsonResponse({"detail": "Invalid Fields", "success": False}, status=400)
+
+    user.name = name
+    user.department = department
+    user.semester = semester
+    
+    if user.is_phone_no_verified:
+      user.has_filled_profile = True
+    
+    try:
+      user.save()
+      return JsonResponse({"detail": "Profile Updated!", "success": True}, status=200)
+    except:
+      return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
+
+
 class RegisterView(APIView):
   permission_classes = [IsAdminUser]
   def post(self, request):
@@ -107,12 +135,7 @@ class MakeUsersView(APIView):
         try:
           user.save()
           # send email
-          return JsonResponse({"success": True}, status=200)
-
         except:
-          return JsonResponse({"success": False}, status=200)
-
-
-
-
+          print(roll_no, email, text_password)
+          
     return JsonResponse({"success": True}, status=200)

@@ -24,3 +24,4 @@ class SeatsFilterList(admin.SimpleListFilter):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
   list_filter = ('day', 'category', SeatsFilterList)
+  search_fields = ('event_code', 'title', 'desciption', )
