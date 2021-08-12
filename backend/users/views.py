@@ -94,10 +94,11 @@ class LoginView(ObtainAuthToken):
         
         if serializer.is_valid():
           user = serializer.validated_data['user']
+          user_serializer = UserSerializer(user)
           token, created = Token.objects.get_or_create(user=user)
           return JsonResponse({
               'token': token.key,
-              'roll_no': user.roll_no,
+              'user': user_serializer.data,
               'success': True,
           }, status=200)
         else:
