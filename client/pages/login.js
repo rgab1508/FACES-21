@@ -18,6 +18,7 @@ import { UserContext } from "../context/UserContext";
 import styles from "../components/Orenda.module.css";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
+import VideoBackground from "../components/VideoBackground";
 
 export default function Login(props) {
   var [rollNo, setRn] = useState("");
@@ -68,18 +69,7 @@ export default function Login(props) {
       <Head>
         <title>FACES-21</title>
       </Head>
-      <Box
-        w="100%"
-        h="100vh"
-        as="video"
-        autoPlay={true}
-        loop
-        zIndex="-1"
-        position="fixed"
-        muted
-        src="NatureVideoTest.mp4"
-        objectFit="cover"
-      />
+      <VideoBackground />
       <Navbar />
       <Center flexDirection="column" height="100vh" bg="rgb(0,60,0,0.4)">
         <Flex
@@ -87,10 +77,10 @@ export default function Login(props) {
           background="green.400"
           p={12}
           borderRadius="10px"
-          w="50%"
+          w={{ base: "auto", md: "50%" }}
         >
           <Center flexDirection="column">
-            <Heading fontSize="50pt" color="white">
+            <Heading fontSize={{ base: "25pt", md: "50pt" }} color="white">
               FACES-21
             </Heading>
             <Text
@@ -98,7 +88,7 @@ export default function Login(props) {
               fontWeight="bold"
               color="white"
               className={styles.scriptina}
-              fontSize="40pt"
+              fontSize={{ base: "30pt", md: "40pt" }}
             >
               Orenda
             </Text>
