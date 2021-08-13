@@ -155,7 +155,7 @@ class MakeUsersView(APIView):
   permission_classes = [IsAdminUser]
 
   def post(self, request):
-    url = 'https://drive.google.com/uc?id=1lseqlHKIm79MPTj2DPjbYFDmw0JUXVbH&export=download'
+    url = 'https://drive.google.com/uc?id=1iMmh16C0H4mMUeEvmwwQbxCvIBymXiE9&export=download'
 
 
     with requests.Session() as s:
