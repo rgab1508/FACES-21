@@ -5,14 +5,15 @@ import {
   Stack,
   ScaleFade,
   Menu,
-  MenuItem,
-  MenuList,
-  MenuButton,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { API_BASE_URL } from "../config";
+import axios from "axios";
 
 function Logo(props) {
   return (
@@ -35,7 +36,7 @@ function MenuToggle({ toggle, isOpen }) {
           document.getElementById("navbar").style.height = "60vh";
           setTimeout(() => toggle(), 200);
         } else {
-          document.getElementById("navbar").style.height = "19vh";
+          document.getElementById("navbar").style.height = "17vh";
           toggle();
         }
       }}
@@ -68,6 +69,18 @@ function MenuItems({ children, isLast, to = "/", ...rest }) {
 }
 
 function DrawerNavbar({ isOpen }) {
+  const [userState, userDispatch] = useContext(UserContext);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (JSON.stringify(userState.userInfo) == "{}") {
+      setLoggedIn(false);
+    } else {
+      setLoggedIn(true);
+    }
+  }, [userState.userInfo]);
+
   return (
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
@@ -93,40 +106,79 @@ function DrawerNavbar({ isOpen }) {
           >
             Home
           </MenuItems>
-          <MenuItems
-            _hover={{ bg: "green.300" }}
-            fontWeight="bold"
-            fontSize="15pt"
-            to="/profile"
-            sx={{ transition: "background 0.2s" }}
-          >
-            Profile
-          </MenuItems>
-          <Menu>
-            
+          {loggedIn && (
             <MenuItems
-            _hover={{ bg: "green.300" }}
-            fontWeight="bold"
-            fontSize="15pt"
-            to="/events"
-            sx={{ transition: "background 0.2s" }}
-          >
-            Events
-          </MenuItems>
-           
+              _hover={{ bg: "green.300" }}
+              fontWeight="bold"
+              fontSize="15pt"
+              to="/profile"
+              sx={{ transition: "background 0.2s" }}
+            >
+              Profile
+            </MenuItems>
+          )}
+          <Menu>
+            <MenuItems
+              _hover={{ bg: "green.300" }}
+              fontWeight="bold"
+              fontSize="15pt"
+              to="/events"
+              sx={{ transition: "background 0.2s" }}
+            >
+              Events
+            </MenuItems>
           </Menu>
-          <MenuItems
-            p="15px"
-            color="white"
-            bg="green.300"
-            fontSize="15pt"
-            to="/login"
-            isLast
-            borderRadius="10px"
-            fontWeight="bold"
-          >
-            Login
-          </MenuItems>
+          {!loggedIn ? (
+            <Box p="15px" borderRadius="10px">
+              <Button
+                color="white"
+                bg="green.300"
+                fontSize="15pt"
+                fontWeight="bold"
+              >
+                <Link href="/login">Login</Link>
+              </Button>
+            </Box>
+          ) : (
+            <Box p="15px" borderRadius="10px">
+              <Button
+                color="white"
+                bg="green.300"
+                fontSize="15pt"
+                fontWeight="bold"
+                onClick={async () => {
+                  try {
+                    const res = await axios.post(
+                      `${API_BASE_URL}/api/u/auth/logout/`,
+                      {},
+                      {
+                        headers: {
+                          Authorization: "Token " + userState.userInfo.token,
+                        },
+                      }
+                    );
+                    if (res.status == 200) {
+                      userDispatch({
+                        type: "REMOVE_USER",
+                      });
+                    } else {
+                      throw new Error(res.statusText);
+                    }
+                  } catch (e) {
+                    console.log(e);
+                    toast({
+                      title: "Error logging out",
+                      status: "error",
+                      duration: 2000,
+                      position: "top-right",
+                    });
+                  }
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
+          )}
         </Stack>
       </ScaleFade>
     </Box>
@@ -184,6 +236,7 @@ export default function Navbar(props) {
         setIsOpen(false);
       }
     };
+    window.innerWidth >= 768 ? setIsOpen(true) : setIsOpen(false);
   }, []);
 
   return (

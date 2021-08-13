@@ -1,8 +1,17 @@
-import { Box, Flex, Text, Center, Select, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Center,
+  Select,
+  Heading,
+  Badge,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
 import styles from "../components/Orenda.module.css";
+import VideoBackground from "../components/VideoBackground";
 
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
@@ -29,35 +38,28 @@ export default function Home(props) {
       <Head>
         <title>FACES-21</title>
       </Head>
-      <Box
-        w="100%"
-        h="100vh"
-        as="video"
-        autoPlay={true}
-        loop
-        zIndex="-1"
-        position="fixed"
-        muted
-        src="NatureVideoTest.mp4"
-        objectFit="cover"
-      />
+      <VideoBackground />
       <Layout>
         <Flex flexDirection="column" w="100%" h="100%">
           <Center
             bg="rgb(0,60,0,0.4)"
             flexDirection="column"
             w="100%"
-            h="80vh"
+            h="100vh"
             gridGap="3"
           >
-            <Heading fontSize="45pt" color="white" fontWeight="bold">
+            <Heading
+              fontSize={{ base: "50pt", md: "50pt" }}
+              color="white"
+              fontWeight="bold"
+            >
               FACES-21
             </Heading>
             <Text
               className={styles.scriptina}
               fontWeight="bold"
               color="white"
-              fontSize="80pt"
+              fontSize={{ base: "70pt", md: "90pt" }}
               textAlign="center"
             >
               Orenda
@@ -100,7 +102,7 @@ export default function Home(props) {
                     sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
                     maxH="23vh"
                   >
-                    <Flex flexDirection="column" w="50%" p="15px">
+                    <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
                       <Text
                         fontWeight="bold"
                         fontSize={{ base: "auto", lg: "20pt" }}
@@ -108,12 +110,16 @@ export default function Home(props) {
                       >
                         {evt.title}
                       </Text>
-                      <Text
-                        fontSize={{ base: "auto", lg: "20pt" }}
-                        color="white"
-                      >
-                        {evt.category == "S" ? "Sports" : "Cultural"}
-                      </Text>
+                      <Box>
+                        <Badge
+                          bg={evt.category == "S" ? "blue.700" : "red.700"}
+                          color="white"
+                          fontSize="14pt"
+                          borderRadius="5px"
+                        >
+                          {evt.category == "S" ? "Sports" : "Cultural"}
+                        </Badge>
+                      </Box>
                       <Text
                         fontSize={{ base: "auto", lg: "20pt" }}
                         color="white"
@@ -128,7 +134,14 @@ export default function Home(props) {
                       backgroundPosition="center"
                       backgroundRepeat="no-repeat"
                       borderRadius="10px"
-                    />
+                    >
+                      <Box
+                        h="100%"
+                        w="100%"
+                        bg="rgb(0,60,0,0.4)"
+                        borderRadius="10px"
+                      ></Box>
+                    </Flex>
                   </Flex>
                 </Flex>
               ))}

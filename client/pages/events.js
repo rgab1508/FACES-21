@@ -1,5 +1,6 @@
 import {
   Flex,
+  Heading,
   Box,
   Center,
   Text,
@@ -12,6 +13,7 @@ import Layout from "../components/Layout";
 import EventPopup from "../components/EventPopup";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import VideoBackground from "../components/VideoBackground";
 
 export default function Events(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,25 +55,29 @@ export default function Events(props) {
       <Head>
         <title>FACES-21 • Events</title>
       </Head>
-      <Box
-        w="100%"
-        h="80vh"
-        as="video"
-        autoPlay={true}
-        loop
-        zIndex="-1"
-        position="fixed"
-        muted
-        src="NatureVideoTest.mp4"
-        objectFit="cover"
-      />
+      <VideoBackground />
       <Layout />
-      <Flex flexDirection="column" w="100vw" h="auto">
-        <Center flexDirection="column" w="100%" h="80vh" bg="rgb(0,60,0,0.4)">
-          <Text p="10px" color="white" fontWeight="bold" fontSize="60pt">
+      <Flex flexDirection="column" w="auto" h="auto">
+        <Center
+          flexDirection="column"
+          w="100%"
+          h={{ base: "60vh", md: "80vh" }}
+          bg="rgb(0,60,0,0.4)"
+        >
+          <Heading
+            p="10px"
+            color="white"
+            fontSize={{ base: "40pt", md: "60pt" }}
+            textAlign="center"
+          >
             Events we have
-          </Text>
-          <Text w="60%" p="10px" color="white" fontSize="20pt">
+          </Heading>
+          <Text
+            w={{ base: "90%", md: "60%" }}
+            p="10px"
+            color="white"
+            fontSize={{ base: "15pt", md: "20pt" }}
+          >
             FACES offers you a variety of events to choose from. Feel free to
             pick any event of your choice, but make sure you follow the
             registration criteria.
@@ -87,7 +93,7 @@ export default function Events(props) {
               onChange={(event) => {
                 setFilterQuery(event.target.value);
               }}
-              w="30vw"
+              w={{ base: "40vw", md: "30vw" }}
             >
               <option value="Day">Day</option>
               <option value="Participant">Participant type</option>
@@ -95,7 +101,7 @@ export default function Events(props) {
             </Select>
             {filterQuery != "" && (
               <Select
-                w="30vw"
+                w={{ base: "40vw", md: "30vw" }}
                 variant="filled"
                 placeholder={
                   filterQuery == "Day"
@@ -143,8 +149,15 @@ export default function Events(props) {
                   onOpen();
                 }}
                 boxShadow="lg"
-                sx={{ transition: "box-shadow 0.3s" }}
-                _hover={{ boxShadow: "2xl" }}
+                sx={{
+                  transition:
+                    "box-shadow 0.3s , transform 0.3s, margin-bottom 0.3s",
+                }}
+                _hover={{
+                  boxShadow: "2xl",
+                  transform: "scale(1.1)",
+                  marginBottom: "20px",
+                }}
               >
                 <Box p="15px" w="50%">
                   <Text color="white" fontWeight="bold" fontSize="20pt">
