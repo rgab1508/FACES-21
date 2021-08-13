@@ -1,6 +1,6 @@
-import { useState, useEffect, useReducer, createContext } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 
-export const UserContext = createContext();
+export const UserContext = React.createContext();
 
 const initialState = {
   userInfo: {},
@@ -26,14 +26,14 @@ export function UserContextProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     if (isInit) {
-      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      sessionStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     }
   }, [state]);
 
   useEffect(() => {
     dispatch({
       type: "ADD_USER",
-      payload: JSON.parse(localStorage.getItem("userInfo")) || {},
+      payload: JSON.parse(sessionStorage.getItem("userInfo")) || {},
     });
     setInit(true);
   }, []);

@@ -130,6 +130,7 @@ export default function Events(props) {
             )}
           </Flex>
           {events.map(function (event, index) {
+            console.log(event);
             return (
               <Flex
                 key={index}

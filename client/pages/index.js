@@ -1,4 +1,12 @@
-import { Box, Flex, Text, Center, Select, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Center,
+  Select,
+  Heading,
+  Badge,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
@@ -100,7 +108,7 @@ export default function Home(props) {
                     sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
                     maxH="23vh"
                   >
-                    <Flex flexDirection="column" w="50%" p="15px">
+                    <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
                       <Text
                         fontWeight="bold"
                         fontSize={{ base: "auto", lg: "20pt" }}
@@ -108,12 +116,16 @@ export default function Home(props) {
                       >
                         {evt.title}
                       </Text>
-                      <Text
-                        fontSize={{ base: "auto", lg: "20pt" }}
-                        color="white"
-                      >
-                        {evt.category == "S" ? "Sports" : "Cultural"}
-                      </Text>
+                      <Box>
+                        <Badge
+                          bg={evt.category == "S" ? "blue.700" : "red.700"}
+                          color="white"
+                          fontSize="14pt"
+                          borderRadius="5px"
+                        >
+                          {evt.category == "S" ? "Sports" : "Cultural"}
+                        </Badge>
+                      </Box>
                       <Text
                         fontSize={{ base: "auto", lg: "20pt" }}
                         color="white"
@@ -128,7 +140,14 @@ export default function Home(props) {
                       backgroundPosition="center"
                       backgroundRepeat="no-repeat"
                       borderRadius="10px"
-                    />
+                    >
+                      <Box
+                        h="100%"
+                        w="100%"
+                        bg="rgb(0,60,0,0.4)"
+                        borderRadius="10px"
+                      ></Box>
+                    </Flex>
                   </Flex>
                 </Flex>
               ))}

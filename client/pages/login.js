@@ -1,6 +1,7 @@
 import Head from "next/head";
 import {
   Heading,
+  Text,
   Box,
   Input,
   Button,
@@ -8,18 +9,59 @@ import {
   Center,
   FormControl,
   FormLabel,
+  useToast,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
+import axios from "axios";
+import { useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import styles from "../components/Orenda.module.css";
+import { useRouter } from "next/router";
+import { API_BASE_URL } from "../config";
 
 export default function Login(props) {
-  var rollNo, password;
+  var [rollNo, setRn] = useState("");
+  var [password, setPw] = useState("");
+  var [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const [userState, userDispatch] = useContext(UserContext);
+  const router = useRouter();
 
   async function handleLogin(e) {
-    await fetch("https://faces21.herokuapp.com/api/u/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: { username: rollNo, password: password },
-    }).then((res) => console.log(res.json()));
+    setLoading(true);
+    try {
+      const res = await axios.post(`${API_BASE_URL}/api/u/auth/login/`, {
+        username: parseInt(rollNo, 10),
+        password: password,
+      });
+      if (res.status == 200) {
+        console.log(res.data);
+        userDispatch({
+          type: "ADD_USER",
+          payload: { ...res.data.user, token: res.data.token },
+        });
+        toast({
+          title: "Successfully logged in",
+          status: "success",
+          duration: 3000,
+          position: "top-right",
+        });
+        router.back();
+        setLoading(false);
+      } else {
+        throw new Error(res.data.message);
+      }
+    } catch (error) {
+      toast({
+        title: `${error}`,
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+      });
+      setRn("");
+      setPw("");
+      setLoading(false);
+    }
   }
 
   return (
@@ -52,9 +94,18 @@ export default function Login(props) {
             <Heading fontSize="50pt" color="white">
               FACES-21
             </Heading>
-            <Heading mb={6} color="white">
+            <Text
+              mt={2}
+              fontWeight="bold"
+              color="white"
+              className={styles.scriptina}
+              fontSize="40pt"
+            >
+              Orenda
+            </Text>
+            <Text fontSize="30pt" my={0} color="white">
               Login
-            </Heading>
+            </Text>
           </Center>
           <FormControl mt={4}>
             <FormLabel fontWeight="bold" color="white">
@@ -64,7 +115,7 @@ export default function Login(props) {
               placeholder="Roll No"
               value={rollNo}
               onChange={(e) => {
-                rollNo = e.target.value;
+                setRn(e.target.value);
               }}
               variant="filled"
               type="number"
@@ -79,7 +130,12 @@ export default function Login(props) {
               placeholder="*******"
               value={password}
               onChange={(e) => {
-                password = e.target.value;
+                setPw(e.target.value);
+              }}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleLogin();
+                }
               }}
               variant="filled"
               mb={10}
@@ -87,7 +143,12 @@ export default function Login(props) {
               _focus={{ bg: "green.200" }}
             />
           </FormControl>
-          <Button onClick={handleLogin} colorScheme="green">
+          <Button
+            isLoading={loading}
+            loadingText="Logging in"
+            onClick={handleLogin}
+            colorScheme="green"
+          >
             Login
           </Button>
         </Flex>

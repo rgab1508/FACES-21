@@ -11,6 +11,7 @@ import {
   Flex,
   Button,
   ButtonGroup,
+  Badge,
 } from "@chakra-ui/react";
 
 export default function EventPopup(props) {
@@ -33,12 +34,44 @@ export default function EventPopup(props) {
           _focus={{ outline: "none!important" }}
         />
         <ModalBody>
-          <Text color="white" fontSize="17pt" fontWeight="bold">
-            {props.event.title}
-          </Text>
-          <Text color="white" fontSize="17pt">
-            {props.event.description}
-          </Text>
+          <Flex flexDirection="column">
+            <Text color="white" fontSize="17pt" fontWeight="bold">
+              {props.event.title}
+            </Text>
+            <Text color="white" fontSize="17pt">
+              {props.event.description}
+            </Text>
+          </Flex>
+          <Flex mt="5" gridGap="5">
+            <Badge
+              bg="purple.700"
+              color="white"
+              fontSize="14pt"
+              borderRadius="5px"
+            >
+              Day - {props.event.day}
+            </Badge>
+            <Badge
+              bg={props.event.category == "S" ? "blue.700" : "red.700"}
+              color="white"
+              fontSize="14pt"
+              borderRadius="5px"
+            >
+              {props.event.category == "S" ? "Sports" : "Cultural"}
+            </Badge>
+            {props.event.team_size > 1 ? (
+              <Badge
+                bg="yellow.500"
+                color="white"
+                fontSize="14pt"
+                borderRadius="5px"
+              >
+                Group
+              </Badge>
+            ) : (
+              ""
+            )}
+          </Flex>
         </ModalBody>
         <ModalFooter>
           <ButtonGroup>
