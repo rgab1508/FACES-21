@@ -68,11 +68,26 @@ export default function Events(props) {
       />
       <Layout />
       <Flex flexDirection="column" w="100vw" h="auto">
-        <Center flexDirection="column" w="100%" h="80vh" bg="rgb(0,60,0,0.4)">
-          <Heading p="10px" color="white" fontSize="60pt">
+        <Center
+          flexDirection="column"
+          w="100%"
+          h={{ base: "60vh", md: "80vh" }}
+          bg="rgb(0,60,0,0.4)"
+        >
+          <Heading
+            p="10px"
+            color="white"
+            fontSize={{ base: "40pt", md: "60pt" }}
+            textAlign="center"
+          >
             Events we have
           </Heading>
-          <Text w="60%" p="10px" color="white" fontSize="20pt">
+          <Text
+            w={{ base: "90%", md: "60%" }}
+            p="10px"
+            color="white"
+            fontSize={{ base: "15pt", md: "20pt" }}
+          >
             FACES offers you a variety of events to choose from. Feel free to
             pick any event of your choice, but make sure you follow the
             registration criteria.

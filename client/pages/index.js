@@ -11,6 +11,7 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
 import styles from "../components/Orenda.module.css";
+import VideoBackground from "../components/VideoBackground";
 
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
@@ -37,18 +38,7 @@ export default function Home(props) {
       <Head>
         <title>FACES-21</title>
       </Head>
-      <Box
-        w="100%"
-        h="100vh"
-        as="video"
-        autoPlay={true}
-        loop
-        zIndex="-1"
-        position="fixed"
-        muted
-        src="NatureVideoTest.mp4"
-        objectFit="cover"
-      />
+      <VideoBackground />
       <Layout>
         <Flex flexDirection="column" w="100%" h="100%">
           <Center
@@ -65,7 +55,7 @@ export default function Home(props) {
               className={styles.scriptina}
               fontWeight="bold"
               color="white"
-              fontSize="80pt"
+              fontSize={{ base: "40pt", md: "80pt" }}
               textAlign="center"
             >
               Orenda

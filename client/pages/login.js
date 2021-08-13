@@ -35,7 +35,6 @@ export default function Login(props) {
         password: password,
       });
       if (res.status == 200) {
-        console.log(res.data);
         userDispatch({
           type: "ADD_USER",
           payload: { ...res.data.user, token: res.data.token },

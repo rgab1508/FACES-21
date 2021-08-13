@@ -36,7 +36,7 @@ function MenuToggle({ toggle, isOpen }) {
           document.getElementById("navbar").style.height = "60vh";
           setTimeout(() => toggle(), 200);
         } else {
-          document.getElementById("navbar").style.height = "19vh";
+          document.getElementById("navbar").style.height = "17vh";
           toggle();
         }
       }}
@@ -106,15 +106,17 @@ function DrawerNavbar({ isOpen }) {
           >
             Home
           </MenuItems>
-          <MenuItems
-            _hover={{ bg: "green.300" }}
-            fontWeight="bold"
-            fontSize="15pt"
-            to="/profile"
-            sx={{ transition: "background 0.2s" }}
-          >
-            Profile
-          </MenuItems>
+          {loggedIn && (
+            <MenuItems
+              _hover={{ bg: "green.300" }}
+              fontWeight="bold"
+              fontSize="15pt"
+              to="/profile"
+              sx={{ transition: "background 0.2s" }}
+            >
+              Profile
+            </MenuItems>
+          )}
           <Menu>
             <MenuItems
               _hover={{ bg: "green.300" }}
@@ -127,18 +129,16 @@ function DrawerNavbar({ isOpen }) {
             </MenuItems>
           </Menu>
           {!loggedIn ? (
-            <MenuItems
-              p="15px"
-              color="white"
-              bg="green.300"
-              fontSize="15pt"
-              to="/login"
-              isLast
-              borderRadius="10px"
-              fontWeight="bold"
-            >
-              Login
-            </MenuItems>
+            <Box p="15px" borderRadius="10px">
+              <Button
+                color="white"
+                bg="green.300"
+                fontSize="15pt"
+                fontWeight="bold"
+              >
+                <Link href="/login">Login</Link>
+              </Button>
+            </Box>
           ) : (
             <Box p="15px" borderRadius="10px">
               <Button
@@ -236,6 +236,7 @@ export default function Navbar(props) {
         setIsOpen(false);
       }
     };
+    window.innerWidth >= 768 ? setIsOpen(true) : setIsOpen(false);
   }, []);
 
   return (
