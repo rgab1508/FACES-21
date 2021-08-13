@@ -49,7 +49,6 @@ class Team(models.Model):
   team_name = models.CharField(_("Team Name"), max_length=256,blank=False)
   event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participants")
   members = models.ManyToManyField(User, related_name='teams')
-  verified = models.BooleanField(_("Verified"), default=False)
   transaction_id = models.CharField(_("Transactions Id"), max_length=36, blank=True, null=True)
   is_paid = models.BooleanField(_("Is Paid"), default=False)
   is_verified = models.BooleanField(_("Is Verified"), default=False)
