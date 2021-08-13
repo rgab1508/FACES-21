@@ -5,6 +5,9 @@ from .models import User, Team
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-  list_filter = ('is_phone_no_verified',) #'money_owed')
+  list_filter = ('is_phone_no_verified', 'has_filled_profile') #'money_owed')
+  search_fields = ('roll_no', 'name', 'email', 'phone_no')
 
-admin.site.register(Team)
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+  search_fields = ('team_code', 'team_name')

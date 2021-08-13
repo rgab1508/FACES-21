@@ -5,9 +5,9 @@ from .models import User, Team
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['id', 'roll_no', 'email', 'password', 'name', 'department', 'semester', 'money_owed', 'has_filled_profile', 'phone_no']
+    fields = ['id', 'roll_no', 'email', 'password', 'name', 'department', 'semester', 'money_owed', 'has_filled_profile', 'phone_no', 'date_joined']
     extra_kwargs = {
-      'password': {'write_only': True}
+      'password': {'write_only': True},
     }
   
   def create(self, validated_data):

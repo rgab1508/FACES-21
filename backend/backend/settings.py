@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'users',
-    'events'
+    'events',
+    'transactions'
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -110,7 +111,7 @@ DATABASES = {
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 
-
+CORS_ALLOW_ALL_ORIGINS = True
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
