@@ -13,6 +13,7 @@ import Layout from "../components/Layout";
 import EventPopup from "../components/EventPopup";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import VideoBackground from "../components/VideoBackground";
 
 export default function Events(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,18 +55,7 @@ export default function Events(props) {
       <Head>
         <title>FACES-21 • Events</title>
       </Head>
-      <Box
-        w="100%"
-        h="80vh"
-        as="video"
-        autoPlay={true}
-        loop
-        zIndex="-1"
-        position="fixed"
-        muted
-        src="NatureVideoTest.mp4"
-        objectFit="cover"
-      />
+      <VideoBackground />
       <Layout />
       <Flex flexDirection="column" w="100vw" h="auto">
         <Center
@@ -103,7 +93,7 @@ export default function Events(props) {
               onChange={(event) => {
                 setFilterQuery(event.target.value);
               }}
-              w="30vw"
+              w={{ base: "40vw", md: "30vw" }}
             >
               <option value="Day">Day</option>
               <option value="Participant">Participant type</option>
@@ -111,7 +101,7 @@ export default function Events(props) {
             </Select>
             {filterQuery != "" && (
               <Select
-                w="30vw"
+                w={{ base: "40vw", md: "30vw" }}
                 variant="filled"
                 placeholder={
                   filterQuery == "Day"
