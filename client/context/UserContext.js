@@ -26,14 +26,14 @@ export function UserContextProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     if (isInit) {
-      sessionStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     }
   }, [state]);
 
   useEffect(() => {
     dispatch({
       type: "ADD_USER",
-      payload: JSON.parse(sessionStorage.getItem("userInfo")) || {},
+      payload: JSON.parse(localStorage.getItem("userInfo")) || {},
     });
     setInit(true);
   }, []);

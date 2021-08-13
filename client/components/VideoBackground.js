@@ -16,6 +16,7 @@ export default function VideoBackground() {
 
   return (
     <>
+      <Box position="absolute" w="100%" h="30vh" background="linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))" />
       <Box
         w="100%"
         h="100vh"
@@ -24,7 +25,7 @@ export default function VideoBackground() {
         display={{ base: "none", md: "block" }}
         autoPlay={true}
         loop
-        zIndex="-1"
+        zIndex={-1}
         position="fixed"
         controls={false}
         muted
