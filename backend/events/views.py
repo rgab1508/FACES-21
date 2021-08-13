@@ -1,3 +1,5 @@
+import json
+
 from users.permissions import IsPhoneNoVerified
 from users.models import User
 from users.models import Team
@@ -36,6 +38,12 @@ class EventRegiterView(APIView):
   permission_classes = [IsAuthenticated, IsPhoneNoVerified]
 
   def post(self, request):
+    def update_criteria(user, event):
+      user_criteria = json.loads(user.criteria)
+      user_criteria[str(event.day)] = True
+      user.criteria = json.dumps(user_criteria)
+      return user
+
     user = request.user
     event_code = request.data['event_code']
     event = None
@@ -65,7 +73,8 @@ class EventRegiterView(APIView):
       # add to moneyOwed
       user.money_owed += event.entry_fee
 
-      # TODO update criteria
+      # update criteria
+      user = update_criteria(user, event)
 
       # Update Event seats
       event.seats += 1
@@ -106,8 +115,6 @@ class EventRegiterView(APIView):
         try:
           u = User.objects.get(roll_no=m)
           t.members.add(u)
-          # TODO update criteria for members
-
         except User.DoesNotExist:
           t.delete()
           return JsonResponse({"detail": "Roll Number is Not Valid or Doesn't Exists", "success": False}, status=400)
@@ -121,6 +128,15 @@ class EventRegiterView(APIView):
       try:
         t.save()
         event.save()
+        # update criteria for members
+        print(t.members.all())
+        for m in t.members.all():
+          if m.roll_no == user.roll_no: continue
+          
+          m = update_criteria(m, event)
+          m.save()
+
+        user = update_criteria(user, event)
         user.save()
         return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
       except:
