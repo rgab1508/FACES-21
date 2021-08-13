@@ -1,12 +1,26 @@
 import { Box } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 export default function VideoBackground() {
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      document.getElementById("videoBackground").autoplay = false;
+    }
+    window.onresize = () => {
+      if (window.innerWidth <= 768) {
+        document.getElementById("videoBackground").autoplay = false;
+        document.getElementById("videoBackground").pause();
+      }
+    };
+  }, []);
+
   return (
     <>
       <Box
         w="100%"
         h="100vh"
         as="video"
+        id="videoBackground"
         display={{ base: "none", md: "block" }}
         autoPlay={true}
         loop

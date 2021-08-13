@@ -177,8 +177,7 @@ export default function Events(props) {
                   </Text>
                 </Box>
                 <Box
-                  //background={`url(https://faces21.herokuapp.com${event.image})`}
-                  background={`url(https://drive.google.com/file/d/19Jz0zSQD8AOkrBJxDSrMfByATuHQclqx/view?usp=sharing)`}
+                  background={`url(https://faces21.herokuapp.com${event.image})`}
                   backgroundSize="cover"
                   backgroundPosition="center"
                   backgroundRepeat="no-repeat"
