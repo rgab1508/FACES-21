@@ -57,7 +57,7 @@ export default function Events(props) {
       </Head>
       <VideoBackground />
       <Layout />
-      <Flex flexDirection="column" w="100vw" h="auto">
+      <Flex flexDirection="column" w="auto" h="auto">
         <Center
           flexDirection="column"
           w="100%"
