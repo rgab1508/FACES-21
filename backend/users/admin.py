@@ -11,3 +11,4 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
   search_fields = ('team_code', 'team_name')
+  list_filter = ('is_verified', 'is_paid')

@@ -27,7 +27,8 @@ class User(AbstractBaseUser, PermissionsMixin):
   
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)
-  criteria = models.TextField(_("Criteria JSON"), default='{"S": false, "C": false, "1": false, "2": false, "3": false}')
+  criteria = models.TextField(_("Criteria JSON"), default='{"1": false, "2": false, "3": false}')
+  cart = models.TextField(_("Cart JSON"), default="[]")
 
   is_staff = models.BooleanField(default=False)
   is_superuser = models.BooleanField(default=False)
@@ -49,7 +50,13 @@ class Team(models.Model):
   event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participants")
   members = models.ManyToManyField(User, related_name='teams')
   verified = models.BooleanField(_("Verified"), default=False)
- 
+  transaction_id = models.CharField(_("Transactions Id"), max_length=36, blank=True, null=True)
+  is_paid = models.BooleanField(_("Is Paid"), default=False)
+  is_verified = models.BooleanField(_("Is Verified"), default=False)
+
 
   def __str__(self) -> str:
     return f"{self.team_name}#{self.team_code}"
+
+
+# ADD POST_SAVE after getting verified and increment event seats

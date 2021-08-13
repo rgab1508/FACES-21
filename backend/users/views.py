@@ -1,4 +1,6 @@
+import json
 import os
+from re import U
 import uuid
 from django.conf import settings
 from django.http.response import JsonResponse
@@ -111,7 +113,40 @@ class LogoutView(APIView):
   def post(self,request):
     request.user.auth_token.delete()
     return JsonResponse({"success": True},status=200)
-   
+
+
+class UserExistsView(APIView):
+  def post(self, request):
+    roll_no = request.data['roll_no']
+
+    try:
+      c = User.objects.filter(roll_no=roll_no).count()
+      
+      if c < 1:
+        return JsonResponse({"exists": False, "success": True}, status=200)
+      else:
+        return JsonResponse({"exists": True, "success": True}, status=200)
+    except:
+      return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
+
+
+# CART REALTED
+
+class UserCartUpdate(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def post(self, request):
+    cart = request.data['cart']
+    user = request.user
+
+    try:
+      j = json.loads(cart)
+      user.cart = cart
+      user.save()
+      return JsonResponse({"detail": "Cart Updated Successfully!", "success": True}, status=200)
+    except ValueError:
+      return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
+
 
 class MakeUsersView(APIView):
   """
