@@ -12,9 +12,14 @@ import {
   Button,
   ButtonGroup,
   Badge,
+  Input,
 } from "@chakra-ui/react";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 export default function EventPopup(props) {
+  const [userState, userDispatch] = useContext(UserContext);
+
   return (
     <Modal
       closeOnEsc={false}
@@ -35,7 +40,7 @@ export default function EventPopup(props) {
         />
         <ModalBody>
           <Flex flexDirection="column">
-            <Text color="white" fontSize="17pt" fontWeight="bold">
+            <Text color="white" fontSize="26pt" fontWeight="bold">
               {props.event.title}
             </Text>
             <Text color="white" fontSize="17pt">
@@ -72,18 +77,39 @@ export default function EventPopup(props) {
               ""
             )}
           </Flex>
+          {props.event.team_size > 1 ? (
+            <Flex mt={4} flexDirection="column" p="20px" gridGap="3">
+              <Text color="white" fontSize="15pt" fontWeight="bold">
+                Enter teammates info
+              </Text>
+              <Input
+                variant="filled"
+                placeholder="Enter team info"
+                bg="white"
+                _focus={{ color: "black", bg: "white" }}
+              />
+            </Flex>
+          ) : (
+            ""
+          )}
         </ModalBody>
         <ModalFooter>
           <ButtonGroup>
-            <Button
-              bg="green.400"
-              color="white"
-              fontWeight="bold"
-              _focus={{ outline: "none!important" }}
-              _hover={{ opacity: 0.8 }}
-            >
-              Register
-            </Button>
+            {JSON.stringify(userState.userInfo) != "{}" ? (
+              <Button
+                bg="green.400"
+                color="white"
+                fontWeight="bold"
+                _focus={{ outline: "none!important" }}
+                _hover={{ opacity: 0.8 }}
+              >
+                Register
+              </Button>
+            ) : (
+              <Text fontStyle="italic" color="white" fontSize="14pt">
+                Login to register
+              </Text>
+            )}
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>

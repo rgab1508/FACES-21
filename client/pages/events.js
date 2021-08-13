@@ -1,5 +1,6 @@
 import {
   Flex,
+  Heading,
   Box,
   Center,
   Text,
@@ -68,9 +69,9 @@ export default function Events(props) {
       <Layout />
       <Flex flexDirection="column" w="100vw" h="auto">
         <Center flexDirection="column" w="100%" h="80vh" bg="rgb(0,60,0,0.4)">
-          <Text p="10px" color="white" fontWeight="bold" fontSize="60pt">
+          <Heading p="10px" color="white" fontSize="60pt">
             Events we have
-          </Text>
+          </Heading>
           <Text w="60%" p="10px" color="white" fontSize="20pt">
             FACES offers you a variety of events to choose from. Feel free to
             pick any event of your choice, but make sure you follow the
@@ -130,7 +131,6 @@ export default function Events(props) {
             )}
           </Flex>
           {events.map(function (event, index) {
-            console.log(event);
             return (
               <Flex
                 key={index}
@@ -144,8 +144,15 @@ export default function Events(props) {
                   onOpen();
                 }}
                 boxShadow="lg"
-                sx={{ transition: "box-shadow 0.3s" }}
-                _hover={{ boxShadow: "2xl" }}
+                sx={{
+                  transition:
+                    "box-shadow 0.3s , transform 0.3s, margin-bottom 0.3s",
+                }}
+                _hover={{
+                  boxShadow: "2xl",
+                  transform: "scale(1.1)",
+                  marginBottom: "20px",
+                }}
               >
                 <Box p="15px" w="50%">
                   <Text color="white" fontWeight="bold" fontSize="20pt">
@@ -165,7 +172,8 @@ export default function Events(props) {
                   </Text>
                 </Box>
                 <Box
-                  background={`url(https://faces21.herokuapp.com${event.image})`}
+                  //background={`url(https://faces21.herokuapp.com${event.image})`}
+                  background={`url(https://drive.google.com/file/d/19Jz0zSQD8AOkrBJxDSrMfByATuHQclqx/view?usp=sharing)`}
                   backgroundSize="cover"
                   backgroundPosition="center"
                   backgroundRepeat="no-repeat"
