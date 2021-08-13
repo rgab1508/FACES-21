@@ -45,7 +45,7 @@ export default function Home(props) {
             bg="rgb(0,60,0,0.4)"
             flexDirection="column"
             w="100%"
-            h="80vh"
+            h="100vh"
             gridGap="3"
           >
             <Heading fontSize="45pt" color="white" fontWeight="bold">
