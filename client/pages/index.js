@@ -48,14 +48,18 @@ export default function Home(props) {
             h="100vh"
             gridGap="3"
           >
-            <Heading fontSize={{ md: "50pt" }} color="white" fontWeight="bold">
+            <Heading
+              fontSize={{ base: "50pt", md: "50pt" }}
+              color="white"
+              fontWeight="bold"
+            >
               FACES-21
             </Heading>
             <Text
               className={styles.scriptina}
               fontWeight="bold"
               color="white"
-              fontSize={{ base: "40pt", md: "90pt" }}
+              fontSize={{ base: "70pt", md: "90pt" }}
               textAlign="center"
             >
               Orenda
