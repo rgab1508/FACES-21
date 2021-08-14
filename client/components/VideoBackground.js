@@ -10,13 +10,20 @@ export default function VideoBackground() {
       if (window.innerWidth <= 768) {
         document.getElementById("videoBackground").autoplay = false;
         document.getElementById("videoBackground").pause();
+      } else {
+        document.getElementById("videoBackground").play();
       }
     };
   }, []);
 
   return (
     <>
-      <Box position="absolute" w="100%" h="30vh" background="linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))" />
+      <Box
+        position="absolute"
+        w="100%"
+        h="30vh"
+        background="linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0))"
+      />
       <Box
         w="100%"
         h="100vh"
