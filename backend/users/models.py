@@ -20,6 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   roll_no = models.IntegerField(_("Roll Number"),unique=True, blank=False)
   email = models.EmailField(_('email address'),unique=True, max_length=254)
   name = models.CharField(_('Name'), max_length=256,blank=True, null=True)
+  avatar = models.CharField(_("Avatar Image"), max_length=256, blank=True ,null=True)
   department = models.CharField(_('Department'),max_length=10,blank=True, null=True, choices=DEPARTMENTS)
   semester = models.SmallIntegerField(_("Semester"),blank=True, null=True)
   phone_no = models.CharField(_("Phone Number"),blank=True,  max_length=10)

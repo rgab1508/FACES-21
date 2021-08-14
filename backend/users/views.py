@@ -130,6 +130,20 @@ class UserExistsView(APIView):
       return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
 
 
+class UserAvatarUpdate(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def post(self, request):
+    user = request.user
+    avatar = request.data["avatar"]
+    user.avatar = avatar
+    try:
+      user.save()
+      return JsonResponse({"detail": "Avatar Updated Successfully!", "success": True}, status=200)
+    except ValueError:
+      return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
+
+
 # CART REALTED
 
 class UserCartUpdate(APIView):

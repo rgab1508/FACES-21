@@ -1,4 +1,5 @@
 import json
+import datetime
 
 from users.permissions import IsPhoneNoVerified
 from users.models import User
@@ -10,6 +11,14 @@ from rest_framework.permissions import IsAuthenticated
 from django.http.response import JsonResponse
 from .models import Event
 from users.serializers import TeamSerializer
+
+
+def is_time_between(begin_time, end_time, check_time=None):
+    check_time = check_time or datetime.utcnow().time()
+    if begin_time < end_time:
+        return check_time >= begin_time and check_time <= end_time
+    else:
+        return check_time >= begin_time or check_time <= end_time
 
 class EventListView(APIView):
   def get(self, request):
@@ -38,11 +47,20 @@ class EventRegiterView(APIView):
   permission_classes = [IsAuthenticated, IsPhoneNoVerified]
 
   def post(self, request):
-    def update_criteria(user, event):
+    def update_criteria(user: User, event: Event) -> User:
       user_criteria = json.loads(user.criteria)
       user_criteria[str(event.day)] = True
       user.criteria = json.dumps(user_criteria)
       return user
+    
+    def check_event_clashes(user: User, event: Event) -> list:
+      participations = user.teams.all()
+      for p in participations:
+        e = p.event
+        print(e.start, e.end, event.start, event.day == e.day)
+        if event.day == e.day and is_time_between(e.start, e.end, event.start):
+          return [e,True]
+      return [None, False]
 
     user = request.user
     event_code = request.data['event_code']
@@ -56,13 +74,19 @@ class EventRegiterView(APIView):
 
     if event.seats == event.max_seats:
       return JsonResponse({"detail": "Event Doesn't have Seats Left!", "success": False}, status=400)
+
+    e = user.teams.filter(event=event).count()
+    if e > 0:
+      return JsonResponse({"detail": "You have Already Registered For this Event", "success": False}, status=400)
+    
+    # checking time clashes with other events
+    [ec, result] = check_event_clashes(user, event)
+    if result:
+      return JsonResponse({"detail": f"This Event Clashes with the {ec.title} Event({ec.start} - {ec.end})", "success": False}, status=400)
     
     if event.team_size == 1:
       # Event is Solo Event
-      e = user.teams.filter(event=event).first()
-      if e:
-        return JsonResponse({"detail": "You have Already Registered For this Event", "success": False}, status=400)
-      
+         
       # create a Team of One
       t = Team()
       t.event = event
@@ -84,16 +108,12 @@ class EventRegiterView(APIView):
         event.save()
         user.save()
         return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
-
       except:
         t.delete()
         return JsonResponse({"detail": "Something Went Wrong!", "success": False}, status=400)
 
     else:
       # Event is Team Event
-      e = user.teams.filter(event=event).first()
-      if e:
-        return JsonResponse({"detail": "You have Already Registered For this Event", "success": False}, status=400)
       
       team_name = request.data['team_name']
       members = request.data["members"]
@@ -104,7 +124,7 @@ class EventRegiterView(APIView):
 
       if len(set(members)) != len(members):
         return JsonResponse({"detail": "Team have Repeated Members, Please ensure they are Unique!", "success": False}, status=400)
-      
+
       t = Team()
       t.event = event
       t.team_name = team_name
@@ -118,6 +138,10 @@ class EventRegiterView(APIView):
         except User.DoesNotExist:
           t.delete()
           return JsonResponse({"detail": "Roll Number is Not Valid or Doesn't Exists", "success": False}, status=400)
+        
+      for m in t.members.all():
+        if not m.has_filled_profile or not m.is_phone_no_verified:
+          return JsonResponse({"detail": "Some Member(s) have not filled their Profile", "success": False}, status=400)
       
       # add to moneyOwed
       user.money_owed += event.entry_fee
