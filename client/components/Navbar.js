@@ -60,6 +60,7 @@ function MenuItems({ children, isLast, to = "/", ...rest }) {
         p="5px"
         borderRadius="10px"
         bg={{ base: "green.600", sm: "transparent" }}
+        cursor="pointer"
         {...rest}
       >
         {children}
@@ -111,7 +112,7 @@ function DrawerNavbar({ isOpen }) {
               _hover={{ bg: "green.300" }}
               fontWeight="bold"
               fontSize="15pt"
-              to="/profile"
+              to="/me"
               sx={{ transition: "background 0.2s" }}
             >
               Profile

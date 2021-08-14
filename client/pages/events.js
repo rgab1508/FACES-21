@@ -61,7 +61,7 @@ export default function Events(props) {
         <Center
           flexDirection="column"
           w="100%"
-          h={{ base: "60vh", md: "80vh" }}
+          h={{ base: "80vh", md: "80vh" }}
           bg="rgb(0,60,0,0.4)"
         >
           <Heading

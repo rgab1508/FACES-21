@@ -12,10 +12,15 @@ import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
 import styles from "../components/Orenda.module.css";
 import VideoBackground from "../components/VideoBackground";
+import { motion, isValidMotionProp } from "framer-motion";
 
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
   const [dayQuery, setDayQuery] = useState("1");
+
+  const MotionHeading = motion(Heading);
+  const MotionText = motion(Text);
+  const MotionFlex = motion(Flex);
 
   useEffect(() => {
     let newEvents;
@@ -48,22 +53,37 @@ export default function Home(props) {
             h="100vh"
             gridGap="3"
           >
-            <Heading
+            <MotionHeading
               fontSize={{ base: "50pt", md: "50pt" }}
               color="white"
               fontWeight="bold"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 10,
+              }}
             >
               FACES-21
-            </Heading>
-            <Text
+            </MotionHeading>
+            <MotionText
               className={styles.scriptina}
               fontWeight="bold"
               color="white"
               fontSize={{ base: "70pt", md: "90pt" }}
               textAlign="center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 10,
+              }}
+              pr={7}
             >
               Orenda
-            </Text>
+            </MotionText>
           </Center>
           <Center
             py="50px"
@@ -93,13 +113,17 @@ export default function Home(props) {
               {events.map((evt, key) => (
                 <Flex key={key} flex={1}>
                   {key % 2 == 0 ? <Box w={{ lg: "60%" }} /> : null}
-                  <Flex
+                  <MotionFlex
                     borderRadius="10px"
                     w={{ base: "100%", lg: "40%" }}
                     bg="green.500"
                     boxShadow="xl"
-                    _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
-                    sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 10,
+                    }}
                     maxH="23vh"
                   >
                     <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
@@ -142,7 +166,7 @@ export default function Home(props) {
                         borderRadius="10px"
                       ></Box>
                     </Flex>
-                  </Flex>
+                  </MotionFlex>
                 </Flex>
               ))}
             </Flex>

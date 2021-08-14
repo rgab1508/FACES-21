@@ -3,7 +3,9 @@ import {
   Heading,
   Text,
   Box,
+  InputGroup,
   Input,
+  InputRightElement,
   Button,
   Flex,
   Center,
@@ -11,6 +13,7 @@ import {
   FormLabel,
   useToast,
 } from "@chakra-ui/react";
+import { ViewIcon } from "@chakra-ui/icons";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useState, useContext } from "react";
@@ -24,6 +27,7 @@ export default function Login(props) {
   var [rollNo, setRn] = useState("");
   var [password, setPw] = useState("");
   var [loading, setLoading] = useState(false);
+  var [show, setShow] = useState(false);
   const toast = useToast();
   const [userState, userDispatch] = useContext(UserContext);
   const router = useRouter();
@@ -65,16 +69,15 @@ export default function Login(props) {
   }
 
   return (
-    <>
+    <Box onMouseUp={() => setShow(false)}>
       <Head>
         <title>FACES-21</title>
       </Head>
       <VideoBackground />
-      <Navbar />
-      <Center flexDirection="column" height="100vh" bg="rgb(0,60,0,0.4)">
+      <Center flexDirection="column" height="100vh" bg="rgb(0,60,0,0.4)" position="relative" zIndex="5">
         <Flex
           direction="column"
-          background="green.400"
+          background="#48BB78BB"
           p={12}
           borderRadius="10px"
           w={{ base: "auto", md: "50%" }}
@@ -115,33 +118,41 @@ export default function Login(props) {
             <FormLabel fontWeight="bold" color="white">
               Password
             </FormLabel>
-            <Input
-              placeholder="*******"
-              value={password}
-              onChange={(e) => {
-                setPw(e.target.value);
-              }}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleLogin();
-                }
-              }}
-              variant="filled"
-              mb={10}
-              type="password"
-              _focus={{ bg: "green.200" }}
-            />
+            <InputGroup>
+              <Input
+                placeholder="*******"
+                value={password}
+                onChange={(e) => {
+                  setPw(e.target.value);
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleLogin();
+                  }
+                }}
+                variant="filled"
+                mb={10}
+                type={show ? "text" : "password"}
+                _focus={{ bg: "green.200" }}
+              />
+              <InputRightElement>
+                <ViewIcon cursor="pointer" onMouseDown={() => setShow(true)} />
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
           <Button
             isLoading={loading}
             loadingText="Logging in"
             onClick={handleLogin}
-            colorScheme="green"
+            color="white"
+            variant="outline"
+            _hover={{ opacity: 1 }}
+            _active={{ opacity: 1 }}
           >
             Login
           </Button>
         </Flex>
       </Center>
-    </>
+    </Box>
   );
 }
