@@ -169,8 +169,7 @@ class MakeUsersView(APIView):
   permission_classes = [IsAdminUser]
 
   def post(self, request):
-    url = 'https://drive.google.com/u/0/uc?id=1aYMnC2Md6TPDlfx4W3eV4oNMpx2mjOr0&export=download'
-
+    url = 'https://drive.google.com/u/0/uc?id=1S4Z_B9p2ZBrQDw4B7MYPQq1vpV28z6HJ&export=download'
 
     with requests.Session() as s:
       download = s.get(url)
@@ -181,13 +180,12 @@ class MakeUsersView(APIView):
       my_list = list(cr)
 
       for row in my_list:
-        [name, roll_no, email] = row
+        [name, roll_no, email, text_password] = row
         roll_no = int(roll_no)
 
         user = User()
         user.roll_no = roll_no
         user.email = email
-        text_password = str(uuid.uuid4())[-8:]
         user.set_password(text_password)
 
         try:

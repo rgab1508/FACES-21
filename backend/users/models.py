@@ -1,5 +1,7 @@
 from uuid import uuid4
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -60,3 +62,13 @@ class Team(models.Model):
 
 
 # ADD POST_SAVE after getting verified and increment event seats
+@receiver(post_save, sender=Team)
+def update_seats(sender, instance, created, **kwargs):
+  print("post save bruh")
+  if not created:
+    if instance.is_paid and instance.is_verified:
+      event = instance.event
+      print(event.seats)
+      event.seats += 1
+      print(event.seats)
+      event.save()

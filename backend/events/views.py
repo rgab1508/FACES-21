@@ -101,7 +101,8 @@ class EventRegiterView(APIView):
       user = update_criteria(user, event)
 
       # Update Event seats
-      event.seats += 1
+      # now changed to after team verified
+      # event.seats += 1
 
       try:
         t.save()
@@ -147,7 +148,8 @@ class EventRegiterView(APIView):
       user.money_owed += event.entry_fee
 
       # Update Event seats
-      event.seats += 1
+      # now changed to after team verified
+      # event.seats += 1
       
       try:
         t.save()
