@@ -99,7 +99,7 @@ function DrawerNavbar({ isOpen }) {
           pt={[4, 4, 0, 0]}
         >
           <MenuItems
-            _hover={{ bg: "transparent" }}
+            _hover={{ bg: "black" }}
             fontWeight="bold"
             fontSize="15pt"
             to="/"
@@ -109,7 +109,7 @@ function DrawerNavbar({ isOpen }) {
           </MenuItems>
           {loggedIn && (
             <MenuItems
-            _hover={{ bg: "transparent" }}
+            _hover={{ bg: "black" }}
               fontWeight="bold"
               fontSize="15pt"
               to="/me"
@@ -120,7 +120,7 @@ function DrawerNavbar({ isOpen }) {
           )}
           <Menu>
             <MenuItems
-              _hover={{ bg: "transparent" }}
+              _hover={{ bg: "black" }}
               fontWeight="bold"
               fontSize="15pt"
               to="/events"
@@ -132,7 +132,7 @@ function DrawerNavbar({ isOpen }) {
           {!loggedIn ? (
             <Box p="15px" borderRadius="10px">
               <Button
-               _hover={{ bg: "transparent" }}
+               _hover={{ bg: "black" }}
                 color="white"
                 bg="transparent"
                 fontSize="15pt"
@@ -144,7 +144,7 @@ function DrawerNavbar({ isOpen }) {
           ) : (
             <Box p="15px" borderRadius="10px">
               <Button
-              _hover={{ bg: "transparent" }}
+              _hover={{ bg: "black" }}
                 color="white"
                 bg="transparent"
                 fontSize="15pt"
@@ -195,7 +195,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("green.500");
+        setBackground("transparent");
         setVisible(1);
       } else {
         setBackground("transparent");
