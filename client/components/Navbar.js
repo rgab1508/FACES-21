@@ -99,7 +99,7 @@ function DrawerNavbar({ isOpen }) {
           pt={[4, 4, 0, 0]}
         >
           <MenuItems
-            _hover={{ bg: "green.300" }}
+            _hover={{ bg: "transparent" }}
             fontWeight="bold"
             fontSize="15pt"
             to="/"
@@ -109,7 +109,7 @@ function DrawerNavbar({ isOpen }) {
           </MenuItems>
           {loggedIn && (
             <MenuItems
-              _hover={{ bg: "green.300" }}
+            _hover={{ bg: "transparent" }}
               fontWeight="bold"
               fontSize="15pt"
               to="/me"
@@ -120,7 +120,7 @@ function DrawerNavbar({ isOpen }) {
           )}
           <Menu>
             <MenuItems
-              _hover={{ bg: "green.300" }}
+              _hover={{ bg: "transparent" }}
               fontWeight="bold"
               fontSize="15pt"
               to="/events"
@@ -132,8 +132,9 @@ function DrawerNavbar({ isOpen }) {
           {!loggedIn ? (
             <Box p="15px" borderRadius="10px">
               <Button
+               _hover={{ bg: "transparent" }}
                 color="white"
-                bg="green.300"
+                bg="transparent"
                 fontSize="15pt"
                 fontWeight="bold"
               >
@@ -143,8 +144,9 @@ function DrawerNavbar({ isOpen }) {
           ) : (
             <Box p="15px" borderRadius="10px">
               <Button
+              _hover={{ bg: "transparent" }}
                 color="white"
-                bg="green.300"
+                bg="transparent"
                 fontSize="15pt"
                 fontWeight="bold"
                 onClick={async () => {
