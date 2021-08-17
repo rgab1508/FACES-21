@@ -54,7 +54,7 @@ export default function Home(props) {
             gridGap="3"
           >
             <MotionHeading
-              fontSize={{ base: "50pt", md: "50pt" }}
+              fontSize={{ base: "50pt", md: "60pt" }}
               color="white"
               fontWeight="bold"
               initial={{ scale: 0 }}
@@ -71,7 +71,7 @@ export default function Home(props) {
               className={styles.scriptina}
               fontWeight="bold"
               color="white"
-              fontSize={{ base: "70pt", md: "90pt" }}
+              fontSize={{ base: "70pt", md: "110pt" }}
               textAlign="center"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
