@@ -66,7 +66,7 @@ export default function EventPopup(props) {
     return true;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!validateInput()) return;
 
     const apiUrl = "https://faces21.herokuapp.com/api/e/register/";
@@ -86,7 +86,26 @@ export default function EventPopup(props) {
       referrerPolicy: "no-referrer",
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res))
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          toast({
+            title: res.detail,
+            duration: 3000,
+            status: "success",
+            position: "top-right",
+          });
+          clearValues();
+        } else {
+          console.log(res);
+          toast({
+            title: res.detail,
+            duration: 3000,
+            status: "error",
+            position: "top-right",
+          });
+        }
+      })
       .catch((e) => {
         console.log(e);
         toast({
