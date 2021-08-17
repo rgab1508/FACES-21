@@ -14,10 +14,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
-import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { CartContext } from "../context/CartContext";
 import styles from "../components/Orenda.module.css";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
@@ -30,6 +30,7 @@ export default function Login(props) {
   var [show, setShow] = useState(false);
   const toast = useToast();
   const [userState, userDispatch] = useContext(UserContext);
+  const [cartState, cartDispatch] = useContext(CartContext);
   const router = useRouter();
 
   async function handleLogin(e) {
@@ -44,6 +45,10 @@ export default function Login(props) {
           type: "ADD_USER",
           payload: { ...res.data.user, token: res.data.token },
         });
+        // cartDispatch({
+        //   type:"ADD_TO_CART",
+        //   payload:{}
+        // })
         toast({
           title: "Successfully logged in",
           status: "success",
@@ -53,7 +58,7 @@ export default function Login(props) {
         router.back();
         setLoading(false);
       } else {
-        throw new Error(res.data.message);
+        throw new Error("Login failed. Please try again");
       }
     } catch (error) {
       toast({
@@ -74,7 +79,13 @@ export default function Login(props) {
         <title>FACES-21</title>
       </Head>
       <VideoBackground />
-      <Center flexDirection="column" height="100vh" bg="rgb(0,60,0,0.4)" position="relative" zIndex="5">
+      <Center
+        flexDirection="column"
+        height="100vh"
+        bg="rgb(0,60,0,0.4)"
+        position="relative"
+        zIndex="5"
+      >
         <Flex
           direction="column"
           background="#48BB78BB"

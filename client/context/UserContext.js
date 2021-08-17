@@ -17,7 +17,7 @@ const reducer = (state, action) => {
         userInfo: {},
       };
     default:
-      throw new Error();
+      throw new Error("Unknown action type");
   }
 };
 
@@ -26,14 +26,14 @@ export function UserContextProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     if (isInit) {
-      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      localStorage.setItem("userData", JSON.stringify(state.userInfo));
     }
   }, [state]);
 
   useEffect(() => {
     dispatch({
       type: "ADD_USER",
-      payload: JSON.parse(localStorage.getItem("userInfo")) || {},
+      payload: JSON.parse(localStorage.getItem("userData")) || {},
     });
     setInit(true);
   }, []);
