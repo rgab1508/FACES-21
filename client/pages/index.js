@@ -17,7 +17,6 @@ import { motion, isValidMotionProp } from "framer-motion";
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
   const [dayQuery, setDayQuery] = useState("1");
-
   const MotionHeading = motion(Heading);
   const MotionText = motion(Text);
   const MotionFlex = motion(Flex);
@@ -47,13 +46,13 @@ export default function Home(props) {
       <Layout>
         <Flex flexDirection="column" w="100%" h="100%">
           <Center
-            bg="rgb(0,60,0,0.4)"
+            
             flexDirection="column"
             w="100%"
             h="100vh"
             gridGap="3"
           >
-            <MotionHeading
+           <MotionHeading
               fontSize={{ base: "50pt", md: "60pt" }}
               color="white"
               fontWeight="bold"
@@ -89,7 +88,7 @@ export default function Home(props) {
             py="50px"
             flexDirection="column"
             w="100%"
-            bg="green.100"
+            
             h="auto"
           >
             <Box mb={10} w="50%" borderRadius="5px" border="1px solid white">
@@ -113,17 +112,13 @@ export default function Home(props) {
               {events.map((evt, key) => (
                 <Flex key={key} flex={1}>
                   {key % 2 == 0 ? <Box w={{ lg: "60%" }} /> : null}
-                  <MotionFlex
+                  <Flex
                     borderRadius="10px"
                     w={{ base: "100%", lg: "40%" }}
                     bg="green.500"
                     boxShadow="xl"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 10,
-                    }}
+                    _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
+                    sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
                     maxH="23vh"
                   >
                     <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
@@ -166,7 +161,7 @@ export default function Home(props) {
                         borderRadius="10px"
                       ></Box>
                     </Flex>
-                  </MotionFlex>
+                  </Flex>
                 </Flex>
               ))}
             </Flex>
