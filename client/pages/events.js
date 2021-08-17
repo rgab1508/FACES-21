@@ -62,7 +62,7 @@ export default function Events(props) {
           flexDirection="column"
           w="100%"
           h={{ base: "80vh", md: "80vh" }}
-          bg="rgb(0,60,0,0.4)"
+         
         >
           <Heading
             p="10px"
@@ -83,7 +83,7 @@ export default function Events(props) {
             registration criteria.
           </Text>
         </Center>
-        <Center py="80px" bg="green.100" flexDirection="column" gridGap="5">
+        <Center py="80px" /*bg="green.100"*/ flexDirection="column" gridGap="5">
           <Flex gridGap="5">
             <Select
               icon={<ChevronDownIcon />}
