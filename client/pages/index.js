@@ -44,15 +44,9 @@ export default function Home(props) {
       </Head>
       <VideoBackground />
       <Layout>
-        <Flex flexDirection="column" w="100%" h="100%">
-          <Center
-            
-            flexDirection="column"
-            w="100%"
-            h="100vh"
-            gridGap="3"
-          >
-           <MotionHeading
+        <Flex flexDirection="column" minW="100%" minH="100%">
+          <Center flexDirection="column" w="100%" h="100vh" gridGap="3">
+            <MotionHeading
               fontSize={{ base: "50pt", md: "60pt" }}
               color="white"
               fontWeight="bold"
@@ -84,87 +78,90 @@ export default function Home(props) {
               Orenda
             </MotionText>
           </Center>
-          <Center
-            py="50px"
-            flexDirection="column"
-            w="100%"
-            
-            h="auto"
-          >
-            <Box mb={10} w="50%" borderRadius="5px" border="1px solid white">
-              <Select
-                bg="white"
-                _focus={{ outline: "none!important" }}
-                placeholder="Select day"
-                position="relative"
-                value={dayQuery}
-                onChange={(e) => {
-                  setDayQuery(e.target.value);
-                }}
-                zIndex="0"
-              >
-                <option value="1">Day 1</option>
-                <option value="2">Day 2</option>
-                <option value="3">Day 3</option>
-              </Select>
-            </Box>
-            <Flex flexDirection="column" w="80%" gridGap="3">
-              {events.map((evt, key) => (
-                <Flex key={key} flex={1}>
-                  {key % 2 == 0 ? <Box w={{ lg: "60%" }} /> : null}
-                  <Flex
-                    borderRadius="10px"
-                    w={{ base: "100%", lg: "40%" }}
-                    bg="green.500"
-                    boxShadow="xl"
-                    _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
-                    sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
-                    maxH="23vh"
-                  >
-                    <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
-                      <Text
-                        fontWeight="bold"
-                        fontSize={{ base: "auto", lg: "20pt" }}
-                        color="white"
-                      >
-                        {evt.title}
-                      </Text>
-                      <Box>
-                        <Badge
-                          bg={evt.category == "S" ? "blue.700" : "red.700"}
-                          color="white"
-                          fontSize="14pt"
-                          borderRadius="5px"
-                        >
-                          {evt.category == "S" ? "Sports" : "Cultural"}
-                        </Badge>
-                      </Box>
-                      <Text
-                        fontSize={{ base: "auto", lg: "20pt" }}
-                        color="white"
-                      >
-                        {evt.start}
-                      </Text>
-                    </Flex>
+          <Center minH={{ md: "85vh" }} w="100%">
+            <Center
+              w={{ base: "100%", md: "95%" }}
+              bgGradient="radial(rgb(0, 105, 92,0.92),rgb(56, 142, 60,0.7))"
+              py="50px"
+              flexDirection="column"
+              h="auto"
+              borderRadius={{ md: "15px" }}
+            >
+              <Box mb={10} w="50%" borderRadius="5px" border="1px solid white">
+                <Select
+                  bg="white"
+                  _focus={{ outline: "none!important" }}
+                  placeholder="Select day"
+                  position="relative"
+                  value={dayQuery}
+                  onChange={(e) => {
+                    setDayQuery(e.target.value);
+                  }}
+                  zIndex="0"
+                >
+                  <option value="1">Day 1</option>
+                  <option value="2">Day 2</option>
+                  <option value="3">Day 3</option>
+                </Select>
+              </Box>
+              <Flex flexDirection="column" w="80%" gridGap="3">
+                {events.map((evt, key) => (
+                  <Flex key={key} flex={1}>
+                    {key % 2 == 0 ? <Box w={{ md: "60%" }} /> : null}
                     <Flex
-                      w="50%"
-                      background={`url(https://faces21.herokuapp.com${evt.image})`}
-                      backgroundSize="cover"
-                      backgroundPosition="center"
-                      backgroundRepeat="no-repeat"
                       borderRadius="10px"
+                      w={{ base: "100%", md: "50%" }}
+                      bg="green.500"
+                      boxShadow="xl"
+                      _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
+                      sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
+                      maxH="23vh"
                     >
-                      <Box
-                        h="100%"
-                        w="100%"
-                        bg="rgb(0,60,0,0.4)"
+                      <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
+                        <Text
+                          fontWeight="bold"
+                          fontSize={{ base: "auto", lg: "20pt" }}
+                          color="white"
+                        >
+                          {evt.title}
+                        </Text>
+                        <Box>
+                          <Badge
+                            bg={evt.category == "S" ? "blue.700" : "red.700"}
+                            color="white"
+                            fontSize="14pt"
+                            borderRadius="5px"
+                          >
+                            {evt.category == "S" ? "Sports" : "Cultural"}
+                          </Badge>
+                        </Box>
+                        <Text
+                          fontSize={{ base: "auto", lg: "20pt" }}
+                          color="white"
+                        >
+                          {evt.start}
+                        </Text>
+                      </Flex>
+                      <Flex
+                        w="50%"
+                        background={`url(https://faces21.herokuapp.com${evt.image})`}
+                        backgroundSize="cover"
+                        backgroundPosition="center"
+                        backgroundRepeat="no-repeat"
                         borderRadius="10px"
-                      ></Box>
+                      >
+                        <Box
+                          h="100%"
+                          w="100%"
+                          bg="rgb(0,60,0,0.4)"
+                          borderRadius="10px"
+                        />
+                      </Flex>
                     </Flex>
                   </Flex>
-                </Flex>
-              ))}
-            </Flex>
+                ))}
+              </Flex>
+            </Center>
           </Center>
         </Flex>
       </Layout>

@@ -56,189 +56,194 @@ export default function Events(props) {
         <title>FACES-21 • Events</title>
       </Head>
       <VideoBackground />
-      <Layout />
-      <Flex flexDirection="column" w="auto" h="auto">
-        <Center
-          flexDirection="column"
-          w="100%"
-          h={{ base: "80vh", md: "80vh" }}
-        >
-          <Heading
-            p="10px"
-            color="white"
-            fontSize={{ base: "40pt", md: "60pt" }}
-            textAlign="center"
+      <Layout>
+        <Flex flexDirection="column" w="auto" h="auto">
+          <Center
+            flexDirection="column"
+            w="100%"
+            h={{ base: "80vh", md: "80vh" }}
           >
-            Events we have
-          </Heading>
-          <Text
-            w={{ base: "90%", md: "60%" }}
-            p="10px"
-            color="white"
-            fontSize={{ base: "15pt", md: "20pt" }}
-          >
-            FACES offers you a variety of events to choose from. Feel free to
-            pick any event of your choice, but make sure you follow the
-            registration criteria.
-          </Text>
-        </Center>
-        <Center py="80px" /*bg="green.100"*/ flexDirection="column" gridGap="5">
-          <Flex gridGap="5">
-            <Select
-              icon={<ChevronDownIcon />}
-              value={filterQuery}
-              variant="filled"
-              placeholder="Select option"
-              onChange={(event) => {
-                setFilterQuery(event.target.value);
-              }}
-              w={{ base: "40vw", md: "30vw" }}
+            <Heading
+              p="10px"
+              color="white"
+              fontSize={{ base: "40pt", md: "60pt" }}
+              textAlign="center"
             >
-              <option value="Day">Day</option>
-              <option value="Participant">Participant type</option>
-              <option value="Event">Event category</option>
-            </Select>
-            {filterQuery != "" && (
+              Events we have
+            </Heading>
+            <Text
+              w={{ base: "90%", md: "60%" }}
+              p="10px"
+              color="white"
+              fontSize={{ base: "15pt", md: "20pt" }}
+            >
+              FACES offers you a variety of events to choose from. Feel free to
+              pick any event of your choice, but make sure you follow the
+              registration criteria.
+            </Text>
+          </Center>
+          <Center
+            py="80px"
+            /*bg="green.100"*/ flexDirection="column"
+            gridGap="5"
+          >
+            <Flex gridGap="5">
               <Select
-                w={{ base: "40vw", md: "30vw" }}
+                icon={<ChevronDownIcon />}
+                value={filterQuery}
                 variant="filled"
-                placeholder={
-                  filterQuery == "Day"
-                    ? "Select day"
-                    : filterQuery == "Participant"
-                    ? "Select category"
-                    : "Select event category"
-                }
-                value={extraQuery}
+                placeholder="Select option"
                 onChange={(event) => {
-                  setExtraQuery(event.target.value);
+                  setFilterQuery(event.target.value);
                 }}
+                w={{ base: "40vw", md: "30vw" }}
               >
-                {filterQuery == "Day" ? (
-                  <>
-                    <option value={1}>Day - 1</option>
-                    <option value={2}>Day - 2</option>
-                    <option value={3}>Day - 3</option>
-                  </>
-                ) : filterQuery == "Participant" ? (
-                  <>
-                    <option value="Solo">Solo</option>
-                    <option value="Group">Group</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="S">Sports</option>
-                    <option value="C">Cultural</option>
-                  </>
-                )}
+                <option value="Day">Day</option>
+                <option value="Participant">Participant type</option>
+                <option value="Event">Event category</option>
               </Select>
-            )}
-          </Flex>
-          {events.map(function(event, index) {
-            return (
-              <Flex
-                key={index}
-                w={{ base: "90%", lg: "60%" }}
-                h="auto"
-                flexDirection="row"
-                bg="green.500"
-                borderRadius="10px"
-                onClick={() => {
-                  setEvent(event);
-                  onOpen();
-                }}
-                boxShadow="lg"
-                sx={{
-                  transition:
-                    "box-shadow 0.3s , transform 0.3s, margin-bottom 0.3s",
-                }}
-                _hover={{
-                  boxShadow: "2xl",
-                  transform: "scale(1.1)",
-                  marginBottom: "20px",
-                }}
-              >
-                <Box p="15px" w="50%">
-                  <Text color="white" fontWeight="bold" fontSize="20pt">
-                    {event.title}
-                  </Text>
-                  <Text w="100%" noOfLines={2} color="white" fontSize="16pt">
-                    {event.description}
-                  </Text>
-                  <Text
-                    w="100%"
-                    noOfLines={2}
-                    color="white"
-                    fontWeight="bold"
-                    fontSize="16pt"
-                  >
-                    {event.start} - {event.end}
-                  </Text>
-                </Box>
-                <Box
-                  background={`url(https://faces21.herokuapp.com${event.image})`}
-                  backgroundSize="cover"
-                  backgroundPosition="center"
-                  backgroundRepeat="no-repeat"
-                  borderRadius="10px"
-                  w="50%"
+              {filterQuery != "" && (
+                <Select
+                  w={{ base: "40vw", md: "30vw" }}
+                  variant="filled"
+                  placeholder={
+                    filterQuery == "Day"
+                      ? "Select day"
+                      : filterQuery == "Participant"
+                      ? "Select category"
+                      : "Select event category"
+                  }
+                  value={extraQuery}
+                  onChange={(event) => {
+                    setExtraQuery(event.target.value);
+                  }}
                 >
-                  <Flex
-                    p="10px"
-                    bg="rgb(52, 130, 39,0.4)"
-                    h="100%"
-                    w="100%"
-                    flexDirection="column"
+                  {filterQuery == "Day" ? (
+                    <>
+                      <option value={1}>Day - 1</option>
+                      <option value={2}>Day - 2</option>
+                      <option value={3}>Day - 3</option>
+                    </>
+                  ) : filterQuery == "Participant" ? (
+                    <>
+                      <option value="Solo">Solo</option>
+                      <option value="Group">Group</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="S">Sports</option>
+                      <option value="C">Cultural</option>
+                    </>
+                  )}
+                </Select>
+              )}
+            </Flex>
+            {events.map(function (event, index) {
+              return (
+                <Flex
+                  key={index}
+                  w={{ base: "90%", lg: "60%" }}
+                  h="auto"
+                  flexDirection="row"
+                  bg="green.500"
+                  borderRadius="10px"
+                  onClick={() => {
+                    setEvent(event);
+                    onOpen();
+                  }}
+                  boxShadow="lg"
+                  sx={{
+                    transition:
+                      "box-shadow 0.3s , transform 0.3s, margin-bottom 0.3s",
+                  }}
+                  _hover={{
+                    boxShadow: "2xl",
+                    transform: "scale(1.1)",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <Box p="15px" w="50%">
+                    <Text color="white" fontWeight="bold" fontSize="20pt">
+                      {event.title}
+                    </Text>
+                    <Text w="100%" noOfLines={2} color="white" fontSize="16pt">
+                      {event.description}
+                    </Text>
+                    <Text
+                      w="100%"
+                      noOfLines={2}
+                      color="white"
+                      fontWeight="bold"
+                      fontSize="16pt"
+                    >
+                      {event.start} - {event.end}
+                    </Text>
+                  </Box>
+                  <Box
+                    background={`url(https://faces21.herokuapp.com${event.image})`}
+                    backgroundSize="cover"
+                    backgroundPosition="center"
+                    backgroundRepeat="no-repeat"
                     borderRadius="10px"
-                    gridGap="2"
+                    w="50%"
                   >
-                    <Badge
-                      ml="auto"
-                      bg="purple.700"
-                      color="white"
-                      fontSize="14pt"
-                      borderRadius="5px"
+                    <Flex
+                      p="10px"
+                      bg="rgb(52, 130, 39,0.4)"
+                      h="100%"
+                      w="100%"
+                      flexDirection="column"
+                      borderRadius="10px"
+                      gridGap="2"
                     >
-                      Day - {event.day}
-                    </Badge>
-                    <Badge
-                      ml="auto"
-                      bg={event.category == "S" ? "blue.700" : "red.700"}
-                      color="white"
-                      fontSize="14pt"
-                      borderRadius="5px"
-                    >
-                      {event.category == "S" ? "Sports" : "Cultural"}
-                    </Badge>
-                    {event.team_size > 1 ? (
                       <Badge
                         ml="auto"
-                        bg="yellow.500"
+                        bg="purple.700"
                         color="white"
                         fontSize="14pt"
                         borderRadius="5px"
                       >
-                        Group
+                        Day - {event.day}
                       </Badge>
-                    ) : null}
-                  </Flex>
-                </Box>
-              </Flex>
-            );
-          })}
-          {event != undefined && (
-            <EventPopup isOpen={isOpen} onClose={onClose} event={event} />
-          )}
-        </Center>
-      </Flex>
+                      <Badge
+                        ml="auto"
+                        bg={event.category == "S" ? "blue.700" : "red.700"}
+                        color="white"
+                        fontSize="14pt"
+                        borderRadius="5px"
+                      >
+                        {event.category == "S" ? "Sports" : "Cultural"}
+                      </Badge>
+                      {event.team_size > 1 ? (
+                        <Badge
+                          ml="auto"
+                          bg="yellow.500"
+                          color="white"
+                          fontSize="14pt"
+                          borderRadius="5px"
+                        >
+                          Group
+                        </Badge>
+                      ) : null}
+                    </Flex>
+                  </Box>
+                </Flex>
+              );
+            })}
+            {event != undefined && (
+              <EventPopup isOpen={isOpen} onClose={onClose} event={event} />
+            )}
+          </Center>
+        </Flex>
+      </Layout>
     </>
   );
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch(
-    "https://faces21.herokuapp.com/api/e"
-  ).then((response) => response.json());
+  const res = await fetch("https://faces21.herokuapp.com/api/e").then(
+    (response) => response.json()
+  );
 
   return {
     props: {

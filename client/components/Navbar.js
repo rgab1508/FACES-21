@@ -7,6 +7,7 @@ import {
   Menu,
   Button,
   useToast,
+  Heading,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
@@ -18,9 +19,9 @@ import axios from "axios";
 function Logo(props) {
   return (
     <Box {...props}>
-      <Text fontSize="25pt" fontWeight="bolder">
+      <Heading fontSize="25pt" fontWeight="bolder">
         {props.visible == 1 && "FACES-21"}
-      </Text>
+      </Heading>
     </Box>
   );
 }
@@ -99,7 +100,7 @@ function DrawerNavbar({ isOpen }) {
           pt={[4, 4, 0, 0]}
         >
           <MenuItems
-            _hover={{ bg: "black" }}
+            _hover={{ bg: "rgb(81, 45, 168)" }}
             fontWeight="bold"
             fontSize="15pt"
             to="/"
@@ -109,7 +110,7 @@ function DrawerNavbar({ isOpen }) {
           </MenuItems>
           {loggedIn && (
             <MenuItems
-            _hover={{ bg: "black" }}
+              _hover={{ bg: "rgb(81, 45, 168)" }}
               fontWeight="bold"
               fontSize="15pt"
               to="/me"
@@ -120,7 +121,7 @@ function DrawerNavbar({ isOpen }) {
           )}
           <Menu>
             <MenuItems
-              _hover={{ bg: "black" }}
+              _hover={{ bg: "rgb(81, 45, 168)" }}
               fontWeight="bold"
               fontSize="15pt"
               to="/events"
@@ -132,7 +133,7 @@ function DrawerNavbar({ isOpen }) {
           {!loggedIn ? (
             <Box p="15px" borderRadius="10px">
               <Button
-               _hover={{ bg: "black" }}
+                _hover={{ bg: "rgb(81, 45, 168)" }}
                 color="white"
                 bg="transparent"
                 fontSize="15pt"
@@ -144,7 +145,7 @@ function DrawerNavbar({ isOpen }) {
           ) : (
             <Box p="15px" borderRadius="10px">
               <Button
-              _hover={{ bg: "black" }}
+                _hover={{ bg: "rgb(81, 45, 168)" }}
                 color="white"
                 bg="transparent"
                 fontSize="15pt"
@@ -195,7 +196,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("transparent");
+        setBackground("green.600");
         setVisible(1);
       } else {
         setBackground("transparent");
