@@ -38,7 +38,7 @@ export default function VideoBackground() {
         display={{ base: "block", md: "none" }}
         zIndex="-1"
         position="fixed"
-        src="poster.jpg"
+        src="poster.jpeg"
         objectFit="cover"
       />
     </>
