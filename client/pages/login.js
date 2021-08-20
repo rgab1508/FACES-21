@@ -88,7 +88,7 @@ export default function Login(props) {
       >
         <Flex
           direction="column"
-          background="#48BB78BB"
+          bgGradient="radial(rgb(0, 105, 92,0.9),rgb(56, 142, 60,0.9))"
           p={12}
           borderRadius="10px"
           w={{ base: "auto", md: "50%" }}
@@ -156,7 +156,8 @@ export default function Login(props) {
             loadingText="Logging in"
             onClick={handleLogin}
             color="white"
-            variant="outline"
+            bg="rgb(67, 160, 71)"
+            variant="solid"
             _hover={{ opacity: 1 }}
             _active={{ opacity: 1 }}
           >

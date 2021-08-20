@@ -13,12 +13,109 @@ import {
   ButtonGroup,
   Badge,
   Input,
+  useToast,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 
 export default function EventPopup(props) {
   const [userState, userDispatch] = useContext(UserContext);
+  const [values, setValues] = useState({
+    teamName: "Team 1",
+    members: [1019121],
+  });
+
+  const toast = useToast();
+
+  const handleChange = (e) => {
+    setValues((prevValues) => {
+      return {
+        ...prevValues,
+        [e.target.name]: [e.target.value],
+      };
+    });
+  };
+
+  const clearValues = () => setValues({ teamName: "", members: [] });
+
+  const validateInput = () => {
+    if (values.teamName == "") {
+      toast({
+        title: "Please Enter a valid Team Name",
+        position: "top-right",
+        duration: 3000,
+        status: "error",
+      });
+      return false;
+    }
+    if (props.event.team_size > 1) {
+      // TEAM Event
+      if (
+        props.event.is_team_size_strict &&
+        values.members.length != props.event.team_size
+      ) {
+        toast({
+          title: `This Event has a Strict Team Size of ${props.event.team_size}`,
+          position: "top-right",
+          duration: 3000,
+          status: "error",
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleRegister = async () => {
+    if (!validateInput()) return;
+
+    const apiUrl = "https://faces21.herokuapp.com/api/e/register/";
+    let data = {
+      event_code: props.event.event_code,
+      team_name: values.teamName,
+      members: values.members, // Insert Array of Roll Nos,
+    };
+
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + userState.userInfo.token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          toast({
+            title: res.detail,
+            duration: 3000,
+            status: "success",
+            position: "top-right",
+          });
+          clearValues();
+        } else {
+          console.log(res);
+          toast({
+            title: res.detail,
+            duration: 3000,
+            status: "error",
+            position: "top-right",
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        toast({
+          title: e.detail,
+          position: "top-right",
+          duration: 3000,
+          status: "error",
+        });
+      });
+  };
 
   return (
     <Modal
@@ -87,6 +184,9 @@ export default function EventPopup(props) {
                 placeholder="Enter team info"
                 bg="white"
                 _focus={{ color: "black", bg: "white" }}
+                value={values.teamName}
+                name="teamName"
+                onChange={handleChange}
               />
             </Flex>
           ) : (
@@ -102,6 +202,7 @@ export default function EventPopup(props) {
                 fontWeight="bold"
                 _focus={{ outline: "none!important" }}
                 _hover={{ opacity: 0.8 }}
+                onClick={() => handleRegister(props.event)}
               >
                 Register
               </Button>
