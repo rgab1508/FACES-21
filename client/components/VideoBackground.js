@@ -1,7 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function VideoBackground() {
+  const windowRef = useRef();
+
   useEffect(() => {
     if (window.innerWidth <= 768) {
       document.getElementById("videoBackground").autoplay = false;
@@ -14,12 +16,20 @@ export default function VideoBackground() {
     };
   }, []);
 
+  // function handleScroll(event) {
+  //   console.log(event);
+  //   // if(windowRef.current){
+  //   //   window
+  //   // }
+  // }
+
   return (
     <>
       <Box
         w="100%"
         h="100vh"
         as="video"
+        ref={windowRef}
         id="videoBackground"
         display={{ base: "none", md: "block" }}
         autoPlay={true}
