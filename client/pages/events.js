@@ -138,7 +138,7 @@ export default function Events(props) {
                 </Select>
               )}
             </Flex>
-            {events.map(function (event, index) {
+            {events.map(function(event, index) {
               return (
                 <Flex
                   key={index}
@@ -241,9 +241,9 @@ export default function Events(props) {
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch("https://faces21.herokuapp.com/api/e").then(
-    (response) => response.json()
-  );
+  const res = await fetch(
+    "https://faces21.herokuapp.com/api/e"
+  ).then((response) => response.json());
 
   return {
     props: {
