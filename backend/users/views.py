@@ -13,8 +13,8 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
 
-from .models import User
-from .serializers import UserSerializer
+from .models import Team, User
+from .serializers import TeamSerializer, UserSerializer
 
 import csv
 
@@ -42,7 +42,13 @@ class OTPVerify(APIView):
 class UserDetail(APIView):
   permission_classes = [IsAuthenticated]
   def get(self, request):
-    serializer = UserSerializer(request.user)
+    user = request.user
+    serializer = UserSerializer(user)
+    # user_teams = TeamSerializer(user.teams, many=True)
+    # data = {
+    #   **serializer.data,
+    #   "teams": user_teams.data
+    # }
     res = {
       "user": serializer.data
     }
@@ -98,8 +104,10 @@ class LoginView(ObtainAuthToken):
           user = serializer.validated_data['user']
           user_serializer = UserSerializer(user)
           token, created = Token.objects.get_or_create(user=user)
+          # user_teams = TeamSerializer(user.teams, many=True)
           return JsonResponse({
               'token': token.key,
+              # 'user': {**user_serializer.data, "teams": user_teams.data},
               'user': user_serializer.data,
               'success': True,
           }, status=200)
