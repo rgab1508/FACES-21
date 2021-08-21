@@ -83,6 +83,35 @@ function DrawerNavbar({ isOpen }) {
     }
   }, [userState.userInfo]);
 
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post(
+        `${API_BASE_URL}/api/u/auth/logout/`,
+        {},
+        {
+          headers: {
+            Authorization: "Token " + userState.userInfo.token,
+          },
+        }
+      );
+      if (res.status == 200) {
+        userDispatch({
+          type: "REMOVE_USER",
+        });
+      } else {
+        throw new Error(res.statusText);
+      }
+    } catch (e) {
+      console.log(e);
+      toast({
+        title: "Error logging out",
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+      });
+    }
+  };
+
   return (
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
@@ -119,17 +148,17 @@ function DrawerNavbar({ isOpen }) {
               Profile
             </MenuItems>
           )}
-          <Menu>
-            <MenuItems
-              _hover={{ bg: "rgb(81, 45, 168)" }}
-              fontWeight="bold"
-              fontSize="15pt"
-              to="/events"
-              sx={{ transition: "background 0.2s" }}
-            >
-              Events
-            </MenuItems>
-          </Menu>
+
+          <MenuItems
+            _hover={{ bg: "rgb(81, 45, 168)" }}
+            fontWeight="bold"
+            fontSize="15pt"
+            to="/events"
+            sx={{ transition: "background 0.2s" }}
+          >
+            Events
+          </MenuItems>
+
           {!loggedIn ? (
             <Box p="15px" borderRadius="10px">
               <Button
@@ -150,34 +179,7 @@ function DrawerNavbar({ isOpen }) {
                 bg="transparent"
                 fontSize="15pt"
                 fontWeight="bold"
-                onClick={async () => {
-                  try {
-                    const res = await axios.post(
-                      `${API_BASE_URL}/api/u/auth/logout/`,
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Token " + userState.userInfo.token,
-                        },
-                      }
-                    );
-                    if (res.status == 200) {
-                      userDispatch({
-                        type: "REMOVE_USER",
-                      });
-                    } else {
-                      throw new Error(res.statusText);
-                    }
-                  } catch (e) {
-                    console.log(e);
-                    toast({
-                      title: "Error logging out",
-                      status: "error",
-                      duration: 2000,
-                      position: "top-right",
-                    });
-                  }
-                }}
+                onClick={handleLogout}
               >
                 Logout
               </Button>
