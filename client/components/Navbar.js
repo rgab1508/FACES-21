@@ -139,43 +139,43 @@ function DrawerNavbar({ isOpen }) {
           <DrawerCloseButton color="white" />
           {/* <DrawerHeader>Create your account</DrawerHeader> */}
 
-          <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
-            {userState.userInfo.teams.length == 0 && (
-              <Text>
-                Cart is Empty{" "}
-                <Box as="span" textDecor="underline">
-                  <Link href={"/events"}>(Browse Events here)</Link>
-                </Box>
-              </Text>
-            )}
-            {userState.userInfo.teams.map((team) => {
-              console.log(team);
-            })}
-            {/* {console.log(userState)} */}
-          </DrawerBody>
-
-          <DrawerFooter bgColor="black" color="whitesmoke">
-            {userState.userInfo.teams.length > 0 && (
-              <Box gridGap={4} w="100%" display="flex" flexDir="column">
-                <Box>
-                  <Input />
-                </Box>
-                <Box display="flex" justifyContent="flex-end">
-                  <Button
-                    variant="outline"
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={handleCheckout} colorScheme="green">
-                    Checkout
-                  </Button>
-                </Box>
-              </Box>
-            )}
-          </DrawerFooter>
+          {loggedIn && (
+            <>
+              {" "}
+              <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
+                {userState.userInfo.teams.length == 0 && (
+                  <Text>
+                    Cart is Empty{" "}
+                    <Box as="span" textDecor="underline">
+                      <Link href={"/events"}>(Browse Events here)</Link>
+                    </Box>
+                  </Text>
+                )}
+              </DrawerBody>
+              <DrawerFooter bgColor="black" color="whitesmoke">
+                {userState.userInfo.teams.length > 0 && (
+                  <Box gridGap={4} w="100%" display="flex" flexDir="column">
+                    <Box>
+                      <Input />
+                    </Box>
+                    <Box display="flex" justifyContent="flex-end">
+                      <Button
+                        variant="outline"
+                        colorScheme="blue"
+                        mr={3}
+                        onClick={onClose}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleCheckout} colorScheme="green">
+                        Checkout
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
+              </DrawerFooter>
+            </>
+          )}
         </DrawerContent>
       </Drawer>
     );
