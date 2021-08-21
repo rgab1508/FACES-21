@@ -14,7 +14,7 @@ class Event(models.Model):
     ("S", "Sports"),
   )
 
-  event_code = models.CharField(_("Event Code"),max_length=36,default=uuid4, unique=True)
+  event_code = models.CharField(_("Event Code"),max_length=36,default=uuid4, unique=True, primary_key=True)
   day = models.SmallIntegerField(_("Day"), choices=DAYS, blank=False)
   start = models.TimeField(_("Start Time"), max_length=5, blank=False)
   end = models.TimeField(_("End Time"), max_length=5, blank=False)

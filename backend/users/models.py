@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     ("ELEC", "Electrical"),
     ("OTHER", "Other")
   )
-  roll_no = models.IntegerField(_("Roll Number"),unique=True, blank=False)
+  roll_no = models.IntegerField(_("Roll Number"),unique=True, blank=False, primary_key=True)
   email = models.EmailField(_('email address'),unique=True, max_length=254)
   name = models.CharField(_('Name'), max_length=256,blank=True, null=True)
   avatar = models.CharField(_("Avatar Image"), max_length=256, blank=True ,null=True)
@@ -48,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Team(models.Model):
-  team_code = models.CharField(_("Team Code"), default=uuid4,max_length=36, unique=True)
+  team_code = models.CharField(_("Team Code"), default=uuid4,max_length=36, unique=True, primary_key=True)
   team_name = models.CharField(_("Team Name"), max_length=256,blank=False)
   event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participants")
   members = models.ManyToManyField(User, related_name='teams')

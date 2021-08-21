@@ -1,11 +1,18 @@
 from rest_framework import serializers
+from rest_framework.settings import import_from_string
 
 from .models import User, Team
 
+class TeamSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Team
+    fields = ['id', 'team_code', 'team_name', 'members']
+
 class UserSerializer(serializers.ModelSerializer):
+  teams = TeamSerializer(many=True, read_only=True)
   class Meta:
     model = User
-    fields = ['id', 'roll_no', 'email', 'password', 'name', 'department', 'semester', 'money_owed', 'has_filled_profile', 'phone_no', 'date_joined']
+    fields = ['id', 'roll_no', 'email', 'password', 'name', 'department', 'semester', 'money_owed', 'has_filled_profile', 'phone_no', 'date_joined', 'teams']
     extra_kwargs = {
       'password': {'write_only': True},
     }
@@ -19,8 +26,3 @@ class UserSerializer(serializers.ModelSerializer):
     return instance
   
 
-class TeamSerializer(serializers.ModelSerializer):
-  members = UserSerializer(read_only=True, many=True)
-  class Meta:
-    model = Team
-    fields = ['id', 'team_code', 'team_name', 'members']
