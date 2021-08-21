@@ -46,7 +46,7 @@ function MenuToggle({ toggle, isOpen }) {
       borderRadius="5px"
       p="5px"
     >
-      {isOpen ? <CloseIcon /> : <HamburgerIcon />}
+      {isOpen ? <CloseIcon color="white" /> : <HamburgerIcon color="white" />}
     </Box>
   );
 }
@@ -196,7 +196,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("green.600");
+        setBackground("rgb(56, 142, 60)");
         setVisible(1);
       } else {
         setBackground("transparent");

@@ -7,12 +7,14 @@ import {
   useDisclosure,
   Select,
   Badge,
+  IconButton,
+  Input,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import EventPopup from "../components/EventPopup";
 import { useEffect, useState } from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 import VideoBackground from "../components/VideoBackground";
 
 export default function Events(props) {
@@ -240,7 +242,7 @@ export default function Events(props) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const res = await fetch("https://faces21.herokuapp.com/api/e").then(
     (response) => response.json()
   );

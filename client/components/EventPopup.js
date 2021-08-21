@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  IconButton,
   Text,
   Box,
   Flex,
@@ -17,12 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 export default function EventPopup(props) {
   const [userState, userDispatch] = useContext(UserContext);
   const [values, setValues] = useState({
-    teamName: "Team 1",
-    members: [1019121],
+    teamName: "",
+    members: [],
   });
 
   const toast = useToast();
@@ -65,6 +67,8 @@ export default function EventPopup(props) {
     }
     return true;
   };
+
+  function addTeamMembers() {}
 
   const handleRegister = async () => {
     if (!validateInput()) return;
@@ -126,7 +130,7 @@ export default function EventPopup(props) {
       size={"5xl"}
     >
       <ModalOverlay />
-      <ModalContent bg="green.600">
+      <ModalContent bg="rgb(46, 125, 50)">
         <ModalHeader>
           <Text color="white">Event</Text>
         </ModalHeader>
@@ -175,19 +179,54 @@ export default function EventPopup(props) {
             )}
           </Flex>
           {props.event.team_size > 1 ? (
-            <Flex mt={4} flexDirection="column" p="20px" gridGap="3">
+            <Flex
+              bg="rgb(27, 94, 32)"
+              borderRadius="10px"
+              mt={4}
+              flexDirection="column"
+              p="20px"
+              gridGap="3"
+            >
               <Text color="white" fontSize="15pt" fontWeight="bold">
                 Enter teammates info
               </Text>
               <Input
                 variant="filled"
-                placeholder="Enter team info"
+                placeholder="Enter a team name"
                 bg="white"
+                _placeholder={{ fontSize: "14pt" }}
                 _focus={{ color: "black", bg: "white" }}
                 value={values.teamName}
                 name="teamName"
                 onChange={handleChange}
               />
+              <Flex gridGap="4">
+                <Input
+                  flex={3}
+                  variant="filled"
+                  placeholder="Enter team members (Roll no)"
+                  _placeholder={{ fontSize: "14pt" }}
+                  bg="white"
+                  _focus={{ color: "black", bg: "white" }}
+                  name="members"
+                />
+                <IconButton
+                  flex={1}
+                  aria-label="Add team member"
+                  icon={<AddIcon />}
+                  bg="rgb(76, 175, 80)"
+                  color="white"
+                  _hover={{ bg: "rgb(129, 199, 132)" }}
+                />
+                <IconButton
+                  flex={1}
+                  aria-label="Remove team member"
+                  icon={<MinusIcon />}
+                  bg="rgb(76, 175, 80)"
+                  color="white"
+                  _hover={{ bg: "rgb(129, 199, 132)" }}
+                />
+              </Flex>
             </Flex>
           ) : (
             ""
