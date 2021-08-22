@@ -8,6 +8,10 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "INIT_CART":
+      return {
+        userCart: action.payload,
+      };
     case "ADD_TO_CART":
       return {
         userCart: [...state.userCart, action.payload],

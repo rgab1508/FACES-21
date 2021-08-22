@@ -8,6 +8,16 @@ import {
   Button,
   useToast,
   Heading,
+  Icon,
+  Input,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerBody,
+  DrawerFooter,
+  useDisclosure,
+  DrawerHeader,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
@@ -46,7 +56,7 @@ function MenuToggle({ toggle, isOpen }) {
       borderRadius="5px"
       p="5px"
     >
-      {isOpen ? <CloseIcon /> : <HamburgerIcon />}
+      {isOpen ? <CloseIcon color="white" /> : <HamburgerIcon color="white" />}
     </Box>
   );
 }
@@ -73,17 +83,107 @@ function MenuItems({ children, isLast, to = "/", ...rest }) {
 function DrawerNavbar({ isOpen }) {
   const [userState, userDispatch] = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
 
+  const cart = useDisclosure();
+
   useEffect(() => {
+    console.log(userState.userInfo);
     if (JSON.stringify(userState.userInfo) == "{}") {
       setLoggedIn(false);
     } else {
       setLoggedIn(true);
     }
+    setIsLoading(false);
   }, [userState.userInfo]);
 
-  return (
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post(
+        `${API_BASE_URL}/api/u/auth/logout/`,
+        {},
+        {
+          headers: {
+            Authorization: "Token " + userState.userInfo.token,
+          },
+        }
+      );
+      if (res.status == 200) {
+        userDispatch({
+          type: "REMOVE_USER",
+        });
+      } else {
+        throw new Error(res.statusText);
+      }
+    } catch (e) {
+      console.log(e);
+      toast({
+        title: "Error logging out",
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+      });
+    }
+  };
+
+  const handleCheckout = () => {
+    console.log("checkout");
+  };
+
+  const CartDrawer = ({ isOpen, onClose }) => {
+    return (
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton color="white" />
+          {/* <DrawerHeader>Create your account</DrawerHeader> */}
+
+          {loggedIn && (
+            <>
+              {" "}
+              <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
+                {userState.userInfo.teams.length == 0 && (
+                  <Text>
+                    Cart is Empty{" "}
+                    <Box as="span" textDecor="underline">
+                      <Link href={"/events"}>(Browse Events here)</Link>
+                    </Box>
+                  </Text>
+                )}
+              </DrawerBody>
+              <DrawerFooter bgColor="black" color="whitesmoke">
+                {userState.userInfo.teams.length > 0 && (
+                  <Box gridGap={4} w="100%" display="flex" flexDir="column">
+                    <Box>
+                      <Input />
+                    </Box>
+                    <Box display="flex" justifyContent="flex-end">
+                      <Button
+                        variant="outline"
+                        colorScheme="blue"
+                        mr={3}
+                        onClick={onClose}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleCheckout} colorScheme="green">
+                        Checkout
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
+              </DrawerFooter>
+            </>
+          )}
+        </DrawerContent>
+      </Drawer>
+    );
+  };
+
+  return isLoading ? (
+    <></>
+  ) : (
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
       flexBasis={{ base: "100%", md: "auto" }}
@@ -119,17 +219,17 @@ function DrawerNavbar({ isOpen }) {
               Profile
             </MenuItems>
           )}
-          <Menu>
-            <MenuItems
-              _hover={{ bg: "rgb(81, 45, 168)" }}
-              fontWeight="bold"
-              fontSize="15pt"
-              to="/events"
-              sx={{ transition: "background 0.2s" }}
-            >
-              Events
-            </MenuItems>
-          </Menu>
+
+          <MenuItems
+            _hover={{ bg: "rgb(81, 45, 168)" }}
+            fontWeight="bold"
+            fontSize="15pt"
+            to="/events"
+            sx={{ transition: "background 0.2s" }}
+          >
+            Events
+          </MenuItems>
+
           {!loggedIn ? (
             <Box p="15px" borderRadius="10px">
               <Button
@@ -150,41 +250,27 @@ function DrawerNavbar({ isOpen }) {
                 bg="transparent"
                 fontSize="15pt"
                 fontWeight="bold"
-                onClick={async () => {
-                  try {
-                    const res = await axios.post(
-                      `${API_BASE_URL}/api/u/auth/logout/`,
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Token " + userState.userInfo.token,
-                        },
-                      }
-                    );
-                    if (res.status == 200) {
-                      userDispatch({
-                        type: "REMOVE_USER",
-                      });
-                    } else {
-                      throw new Error(res.statusText);
-                    }
-                  } catch (e) {
-                    console.log(e);
-                    toast({
-                      title: "Error logging out",
-                      status: "error",
-                      duration: 2000,
-                      position: "top-right",
-                    });
-                  }
-                }}
+                onClick={handleLogout}
               >
                 Logout
               </Button>
             </Box>
           )}
+          <Box p="15px" borderRadius="10px">
+            <Button
+              _hover={{ bg: "rgb(81, 45, 168)" }}
+              color="white"
+              bg="transparent"
+              fontSize="15pt"
+              fontWeight="bold"
+              onClick={cart.onOpen}
+            >
+              <Icon />
+            </Button>
+          </Box>
         </Stack>
       </ScaleFade>
+      <CartDrawer isOpen={cart.isOpen} onClose={cart.onClose} />
     </Box>
   );
 }
@@ -196,7 +282,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("green.600");
+        setBackground("rgb(17,82,45,0.6)");
         setVisible(1);
       } else {
         setBackground("transparent");
@@ -214,10 +300,10 @@ const NavbarContainer = (props) => {
       wrap="wrap"
       p="20px"
       w="100%"
-      bg={`${background}`}
-      color={["white", "white", "white", "white"]}
+      background={`${background}`}
+      color="white"
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
-      sx={{ transition: " background 0.2s, height 0.4s" }}
+      sx={{ transition: "background 0.2s " }}
       position="fixed"
       zIndex="1"
       {...rest}

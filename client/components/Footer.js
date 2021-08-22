@@ -6,10 +6,11 @@ export default function Footer() {
       //bgGradient="linear(to-r,rgb(69, 39, 160,0.75),rgb(69, 40, 160,0.75),rgb(69, 49, 160,0.75),rgb(0, 121, 107,0.75))"
       bg="rgb(69, 39, 160,0.75)"
       w="100%"
-      h={{ md: "8vh" }}
+      h={{ md: "9vh" }}
       px={{ base: "20px", md: "50px" }}
-      py="20px"
+      py={{ md: "20px" }}
       gridGap="2"
+      align="center"
     >
       <Text noOfLines={2} flex={2} color="rgb(179, 157, 219)">
         Developed by Aditya, Abhishek, Trevor & Gabriel
