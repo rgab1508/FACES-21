@@ -1,7 +1,7 @@
 import json
 import datetime
 
-from users.permissions import IsPhoneNoVerified
+from users.permissions import IsProfileFilled
 from users.models import User
 from users.models import Team
 from uuid import uuid4
@@ -44,7 +44,7 @@ class EventDetailVIew(APIView):
       return JsonResponse({"detail": "Event Doesn't Exists", "success": False}, status=400)
     
 class EventRegiterView(APIView):
-  permission_classes = [IsAuthenticated, IsPhoneNoVerified]
+  permission_classes = [IsAuthenticated, IsProfileFilled]
 
   def post(self, request):
     def update_criteria(user: User, event: Event) -> User:
