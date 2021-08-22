@@ -26,6 +26,7 @@ export default function EventPopup(props) {
     teamName: "",
     members: [],
   });
+  const [member, setMember] = useState("");
 
   const toast = useToast();
 
@@ -68,7 +69,33 @@ export default function EventPopup(props) {
     return true;
   };
 
-  function addTeamMembers() {}
+  async function checkIfStudentExists(rollNo) {
+    const apiUrl = "https://faces21.herokuapp.com/api/u/exists/";
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ roll_no: rollNo }),
+    });
+    if (response.json().exists) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function addTeamMembers(event) {
+    if (!values.members.includes(member)) {
+      values.members.push(member);
+      setMember("");
+    }
+  }
+
+  function removeTeamMembers(event) {
+    values.members.pop();
+    setValues({ ...values });
+  }
 
   const handleRegister = async () => {
     if (!validateInput()) return;
@@ -179,53 +206,70 @@ export default function EventPopup(props) {
             )}
           </Flex>
           {props.event.team_size > 1 ? (
-            <Flex
-              bg="rgb(27, 94, 32)"
-              borderRadius="10px"
-              mt={4}
-              flexDirection="column"
-              p="20px"
-              gridGap="3"
-            >
-              <Text color="white" fontSize="15pt" fontWeight="bold">
-                Enter teammates info
-              </Text>
-              <Input
-                variant="filled"
-                placeholder="Enter a team name"
-                bg="white"
-                _placeholder={{ fontSize: "14pt" }}
-                _focus={{ color: "black", bg: "white" }}
-                value={values.teamName}
-                name="teamName"
-                onChange={handleChange}
-              />
-              <Flex gridGap="4">
+            <Flex flexDirection="column" gridGap="3">
+              <Flex
+                bg="rgb(27, 94, 32)"
+                borderRadius="10px"
+                mt={4}
+                flexDirection="column"
+                p="20px"
+                gridGap="3"
+              >
+                <Text color="white" fontSize="15pt" fontWeight="bold">
+                  Enter teammates info
+                </Text>
                 <Input
-                  flex={3}
                   variant="filled"
-                  placeholder="Enter team members (Roll no)"
-                  _placeholder={{ fontSize: "14pt" }}
+                  placeholder="Enter a team name"
                   bg="white"
+                  _placeholder={{ fontSize: "14pt" }}
                   _focus={{ color: "black", bg: "white" }}
-                  name="members"
+                  value={values.teamName}
+                  name="teamName"
+                  onChange={handleChange}
                 />
-                <IconButton
-                  flex={1}
-                  aria-label="Add team member"
-                  icon={<AddIcon />}
-                  bg="rgb(76, 175, 80)"
-                  color="white"
-                  _hover={{ bg: "rgb(129, 199, 132)" }}
-                />
-                <IconButton
-                  flex={1}
-                  aria-label="Remove team member"
-                  icon={<MinusIcon />}
-                  bg="rgb(76, 175, 80)"
-                  color="white"
-                  _hover={{ bg: "rgb(129, 199, 132)" }}
-                />
+                <Flex gridGap="4">
+                  <Input
+                    flex={3}
+                    variant="filled"
+                    placeholder="Enter team members (Roll no)"
+                    _placeholder={{ fontSize: "14pt" }}
+                    bg="white"
+                    _focus={{ color: "black", bg: "white" }}
+                    name="member"
+                    value={member}
+                    onChange={(event) => {
+                      setMember(event.target.value);
+                    }}
+                  />
+                  <IconButton
+                    flex={1}
+                    aria-label="Add team member"
+                    icon={<AddIcon />}
+                    bg="rgb(76, 175, 80)"
+                    color="white"
+                    _hover={{ bg: "rgb(129, 199, 132)" }}
+                    onClick={addTeamMembers}
+                  />
+                  <IconButton
+                    flex={1}
+                    aria-label="Remove team member"
+                    icon={<MinusIcon />}
+                    bg="rgb(76, 175, 80)"
+                    color="white"
+                    _hover={{ bg: "rgb(129, 199, 132)" }}
+                    onClick={removeTeamMembers}
+                  />
+                </Flex>
+              </Flex>
+              <Flex gridGap="2">
+                {values.members.map((val) => {
+                  return (
+                    <Flex p="15px" borderRadius="10px" bg="rgb(27, 94, 32)">
+                      <Text color="white">{val}</Text>
+                    </Flex>
+                  );
+                })}
               </Flex>
             </Flex>
           ) : (

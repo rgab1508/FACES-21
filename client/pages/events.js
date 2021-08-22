@@ -94,11 +94,14 @@ export default function Events(props) {
                 icon={<ChevronDownIcon />}
                 value={filterQuery}
                 variant="filled"
+                bg="rgb(0,0,0,0.7)"
+                color="white"
                 placeholder="Select option"
                 onChange={(event) => {
                   setFilterQuery(event.target.value);
                 }}
                 w={{ base: "40vw", md: "30vw" }}
+                _focus={{ bg: "rgb(0,0,0,0.6)", color: "white" }}
               >
                 <option value="Day">Day</option>
                 <option value="Participant">Participant type</option>
@@ -119,6 +122,9 @@ export default function Events(props) {
                   onChange={(event) => {
                     setExtraQuery(event.target.value);
                   }}
+                  bg="rgb(0,0,0,0.7)"
+                  color="white"
+                  _focus={{ bg: "rgb(0,0,0,0.6)", color: "white" }}
                 >
                   {filterQuery == "Day" ? (
                     <>
@@ -147,7 +153,9 @@ export default function Events(props) {
                   w={{ base: "90%", lg: "60%" }}
                   h="auto"
                   flexDirection="row"
-                  bg="green.500"
+                  //bg="rgb(17,82,45,0.8)"
+                  bgColor="rgb(0,0,0,0.6)"
+                  backgroundImage="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
                   borderRadius="10px"
                   onClick={() => {
                     setEvent(event);
@@ -191,7 +199,7 @@ export default function Events(props) {
                   >
                     <Flex
                       p="10px"
-                      bg="rgb(52, 130, 39,0.4)"
+                      bg="rgb(69, 39, 160,0.4)"
                       h="100%"
                       w="100%"
                       flexDirection="column"

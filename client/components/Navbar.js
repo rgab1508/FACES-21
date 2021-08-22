@@ -139,43 +139,43 @@ function DrawerNavbar({ isOpen }) {
           <DrawerCloseButton color="white" />
           {/* <DrawerHeader>Create your account</DrawerHeader> */}
 
-          <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
-            {userState.userInfo.teams.length == 0 && (
-              <Text>
-                Cart is Empty{" "}
-                <Box as="span" textDecor="underline">
-                  <Link href={"/events"}>(Browse Events here)</Link>
-                </Box>
-              </Text>
-            )}
-            {userState.userInfo.teams.map((team) => {
-              console.log(team);
-            })}
-            {/* {console.log(userState)} */}
-          </DrawerBody>
-
-          <DrawerFooter bgColor="black" color="whitesmoke">
-            {userState.userInfo.teams.length > 0 && (
-              <Box gridGap={4} w="100%" display="flex" flexDir="column">
-                <Box>
-                  <Input />
-                </Box>
-                <Box display="flex" justifyContent="flex-end">
-                  <Button
-                    variant="outline"
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={handleCheckout} colorScheme="green">
-                    Checkout
-                  </Button>
-                </Box>
-              </Box>
-            )}
-          </DrawerFooter>
+          {loggedIn && (
+            <>
+              {" "}
+              <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
+                {userState.userInfo.teams.length == 0 && (
+                  <Text>
+                    Cart is Empty{" "}
+                    <Box as="span" textDecor="underline">
+                      <Link href={"/events"}>(Browse Events here)</Link>
+                    </Box>
+                  </Text>
+                )}
+              </DrawerBody>
+              <DrawerFooter bgColor="black" color="whitesmoke">
+                {userState.userInfo.teams.length > 0 && (
+                  <Box gridGap={4} w="100%" display="flex" flexDir="column">
+                    <Box>
+                      <Input />
+                    </Box>
+                    <Box display="flex" justifyContent="flex-end">
+                      <Button
+                        variant="outline"
+                        colorScheme="blue"
+                        mr={3}
+                        onClick={onClose}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleCheckout} colorScheme="green">
+                        Checkout
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
+              </DrawerFooter>
+            </>
+          )}
         </DrawerContent>
       </Drawer>
     );
@@ -282,7 +282,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("rgb(56, 142, 60)");
+        setBackground("rgb(17,82,45,0.6)");
         setVisible(1);
       } else {
         setBackground("transparent");
@@ -300,10 +300,10 @@ const NavbarContainer = (props) => {
       wrap="wrap"
       p="20px"
       w="100%"
-      bg={`${background}`}
-      color={["white", "white", "white", "white"]}
+      background={`${background}`}
+      color="white"
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
-      sx={{ transition: " background 0.2s, height 0.4s" }}
+      sx={{ transition: "background 0.2s " }}
       position="fixed"
       zIndex="1"
       {...rest}
