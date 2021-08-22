@@ -12,9 +12,23 @@ import {
   FormControl,
   FormLabel,
   Image,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Avatar,
+  AvatarBadge,
+  Radio,
+  RadioGroup,
+  useRadio,
+  useRadioGroup,
+  HStack,
+  useNumberInput,
   useToast,
+  InputLeftElement,
 } from "@chakra-ui/react";
-import { ViewIcon } from "@chakra-ui/icons";
+import { ViewIcon, EditIcon } from "@chakra-ui/icons";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
@@ -23,19 +37,77 @@ import styles from "../components/Orenda.module.css";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
 import VideoBackground from "../components/VideoBackground";
-
 import { firebase } from "@firebase/app";
 import "@firebase/auth";
+
+function RadioCard(props) {
+  const { getInputProps, getCheckboxProps } = useRadio(props);
+
+  const input = getInputProps();
+  const checkbox = getCheckboxProps();
+
+  return (
+    <Box as="label" m={1}>
+      <input {...input} />
+      <Box
+        {...checkbox}
+        cursor="pointer"
+        borderWidth="1px"
+        borderRadius="md"
+        boxShadow="md"
+        _checked={{
+          bg: "teal.600",
+          color: "white",
+          borderColor: "teal.600",
+        }}
+        _focus={{
+          boxShadow: "outline",
+        }}
+        px={3}
+        py={2}
+        display="flex"
+        flexGrow={1}
+      >
+        {props.children}
+      </Box>
+    </Box>
+  );
+}
 
 export default function Login(props) {
   var [loading, setLoading] = useState(false);
   const toast = useToast();
   const [userState, userDispatch] = useContext(UserContext);
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(userState.userInfo.phone);
+  const [avatar, setAvatar] = useState(null);
   const [OTP, setOTP] = useState("");
   const [OTPSent, setOTPSent] = useState(false);
+  const [phoneSet, setPhoneSet] = useState(false);
+  const [profile, setProfile] = useState({});
   const router = useRouter();
-  var verify;
+
+  const departments = ["COMP", "IT", "EXTC", "MECH", "ELEC", "OTHER"];
+
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
+    useNumberInput({
+      step: 1,
+      value: profile.semester,
+      onChange: (sem) => setProfile({ ...profile, semester: +sem }),
+      min: 1,
+      max: 8,
+    });
+
+  const inc = getIncrementButtonProps();
+  const dec = getDecrementButtonProps();
+  const input = getInputProps({ isReadOnly: true });
+
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: "department",
+    value: profile.department,
+    onChange: (val) => setProfile({ ...profile, department: val }),
+  });
+
+  const group = getRootProps();
 
   if (!firebase.apps.length) {
     firebase.initializeApp(JSON.parse(process.env.NEXT_PUBLIC_FIREBASE));
@@ -43,77 +115,224 @@ export default function Login(props) {
     firebase.app();
   }
 
-  var recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-    "recaptcha-container",
-    {
-      size: "normal",
-      callback: () => setOTPSent(true),
-    }
-  );
-
   function login() {
+    var recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+      "recaptcha-container",
+      {
+        size: "normal",
+        callback: () => setOTPSent(true),
+      }
+    );
     firebase
       .auth()
       .signInWithPhoneNumber(phone, recaptchaVerifier)
-      .then((_verify) => (verify = _verify))
+      .then((_verify) => (window.verify = _verify))
       .catch(console.log);
   }
 
   function verifyOTP() {
-    verify.confirm(OTP).then(console.log).catch(console.log);
+    window.verify
+      .confirm(OTP)
+      .then((stuff) => {
+        console.log(stuff);
+        setPhoneSet(true);
+        toast({
+          title: "Phone verification succesful",
+          position: "top-right",
+          duration: 3000,
+          status: "success",
+        });
+      })
+      .catch(console.log);
   }
+
+  async function updateAvatar() {
+    var formData = new FormData();
+    formData.append("file", avatar);
+    await axios.post("https://vgy.me/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then(console.log).catch(console.log);
+  }
+
+  async function updateProfile() {
+    if (avatar) {
+      await updateAvatar();
+    }
+    await axios({
+      url: `${API_BASE_URL}/api/u/update/`,
+      method: "POST",
+      data: {
+        name: profile.name,
+        department: profile.department,
+        semester: profile.semester,
+      },
+      headers: {
+        Authorization: "Token " + userState.userInfo.token,
+      },
+    })
+      .then((res) => {
+        userDispatch({
+          type: "ADD_USER",
+          payload: profile,
+        });
+      })
+      .catch(console.log);
+  }
+
+  function handleChange(e) {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  }
+
+  useEffect(() => {
+    setProfile(userState.userInfo);
+  }, [userState.userInfo]);
 
   return (
     <>
       <Head>
         <title>Edit Profile | FACES-21</title>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
       </Head>
       <VideoBackground />
       <Navbar />
-      <Flex h="100vh" justifyContent="center" align="center">
-        <Flex bgColor="white" position="relative" p={5}>
-          <Flex direction="column">
-            <Image src="/profile.svg" maxW={{ base: "250px", md: "500px" }} />
-          </Flex>
-          <Flex direction="column">
-            <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input variant="filled" name="name" />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Phone</FormLabel>
-              <Input
-                variant="filled"
-                name="phone"
-                defaultValue={userState.userInfo.phone}
-                id="phone"
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <Button onClick={login} m={3}>
-                Verify OTP
-              </Button>
-              <Flex
-                id="recaptcha-container"
-                p={3}
-                display={OTPSent && "none"}
-              />
-            </FormControl>
-            {OTPSent && (
-              <FormControl>
-                <FormLabel>OTP</FormLabel>
-                <Input
-                  variant="filled"
-                  id="otp"
-                  onChange={(e) => setOTP(e.target.value)}
-                />
-                <Button onClick={verifyOTP} m={3}>
-                  Submit OTP
+      <Flex justifyContent="center" >
+        <Flex
+          direction="column"
+          bgColor="transparent"
+          backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
+          borderRadius={10}
+          position="relative"
+          p={5}
+          ml={2}
+          mr={2}
+          color="white"
+          zIndex={5}
+        >
+          <Tabs colorScheme="whiteAlpha" variant="soft-rounded" isFitted>
+            <TabList>
+              <Tab color="white">Profile</Tab>
+              <Tab color="white">My Events</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Flex w="100%" justifyContent="center">
+                  <Avatar
+                    width="170px"
+                    height="170px"
+                    src={avatar ? URL.createObjectURL(avatar) : profile.avatar}
+                    borderWidth="3px"
+                    m={3}
+                    cursor="pointer"
+                  >
+                    <Flex justifyContent="center" alignItems="center">
+                      <Input
+                        variant="filled"
+                        style={{ display: "none" }}
+                        id="avatar-file-input"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setAvatar(e.target.files[0])}
+                        name="avatar"
+                        p="0"
+                        m="0"
+                      />
+                      <label
+                        htmlFor="avatar-file-input"
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          display: "inline",
+                        }}
+                      >
+                        <AvatarBadge
+                          boxSize="50px"
+                          borderWidth="0em"
+                          bgColor="red.500"
+                          cursor="pointer"
+                        >
+                          <EditIcon
+                            boxSize="25px"
+                            display="inline"
+                            variant="red"
+                          />
+                        </AvatarBadge>
+                      </label>
+                    </Flex>
+                  </Avatar>
+                </Flex>
+                <Flex direction={{ base: "column", md: "row" }}>
+                  <FormControl m={1}>
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      name="name"
+                      value={profile.name}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                  <FormControl m={1}>
+                    <FormLabel>Semester</FormLabel>
+                    <InputGroup>
+                      <InputLeftElement>
+                        <Button {...dec} color="black" bgColor="#FFFFFFAA">
+                          -
+                        </Button>
+                      </InputLeftElement>
+                      <Input {...input} textAlign="center" name="semester" />
+                      <InputRightElement>
+                        <Button {...inc} color="black" bgColor="#FFFFFFAA">
+                          +
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </FormControl>
+                </Flex>
+                <FormControl m={1}>
+                  <FormLabel>Department</FormLabel>
+                  <Flex wrap="wrap" {...group}>
+                    {departments.map((value) => {
+                      const radio = getRadioProps({ value });
+                      return (
+                        <RadioCard key={value} {...radio}>
+                          {value}
+                        </RadioCard>
+                      );
+                    })}
+                  </Flex>
+                </FormControl>
+                <FormControl m={1}>
+                  <FormLabel>Phone</FormLabel>
+                  <Input
+                    name="phone"
+                    defaultValue={profile.phone}
+                    id="phone"
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                  <Button onClick={login} m={3} color="black">
+                    Verify OTP
+                  </Button>
+                  <Flex
+                    id="recaptcha-container"
+                    p={3}
+                    display={OTPSent && "none"}
+                  />
+                </FormControl>
+                {!phoneSet && OTPSent && (
+                  <FormControl m={1}>
+                    <FormLabel>OTP</FormLabel>
+                    <Input id="otp" onChange={(e) => setOTP(e.target.value)} />
+                    <Button onClick={verifyOTP} m={3} color="black">
+                      Submit OTP
+                    </Button>
+                  </FormControl>
+                )}
+                <Button onClick={updateProfile} m={3} color="black">
+                  Save Profile
                 </Button>
-              </FormControl>
-            )}
-          </Flex>
+              </TabPanel>
+              <TabPanel></TabPanel>
+            </TabPanels>
+          </Tabs>
         </Flex>
       </Flex>
     </>
