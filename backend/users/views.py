@@ -15,6 +15,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from .models import Team, User
 from .serializers import TeamSerializer, UserSerializer
+from .permissions import IsProfileFilled
 
 import csv
 
@@ -152,6 +153,22 @@ class UserAvatarUpdate(APIView):
       return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
 
 
+class UserCheckout(APIView):
+  permission_classes = [IsAuthenticated, IsProfileFilled]
+
+  def post(self, request):
+    user = request.user
+
+    teams = request.data['teams']
+    """
+      TODOS
+      - check if team_code exists in user profile
+      - if does then add transaction id to that team
+      - set is_paid to true
+      - if doesnt exists then This team doesnt Exists
+    """
+    return JsonResponse({"detail": "Transaction ID Added Successfully!", "success": True},status=200)
+
 # CART REALTED
 
 class UserCartUpdate(APIView):
@@ -168,6 +185,9 @@ class UserCartUpdate(APIView):
       return JsonResponse({"detail": "Cart Updated Successfully!", "success": True}, status=200)
     except ValueError:
       return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
+
+  
+
 
 
 class MakeUsersView(APIView):

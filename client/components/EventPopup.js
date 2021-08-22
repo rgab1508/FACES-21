@@ -19,6 +19,7 @@ import {
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { API_BASE_URL } from "../config";
 
 export default function EventPopup(props) {
   const [userState, userDispatch] = useContext(UserContext);
@@ -42,7 +43,7 @@ export default function EventPopup(props) {
   const clearValues = () => setValues({ teamName: "", members: [] });
 
   const validateInput = () => {
-    if (values.teamName == "") {
+    if (props.event.team_size > 1 && values.teamName == "") {
       toast({
         title: "Please Enter a valid Team Name",
         position: "top-right",
@@ -70,8 +71,7 @@ export default function EventPopup(props) {
   };
 
   async function checkIfStudentExists(rollNo) {
-    const apiUrl = "https://faces21.herokuapp.com/api/u/exists/";
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${API_BASE_URL}/api/u/exists/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,14 +100,13 @@ export default function EventPopup(props) {
   const handleRegister = async () => {
     if (!validateInput()) return;
 
-    const apiUrl = "https://faces21.herokuapp.com/api/e/register/";
     let data = {
       event_code: props.event.event_code,
       team_name: values.teamName,
       members: values.members, // Insert Array of Roll Nos,
     };
 
-    fetch(apiUrl, {
+    fetch(`${API_BASE_URL}/api/e/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -120,6 +119,13 @@ export default function EventPopup(props) {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
+          userDispatch({
+            type: "ADD_USER",
+            payload: {
+              ...userState.userInfo,
+              teams: [...userState.userInfo.teams, res.team],
+            },
+          });
           toast({
             title: res.detail,
             duration: 3000,

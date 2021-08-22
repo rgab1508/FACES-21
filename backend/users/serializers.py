@@ -2,11 +2,13 @@ from rest_framework import serializers
 from rest_framework.settings import import_from_string
 
 from .models import User, Team
+from events.serializers import EventSerializer2
 
 class TeamSerializer(serializers.ModelSerializer):
+  event = EventSerializer2(read_only=True)
   class Meta:
     model = Team
-    fields = [ 'team_code', 'team_name', 'members']
+    fields = [ 'team_code', 'team_name', 'members', 'event']
 
 class UserSerializer(serializers.ModelSerializer):
   teams = TeamSerializer(many=True, read_only=True)

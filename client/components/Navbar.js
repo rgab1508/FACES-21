@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import Cart from "./Cart";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
@@ -127,60 +128,6 @@ function DrawerNavbar({ isOpen }) {
     }
   };
 
-  const handleCheckout = () => {
-    console.log("checkout");
-  };
-
-  const CartDrawer = ({ isOpen, onClose }) => {
-    return (
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton color="white" />
-          {/* <DrawerHeader>Create your account</DrawerHeader> */}
-
-          {loggedIn && (
-            <>
-              {" "}
-              <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
-                {userState.userInfo.teams.length == 0 && (
-                  <Text>
-                    Cart is Empty{" "}
-                    <Box as="span" textDecor="underline">
-                      <Link href={"/events"}>(Browse Events here)</Link>
-                    </Box>
-                  </Text>
-                )}
-              </DrawerBody>
-              <DrawerFooter bgColor="black" color="whitesmoke">
-                {userState.userInfo.teams.length > 0 && (
-                  <Box gridGap={4} w="100%" display="flex" flexDir="column">
-                    <Box>
-                      <Input />
-                    </Box>
-                    <Box display="flex" justifyContent="flex-end">
-                      <Button
-                        variant="outline"
-                        colorScheme="blue"
-                        mr={3}
-                        onClick={onClose}
-                      >
-                        Cancel
-                      </Button>
-                      <Button onClick={handleCheckout} colorScheme="green">
-                        Checkout
-                      </Button>
-                    </Box>
-                  </Box>
-                )}
-              </DrawerFooter>
-            </>
-          )}
-        </DrawerContent>
-      </Drawer>
-    );
-  };
-
   return isLoading ? (
     <></>
   ) : (
@@ -270,7 +217,12 @@ function DrawerNavbar({ isOpen }) {
           </Box>
         </Stack>
       </ScaleFade>
-      <CartDrawer isOpen={cart.isOpen} onClose={cart.onClose} />
+      <Cart
+        isOpen={cart.isOpen}
+        onClose={cart.onClose}
+        loggedIn={loggedIn}
+        userState={userState}
+      />
     </Box>
   );
 }
