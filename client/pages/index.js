@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import styles from "../components/Orenda.module.css";
 import VideoBackground from "../components/VideoBackground";
 import { motion, isValidMotionProp } from "framer-motion";
+import { API_BASE_URL } from "../config";
 
 // ? Radio buttons for days.
 
@@ -187,8 +188,8 @@ export default function Home(props) {
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch("https://faces21.herokuapp.com/api/e").then(
-    (response) => response.json()
+  const res = await fetch(`${API_BASE_URL}/api/e`).then((response) =>
+    response.json()
   );
 
   return {

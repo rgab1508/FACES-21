@@ -16,6 +16,7 @@ import EventPopup from "../components/EventPopup";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 import VideoBackground from "../components/VideoBackground";
+import { API_BASE_URL } from "../config";
 
 export default function Events(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -251,9 +252,9 @@ export default function Events(props) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(
-    "https://faces21.herokuapp.com/api/e"
-  ).then((response) => response.json());
+  const res = await fetch(`${API_BASE_URL}/api/e`).then((response) =>
+    response.json()
+  );
 
   return {
     props: {

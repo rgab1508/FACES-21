@@ -137,8 +137,6 @@ function DrawerNavbar({ isOpen }) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton color="white" />
-          {/* <DrawerHeader>Create your account</DrawerHeader> */}
-
           {loggedIn && (
             <>
               {" "}
@@ -151,6 +149,31 @@ function DrawerNavbar({ isOpen }) {
                     </Box>
                   </Text>
                 )}
+                {userState.userInfo.teams
+                  .filter((t) => !t.is_paid)
+                  .map((t, tIdx) => {
+                    console.log(t);
+                    return (
+                      <Box
+                        bgImage="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
+                        py={3}
+                        key={t.team_code}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Box>
+                          <Text px={5} fontSize="large" fontWeight="bold">
+                            {tIdx + 1}.
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text>{t.event.title}</Text>
+                          <Text>Day {t.event.day}</Text>
+                          <Text></Text>
+                        </Box>
+                      </Box>
+                    );
+                  })}
               </DrawerBody>
               <DrawerFooter bgColor="black" color="whitesmoke">
                 {userState.userInfo.teams.length > 0 && (
