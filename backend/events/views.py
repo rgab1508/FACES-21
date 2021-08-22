@@ -106,9 +106,12 @@ class EventRegiterView(APIView):
 
       try:
         t.save()
-        event.save()
+        # event.save()
         user.save()
-        return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
+        team_serializer = TeamSerializer(t)
+        print(team_serializer.data)
+        # event_serializer = EventSerializer(event)
+        return JsonResponse({"detail": "Event Registered Sucessfully!", "team": team_serializer.data, "success": True}, status=200)
       except:
         t.delete()
         return JsonResponse({"detail": "Something Went Wrong!", "success": False}, status=400)
