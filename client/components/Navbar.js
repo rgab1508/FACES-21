@@ -282,7 +282,7 @@ const NavbarContainer = (props) => {
     window.addEventListener("scroll", () => {
       let y = window.scrollY;
       if (y >= 500) {
-        setBackground("rgb(56, 142, 60)");
+        setBackground("rgb(17,82,45,0.6)");
         setVisible(1);
       } else {
         setBackground("transparent");
@@ -300,10 +300,10 @@ const NavbarContainer = (props) => {
       wrap="wrap"
       p="20px"
       w="100%"
-      bg={`${background}`}
-      color={["white", "white", "white", "white"]}
+      background={`${background}`}
+      color="white"
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
-      sx={{ transition: " background 0.2s, height 0.4s" }}
+      sx={{ transition: "background 0.2s " }}
       position="fixed"
       zIndex="1"
       {...rest}

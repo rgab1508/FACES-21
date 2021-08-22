@@ -48,11 +48,11 @@ export default function Home(props) {
       <Layout>
         <Flex flexDirection="column" minW="100%" minH="100%">
           <Center
-            bg="rgb(0,0,0,0.6)"
+            bg="rgb(0,0,0,0.35)"
             flexDirection="column"
             w="100%"
             h="100vh"
-            gridGap="3"
+            gridGap="10"
           >
             <MotionHeading
               fontSize={{ base: "50pt", md: "60pt" }}
@@ -65,14 +65,14 @@ export default function Home(props) {
                 stiffness: 260,
                 damping: 10,
               }}
+              mb={{ md: "30px" }}
             >
               FACES-21
             </MotionHeading>
             <MotionText
               className={styles.scriptina}
-              fontWeight="bold"
               color="white"
-              fontSize={{ base: "70pt", md: "110pt" }}
+              fontSize={{ base: "70pt", md: "80pt" }}
               textAlign="center"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -91,20 +91,26 @@ export default function Home(props) {
             //bgGradient="radial(rgb(0, 105, 92,0.92),rgb(56, 142, 60,0.7))"
             //bgGradient="linear(to-br,rgb(81, 45, 168,0.9),rgb(81, 45, 168,0.9),rgb(56, 142, 60,0.9))"
             //bg="rgb(0,0,0,0.7)"
-            bg="rgb(0,0,0,0.6)"
+            bg="rgb(0,0,0,0.35)"
             py="60px"
             flexDirection="column"
             h="auto"
           >
-            <Box mb={10} w="50%" borderRadius="5px" border="1px solid white">
+            <Box mb={10} w="50%">
               <Select
-                bg="white"
-                _focus={{ outline: "none!important" }}
                 placeholder="Select day"
                 position="relative"
                 value={dayQuery}
                 onChange={(e) => {
                   setDayQuery(e.target.value);
+                }}
+                variant="filled"
+                bg="rgb(0,0,0,0.7)"
+                color="white"
+                _focus={{
+                  bg: "rgb(0,0,0,0.6)",
+                  color: "white",
+                  outline: "none!important",
                 }}
                 zIndex="0"
               >
@@ -121,7 +127,9 @@ export default function Home(props) {
                     borderRadius="10px"
                     w={{ base: "100%", md: "50%" }}
                     //bg="rgb(126, 87, 194)"
-                    bg="rgb(0,0,0)"
+                    //bg="rgb(0,0,0)"
+                    bgColor="#923cb5"
+                    backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
                     boxShadow="xl"
                     _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
                     sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
@@ -163,7 +171,7 @@ export default function Home(props) {
                       <Box
                         h="100%"
                         w="100%"
-                        bg="rgb(0,60,0,0.4)"
+                        bg="rgb(0,0,0,0.4)"
                         borderRadius="10px"
                       />
                     </Flex>
