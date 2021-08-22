@@ -109,7 +109,7 @@ export default function Home(props) {
                 color="white"
                 _focus={{
                   bg: "rgb(0,0,0,0.6)",
-                  color: "white",
+                  color: "black",
                   outline: "none!important",
                 }}
                 zIndex="0"
