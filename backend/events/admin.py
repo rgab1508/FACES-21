@@ -1,5 +1,10 @@
 from django.contrib import admin
+from django.db import models
 from django.db.models import F
+from martor.models import MartorField
+from martor.admin import AdminMartorWidget
+# from django_markdown.models import MarkdownField
+# from django_markdown.widgets import AdminMarkdownWidget
 
 from .models import Event
 
@@ -25,3 +30,4 @@ class SeatsFilterList(admin.SimpleListFilter):
 class EventAdmin(admin.ModelAdmin):
   list_filter = ('day', 'category', SeatsFilterList)
   search_fields = ('event_code', 'title', 'desciption', )
+  formfield_overrides = {MartorField: {'widget': AdminMartorWidget}}

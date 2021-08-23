@@ -1,4 +1,6 @@
 from django.db import models
+# from django_markdown.models import MarkdownField
+from martor.models import MartorField
 from django.utils.translation import ugettext_lazy as _
 from uuid import uuid4
 
@@ -19,7 +21,8 @@ class Event(models.Model):
   start = models.TimeField(_("Start Time"), max_length=5, blank=False)
   end = models.TimeField(_("End Time"), max_length=5, blank=False)
   title = models.CharField(_("Event Title"), max_length=256,blank=False)
-  description = models.TextField(_("Event Description"), blank=False)
+  description = MartorField(_("Event Description"), blank=False)
+  # description = models.TextField(_("Event Description"), blank=False)
   image = models.ImageField(_("Event Banner"), upload_to="uploads/")
   seats = models.IntegerField(_("Event Seats"),blank=False,default=0)
   max_seats = models.IntegerField(_("Maximum Event Seats"),blank=False,default=0)

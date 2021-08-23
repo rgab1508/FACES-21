@@ -108,9 +108,10 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
                         </Text>
                       </Box>
                       <Box>
-                        <Text>{t.event.title}</Text>
+                        <Text noOfLines={2}>{t.event.title}</Text>
                         <Text>Day {t.event.day}</Text>
-                        <Text></Text>
+                        {/* TODO: For comma seperated members roll nos (maybe) */}
+                        {/* <Text></Text> */}
                       </Box>
                     </Box>
                   );
@@ -149,6 +150,7 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
                 <ConfirmAlert />
                 <Button
                   onClick={() => {
+                    // TODO: add more validation here
                     if (transactionId == "") {
                       toast({
                         title: "Please Enter a Valid Transaction ID",
