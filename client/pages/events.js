@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { ChevronDownIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 import VideoBackground from "../components/VideoBackground";
 import { API_BASE_URL } from "../config";
+import EventCard from "../components/EventCard";
+import { AnimateSharedLayout } from "framer-motion";
 
 export default function Events(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -103,6 +105,7 @@ export default function Events(props) {
                 }}
                 w={{ base: "40vw", md: "30vw" }}
                 _focus={{ bg: "rgb(0,0,0,0.6)", color: "white" }}
+                _hover={{ bg: "rgb(0,0,0)" }}
               >
                 <option value="Day">Day</option>
                 <option value="Participant">Participant type</option>
@@ -126,6 +129,7 @@ export default function Events(props) {
                   bg="rgb(0,0,0,0.7)"
                   color="white"
                   _focus={{ bg: "rgb(0,0,0,0.6)", color: "white" }}
+                  _hover={{ bg: "rgb(0,0,0)" }}
                 >
                   {filterQuery == "Day" ? (
                     <>
@@ -147,103 +151,11 @@ export default function Events(props) {
                 </Select>
               )}
             </Flex>
-            {events.map(function (event, index) {
-              return (
-                <Flex
-                  key={index}
-                  w={{ base: "90%", lg: "60%" }}
-                  h="auto"
-                  flexDirection="row"
-                  //bg="rgb(17,82,45,0.8)"
-                  bgColor="rgb(0,0,0,0.6)"
-                  backgroundImage="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
-                  borderRadius="10px"
-                  onClick={() => {
-                    setEvent(event);
-                    onOpen();
-                  }}
-                  boxShadow="lg"
-                  sx={{
-                    transition:
-                      "box-shadow 0.3s , transform 0.3s, margin-bottom 0.3s",
-                  }}
-                  _hover={{
-                    boxShadow: "2xl",
-                    transform: "scale(1.1)",
-                    marginBottom: "20px",
-                  }}
-                >
-                  <Box p="15px" w="50%">
-                    <Text color="white" fontWeight="bold" fontSize="20pt">
-                      {event.title}
-                    </Text>
-                    <Text w="100%" noOfLines={2} color="white" fontSize="16pt">
-                      {event.description}
-                    </Text>
-                    <Text
-                      w="100%"
-                      noOfLines={2}
-                      color="white"
-                      fontWeight="bold"
-                      fontSize="16pt"
-                    >
-                      {event.start} - {event.end}
-                    </Text>
-                  </Box>
-                  <Box
-                    background={`url(https://faces21.herokuapp.com${event.image})`}
-                    backgroundSize="cover"
-                    backgroundPosition="center"
-                    backgroundRepeat="no-repeat"
-                    borderRadius="10px"
-                    w="50%"
-                  >
-                    <Flex
-                      p="10px"
-                      bg="rgb(69, 39, 160,0.4)"
-                      h="100%"
-                      w="100%"
-                      flexDirection="column"
-                      borderRadius="10px"
-                      gridGap="2"
-                    >
-                      <Badge
-                        ml="auto"
-                        bg="purple.700"
-                        color="white"
-                        fontSize="14pt"
-                        borderRadius="5px"
-                      >
-                        Day - {event.day}
-                      </Badge>
-                      <Badge
-                        ml="auto"
-                        bg={event.category == "S" ? "blue.700" : "red.700"}
-                        color="white"
-                        fontSize="14pt"
-                        borderRadius="5px"
-                      >
-                        {event.category == "S" ? "Sports" : "Cultural"}
-                      </Badge>
-                      {event.team_size > 1 ? (
-                        <Badge
-                          ml="auto"
-                          bg="yellow.500"
-                          color="white"
-                          fontSize="14pt"
-                          borderRadius="5px"
-                        >
-                          Group
-                        </Badge>
-                      ) : null}
-                    </Flex>
-                  </Box>
-                </Flex>
-              );
-            })}
-            {event != undefined && (
-              <EventPopup isOpen={isOpen} onClose={onClose} event={event} />
-            )}
+            <AnimateSharedLayout type="crossfade">
+              {events.map(function (event, index) {
+                return <EventCard key={index} event={event} />;
+              })}
+            </AnimateSharedLayout>
           </Center>
         </Flex>
       </Layout>
