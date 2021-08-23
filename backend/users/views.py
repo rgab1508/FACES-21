@@ -159,15 +159,33 @@ class UserCheckout(APIView):
   def post(self, request):
     user = request.user
 
-    teams = request.data['teams']
-    """
-      TODOS
-      - check if team_code exists in user profile
-      - if does then add transaction id to that team
-      - set is_paid to true
-      - if doesnt exists then This team doesnt Exists
-    """
-    return JsonResponse({"detail": "Transaction ID Added Successfully!", "success": True},status=200)
+    team_codes = request.data['teams']
+    transaction_id = request.data['transaction_id']
+    if len(transaction_id) < 12:
+      return JsonResponse({"detail": "Enter a Valid Transaction ID", "success": False},status=400)
+    
+    teams = []
+
+    for t in team_codes:
+      team_q = user.teams.filter(team_code=t)
+      if not team_q:
+        return JsonResponse({"detail": "Not Registered for that Event", "success": False},status=400)
+      
+      team = team_q.first()
+      team.transaction_id = transaction_id
+      team.is_paid = True
+      teams.append(team)
+    
+    user.money_owed = 0
+
+    try:
+      for t in teams:
+        t.save()
+      
+      user.save()
+      return JsonResponse({"detail": "Transaction ID Added Successfully!", "success": True},status=200)
+    except:
+      return JsonResponse({"detail": "Something Went Wrong", "success": False},status=400)
 
 # CART REALTED
 
