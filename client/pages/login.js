@@ -17,7 +17,6 @@ import { ViewIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { CartContext } from "../context/CartContext";
 import styles from "../components/Orenda.module.css";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
@@ -30,7 +29,6 @@ export default function Login(props) {
   var [show, setShow] = useState(false);
   const toast = useToast();
   const [userState, userDispatch] = useContext(UserContext);
-  const [cartState, cartDispatch] = useContext(CartContext);
   const router = useRouter();
 
   async function handleLogin(e) {
@@ -44,10 +42,6 @@ export default function Login(props) {
         userDispatch({
           type: "ADD_USER",
           payload: { ...res.data.user, token: res.data.token },
-        });
-        cartDispatch({
-          type: "INIT_CART",
-          payload: {},
         });
         toast({
           title: "Successfully logged in",
