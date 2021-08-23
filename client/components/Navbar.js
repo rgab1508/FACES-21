@@ -208,12 +208,7 @@ function DrawerNavbar({ isOpen }) {
           </Box>
         </Stack>
       </ScaleFade>
-      <Cart
-        isOpen={cart.isOpen}
-        onClose={cart.onClose}
-        loggedIn={loggedIn}
-        userState={userState}
-      />
+      <Cart isOpen={cart.isOpen} onClose={cart.onClose} loggedIn={loggedIn} />
     </Box>
   );
 }

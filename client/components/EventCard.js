@@ -6,18 +6,25 @@ import {
   IconButton,
   Input,
   Collapse,
+  Button,
+  useToast,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
+import { UserContext } from "../context/UserContext";
+import { API_BASE_URL } from "../config";
 
 export default function EventCard({ event, readOnly, key }) {
+  const [userState, userDispatch] = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
   const [values, setValues] = useState({
     teamName: "",
     members: [],
   });
   const [member, setMember] = useState("");
+
+  const toast = useToast();
 
   const handleChange = (e) => {
     setValues((prevValues) => {
@@ -31,7 +38,7 @@ export default function EventCard({ event, readOnly, key }) {
   const clearValues = () => setValues({ teamName: "", members: [] });
 
   const validateInput = () => {
-    if (props.event.team_size > 1 && values.teamName == "") {
+    if (event.team_size > 1 && values.teamName == "") {
       toast({
         title: "Please Enter a valid Team Name",
         position: "top-right",
@@ -40,14 +47,14 @@ export default function EventCard({ event, readOnly, key }) {
       });
       return false;
     }
-    if (props.event.team_size > 1) {
+    if (event.team_size > 1) {
       // TEAM Event
       if (
-        props.event.is_team_size_strict &&
-        values.members.length != props.event.team_size
+        event.is_team_size_strict &&
+        values.members.length != event.team_size
       ) {
         toast({
-          title: `This Event has a Strict Team Size of ${props.event.team_size}`,
+          title: `This Event has a Strict Team Size of ${event.team_size}`,
           position: "top-right",
           duration: 3000,
           status: "error",
@@ -66,18 +73,17 @@ export default function EventCard({ event, readOnly, key }) {
       },
       body: JSON.stringify({ roll_no: rollNo }),
     });
-    if (response.json().exists) {
-      return true;
-    } else {
-      return false;
-    }
+    let res = response.json();
+    if (res.success) {
+      return res.exists;
+    } else return false;
   }
 
   const handleRegister = async () => {
     if (!validateInput()) return;
 
     let data = {
-      event_code: props.event.event_code,
+      event_code: event.event_code,
       team_name: values.teamName,
       members: values.members, // Insert Array of Roll Nos,
     };
@@ -131,10 +137,45 @@ export default function EventCard({ event, readOnly, key }) {
   };
 
   function addTeamMembers(event) {
-    if (!values.members.includes(member)) {
-      values.members.push(member);
-      setMember("");
+    let roll_no = Number.parseInt(member);
+    if (Number.isNaN(roll_no)) {
+      toast({
+        title: "Please Enter a Valid Roll No.",
+        status: "error",
+        position: "top-right",
+        duration: 2000,
+      });
+      return;
     }
+    if (roll_no <= 99999 || roll_no >= 9999999) {
+      toast({
+        title: "Please Enter a Valid Roll No.",
+        status: "error",
+        position: "top-right",
+        duration: 2000,
+      });
+      return;
+    }
+    if (values.members.includes(roll_no)) {
+      toast({
+        title: "Student Already Added!",
+        status: "info",
+        position: "top-right",
+        duration: 2000,
+      });
+      return;
+    }
+    if (!checkIfStudentExists(roll_no)) {
+      toast({
+        title: "Roll No. Doesnt Exists!",
+        status: "error",
+        position: "top-right",
+        duration: 2000,
+      });
+      return;
+    }
+    values.members.push(roll_no);
+    setMember("");
   }
 
   function removeTeamMembers(event) {
@@ -320,6 +361,24 @@ export default function EventCard({ event, readOnly, key }) {
           ) : (
             ""
           )}
+          <Flex justifyContent="flex-end">
+            {JSON.stringify(userState.userInfo) != "{}" ? (
+              <Button
+                bg="green.400"
+                color="white"
+                fontWeight="bold"
+                _focus={{ outline: "none!important" }}
+                _hover={{ opacity: 0.8 }}
+                onClick={handleRegister}
+              >
+                Register
+              </Button>
+            ) : (
+              <Text fontStyle="italic" mr={5} color="white" fontSize="large">
+                Login to register
+              </Text>
+            )}
+          </Flex>
         </Flex>
       </Collapse>
     </Flex>

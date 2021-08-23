@@ -23,15 +23,69 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { API_BASE_URL } from "../config";
+import { UserContext } from "../context/UserContext";
 
-const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
+const Cart = ({ isOpen, onClose, loggedIn }) => {
+  const [userState, userDispatch] = useContext(UserContext);
+
   const [transactionId, setTransactionId] = useState("");
   const confirm = useDisclosure();
   const toast = useToast();
 
   const handleCheckout = () => {
     console.log("checkout");
+    let data = {
+      teams: [],
+      transaction_id: transactionId,
+    };
+    userState.userInfo.teams
+      .filter((t) => !t.is_paid)
+      .map((t) => data.teams.push(t.team_code));
+
+    fetch(`${API_BASE_URL}/api/u/checkout/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + userState.userInfo.token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          // update local teams array
+          toast({
+            title: res.detail,
+            status: "success",
+            position: "top-right",
+            duration: 3000,
+          });
+          userDispatch({
+            type: "ADD_USER",
+            payload: {
+              ...userState.userInfo,
+              teams: userState.userInfo.teams.map((t) => {
+                t.transaction_id = transactionId;
+                t.is_paid = true;
+                return t;
+              }),
+            },
+          });
+        }
+      })
+      .catch((res) => {
+        toast({
+          title: res.detail,
+          status: "error",
+          position: "top-right",
+          duration: 3000,
+        });
+      });
   };
 
   const ConfirmAlert = () => {
@@ -82,7 +136,7 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
         <DrawerBody
           bg="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
           color="whitesmoke"
-          pt={10}
+          pt={12}
         >
           {loggedIn ? (
             <>
@@ -114,8 +168,10 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
                       <Box>
                         <Text noOfLines={2}>{t.event.title}</Text>
                         <Text>Day {t.event.day}</Text>
-                        {/* TODO: For comma seperated members roll nos (maybe) */}
-                        {/* <Text></Text> */}
+                        {!t.event.team_size > 1 && (
+                          <Text>{t.members.join()}</Text>
+                        )}
+                        <Text>&#8377; {t.event.entry_fee}</Text>
                       </Box>
                     </Box>
                   );
@@ -131,48 +187,49 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
           )}
         </DrawerBody>
         <DrawerFooter bgColor="black" color="whitesmoke">
-          {loggedIn && userState.userInfo.teams.length > 0 && (
-            <Box gridGap={4} w="100%" display="flex" flexDir="column">
-              <Box>
-                <FormControl>
-                  <FormLabel>Enter Transaction ID :</FormLabel>
-                  <Input
-                    value={transactionId}
-                    onChange={(e) => setTransactionId(e.target.value)}
-                  />
-                </FormControl>
+          {loggedIn &&
+            userState.userInfo.teams.filter((t) => !t.is_paid).length > 0 && (
+              <Box gridGap={4} w="100%" display="flex" flexDir="column">
+                <Box>
+                  <FormControl>
+                    <FormLabel>Enter Transaction ID :</FormLabel>
+                    <Input
+                      value={transactionId}
+                      onChange={(e) => setTransactionId(e.target.value)}
+                    />
+                  </FormControl>
+                </Box>
+                <Box display="flex" justifyContent="flex-end">
+                  <Button
+                    variant="outline"
+                    colorScheme="blue"
+                    mr={3}
+                    onClick={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <ConfirmAlert />
+                  <Button
+                    onClick={() => {
+                      // TODO: add more validation here
+                      if (transactionId == "") {
+                        toast({
+                          title: "Please Enter a Valid Transaction ID",
+                          status: "error",
+                          position: "top-right",
+                          duration: 3000,
+                        });
+                        return;
+                      }
+                      confirm.onOpen();
+                    }}
+                    colorScheme="green"
+                  >
+                    Checkout
+                  </Button>
+                </Box>
               </Box>
-              <Box display="flex" justifyContent="flex-end">
-                <Button
-                  variant="outline"
-                  colorScheme="blue"
-                  mr={3}
-                  onClick={onClose}
-                >
-                  Cancel
-                </Button>
-                <ConfirmAlert />
-                <Button
-                  onClick={() => {
-                    // TODO: add more validation here
-                    if (transactionId == "") {
-                      toast({
-                        title: "Please Enter a Valid Transaction ID",
-                        status: "error",
-                        position: "top-right",
-                        duration: 3000,
-                      });
-                      return;
-                    }
-                    confirm.onOpen();
-                  }}
-                  colorScheme="green"
-                >
-                  Checkout
-                </Button>
-              </Box>
-            </Box>
-          )}
+            )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

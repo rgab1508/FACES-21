@@ -152,7 +152,7 @@ export default function Events(props) {
               )}
             </Flex>
             <AnimateSharedLayout type="crossfade">
-              {events.map(function (event, index) {
+              {events.map(function(event, index) {
                 return <EventCard key={index} event={event} />;
               })}
             </AnimateSharedLayout>
