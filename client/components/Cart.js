@@ -79,7 +79,11 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
       <DrawerContent>
         <DrawerCloseButton color="white" />
 
-        <DrawerBody bgColor="black" color="whitesmoke" pt={10}>
+        <DrawerBody
+          bg="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
+          color="whitesmoke"
+          pt={10}
+        >
           {loggedIn ? (
             <>
               {userState.userInfo.teams.length == 0 && (
@@ -96,7 +100,7 @@ const Cart = ({ isOpen, onClose, loggedIn, userState }) => {
                   // console.log(t);
                   return (
                     <Box
-                      bgImage="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
+                      bgImage="linear-gradient(147deg, rgb(0,0,0,0.9) 0%, rgb(17,82,45,0.9) 74%)"
                       py={3}
                       key={t.team_code}
                       display="flex"
