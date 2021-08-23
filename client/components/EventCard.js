@@ -1,11 +1,17 @@
-import { Box, Flex, Badge, Text, IconButton, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Badge,
+  Text,
+  IconButton,
+  Input,
+  Collapse,
+} from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function EventCard({ event, readOnly, key }) {
-  const MotionFlex = motion(Flex, { forwardMotionProps: true });
-  const MotionBox = motion(Box, { forwardMotionProps: true });
   const [isOpen, setOpen] = useState(false);
   const [values, setValues] = useState({
     teamName: "",
@@ -52,6 +58,78 @@ export default function EventCard({ event, readOnly, key }) {
     return true;
   };
 
+  async function checkIfStudentExists(rollNo) {
+    const response = await fetch(`${API_BASE_URL}/api/u/exists/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ roll_no: rollNo }),
+    });
+    if (response.json().exists) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleRegister = async () => {
+    if (!validateInput()) return;
+
+    let data = {
+      event_code: props.event.event_code,
+      team_name: values.teamName,
+      members: values.members, // Insert Array of Roll Nos,
+    };
+
+    fetch(`${API_BASE_URL}/api/e/register/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + userState.userInfo.token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          userDispatch({
+            type: "ADD_USER",
+            payload: {
+              ...userState.userInfo,
+              teams: [...userState.userInfo.teams, res.team],
+            },
+          });
+          toast({
+            title: res.detail,
+            duration: 3000,
+            status: "success",
+            position: "top-right",
+          });
+          clearValues();
+        } else {
+          console.log(res);
+          toast({
+            title: res.detail,
+            duration: 3000,
+            status: "error",
+            position: "top-right",
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        toast({
+          title: e.detail,
+          position: "top-right",
+          duration: 3000,
+          status: "error",
+        });
+      });
+  };
+
   function addTeamMembers(event) {
     if (!values.members.includes(member)) {
       values.members.push(member);
@@ -65,13 +143,11 @@ export default function EventCard({ event, readOnly, key }) {
   }
 
   return (
-    <MotionFlex
-      layout
+    <Flex
       key={key}
       w={{ base: "90%", lg: "60%" }}
       h="auto"
       flexDirection="column"
-      //bg="rgb(17,82,45,0.8)"
       bgColor="rgb(0,0,0,0.6)"
       backgroundImage="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
       borderRadius="10px"
@@ -79,220 +155,173 @@ export default function EventCard({ event, readOnly, key }) {
       _hover={{
         boxShadow: "2xl",
       }}
-      onClick={() => setOpen(!isOpen)}
-      transition="height 0.3s"
+      sx={{ transition: "box-shadow 0.2s ease-in-out, height 1s" }}
     >
-      <MotionFlex
-        layout
-        sx={{
-          transition: "all 0.3s",
-        }}
-        flexDirection="row"
-      >
-        <MotionBox layout p="15px" w="50%">
+      <Flex flexDirection="row" onClick={() => setOpen(!isOpen)}>
+        <Box sx={{ transition: "all 0.5s" }} p="15px" w="50%">
+          <Text
+            color="white"
+            fontWeight="bold"
+            fontSize={isOpen ? "25pt" : "20pt"}
+          >
+            {event.title}
+          </Text>
           {!isOpen && (
             <>
-              <Text color="white" fontWeight="bold" fontSize="20pt">
-                {event.title}
-              </Text>
-
-              <Text w="100%" noOfLines={2} color="white" fontSize="16pt">
-                {event.description}
-              </Text>
-
               <Text
+                sx={{ transition: "font-size 0.3s" }}
                 w="100%"
                 noOfLines={2}
                 color="white"
-                fontWeight="bold"
                 fontSize="16pt"
               >
-                {event.start} - {event.end}
+                {event.description}
               </Text>
             </>
           )}
-        </MotionBox>
-        <MotionBox
-          layout
-          background={`url(https://faces21.herokuapp.com${event.image})`}
+          <Text
+            w="100%"
+            noOfLines={2}
+            color="white"
+            fontWeight="bold"
+            fontSize="16pt"
+          >
+            {event.start} - {event.end}
+          </Text>
+        </Box>
+        <Box
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
           borderRadius="10px"
           w="50%"
         >
-          {!isOpen && (
-            <MotionFlex
-              layout
-              p="10px"
-              bg="rgb(69, 39, 160,0.4)"
-              h="100%"
-              w="100%"
-              flexDirection="column"
-              borderRadius="10px"
-              gridGap="2"
-            >
-              <Badge
-                ml="auto"
-                bg="purple.700"
-                color="white"
-                fontSize="14pt"
-                borderRadius="5px"
-              >
-                Day - {event.day}
-              </Badge>
-              <Badge
-                ml="auto"
-                bg={event.category == "S" ? "blue.700" : "red.700"}
-                color="white"
-                fontSize="14pt"
-                borderRadius="5px"
-              >
-                {event.category == "S" ? "Sports" : "Cultural"}
-              </Badge>
-              {event.team_size > 1 ? (
-                <Badge
-                  ml="auto"
-                  bg="yellow.500"
-                  color="white"
-                  fontSize="14pt"
-                  borderRadius="5px"
-                >
-                  Group
-                </Badge>
-              ) : null}
-            </MotionFlex>
-          )}
-        </MotionBox>
-      </MotionFlex>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            layout
-            bg="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
+          <Flex
+            p="10px"
+            bg="rgb(69, 39, 160,0.4)"
+            h="100%"
             w="100%"
-            style={{ padding: "15px" }}
-            p="15px"
+            flexDirection="column"
             borderRadius="10px"
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
-            transition={{ duration: 1 }}
+            gridGap="2"
           >
-            <AnimateSharedLayout>
-              <MotionFlex layout flexDirection="column">
-                <Text color="white" fontSize="26pt" fontWeight="bold">
-                  {event.title}
+            <Badge
+              ml="auto"
+              bg="purple.700"
+              color="white"
+              fontSize="14pt"
+              borderRadius="5px"
+            >
+              Day - {event.day}
+            </Badge>
+            <Badge
+              ml="auto"
+              bg={event.category == "S" ? "blue.700" : "red.700"}
+              color="white"
+              fontSize="14pt"
+              borderRadius="5px"
+            >
+              {event.category == "S" ? "Sports" : "Cultural"}
+            </Badge>
+            {event.team_size > 1 ? (
+              <Badge
+                ml="auto"
+                bg="yellow.500"
+                color="white"
+                fontSize="14pt"
+                borderRadius="5px"
+              >
+                Group
+              </Badge>
+            ) : null}
+          </Flex>
+        </Box>
+      </Flex>
+      <Collapse in={isOpen} animateOpacity unmountOnExit>
+        <Flex
+          flexDirection="column"
+          bg="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
+          w="100%"
+          p="15px"
+          borderRadius="10px"
+        >
+          <Flex flexDirection="column">
+            <Text color="white" fontSize="17pt">
+              {event.description}
+            </Text>
+          </Flex>
+          {event.team_size > 1 ? (
+            <Flex flexDirection="column" gridGap="3">
+              <Flex
+                bg="rgb(27, 94, 32)"
+                borderRadius="10px"
+                mt={4}
+                flexDirection="column"
+                p="20px"
+                gridGap="3"
+              >
+                <Text color="white" fontSize="15pt" fontWeight="bold">
+                  Enter teammates info
                 </Text>
-                <Text color="white" fontSize="17pt">
-                  {event.description}
-                </Text>
-              </MotionFlex>
-              <MotionFlex layout mt="5" gridGap="5">
-                <Badge
-                  bg="purple.700"
-                  color="white"
-                  fontSize="14pt"
-                  borderRadius="5px"
-                >
-                  Day - {event.day}
-                </Badge>
-                <Badge
-                  bg={event.category == "S" ? "blue.700" : "red.700"}
-                  color="white"
-                  fontSize="14pt"
-                  borderRadius="5px"
-                >
-                  {event.category == "S" ? "Sports" : "Cultural"}
-                </Badge>
-                {event.team_size > 1 ? (
-                  <Badge
-                    bg="yellow.500"
+                <Input
+                  variant="filled"
+                  placeholder="Enter a team name"
+                  bg="white"
+                  _placeholder={{ fontSize: "14pt" }}
+                  _focus={{ color: "black", bg: "white" }}
+                  value={values.teamName}
+                  name="teamName"
+                  onChange={handleChange}
+                />
+                <Flex gridGap="4">
+                  <Input
+                    flex={3}
+                    variant="filled"
+                    placeholder="Enter team members (Roll no)"
+                    _placeholder={{ fontSize: "14pt" }}
+                    bg="white"
+                    _focus={{ color: "black", bg: "white" }}
+                    name="member"
+                    value={member}
+                    onChange={(event) => {
+                      setMember(event.target.value);
+                    }}
+                  />
+                  <IconButton
+                    flex={1}
+                    aria-label="Add team member"
+                    icon={<AddIcon />}
+                    bg="rgb(76, 175, 80)"
                     color="white"
-                    fontSize="14pt"
-                    borderRadius="5px"
-                  >
-                    Group
-                  </Badge>
-                ) : (
-                  ""
-                )}
-              </MotionFlex>
-              {event.team_size > 1 ? (
-                <MotionFlex layout flexDirection="column" gridGap="3">
-                  <MotionFlex
-                    layout
-                    bg="rgb(27, 94, 32)"
-                    borderRadius="10px"
-                    mt={4}
-                    flexDirection="column"
-                    p="20px"
-                    gridGap="3"
-                  >
-                    <Text color="white" fontSize="15pt" fontWeight="bold">
-                      Enter teammates info
-                    </Text>
-                    <Input
-                      variant="filled"
-                      placeholder="Enter a team name"
-                      bg="white"
-                      _placeholder={{ fontSize: "14pt" }}
-                      _focus={{ color: "black", bg: "white" }}
-                      value={values.teamName}
-                      name="teamName"
-                      onChange={handleChange}
-                    />
-                    <MotionFlex layout gridGap="4">
-                      <Input
-                        flex={3}
-                        variant="filled"
-                        placeholder="Enter team members (Roll no)"
-                        _placeholder={{ fontSize: "14pt" }}
-                        bg="white"
-                        _focus={{ color: "black", bg: "white" }}
-                        name="member"
-                        value={member}
-                        onChange={(event) => {
-                          setMember(event.target.value);
-                        }}
-                      />
-                      <IconButton
-                        flex={1}
-                        aria-label="Add team member"
-                        icon={<AddIcon />}
-                        bg="rgb(76, 175, 80)"
-                        color="white"
-                        _hover={{ bg: "rgb(129, 199, 132)" }}
-                        onClick={addTeamMembers}
-                      />
-                      <IconButton
-                        flex={1}
-                        aria-label="Remove team member"
-                        icon={<MinusIcon />}
-                        bg="rgb(76, 175, 80)"
-                        color="white"
-                        _hover={{ bg: "rgb(129, 199, 132)" }}
-                        onClick={removeTeamMembers}
-                      />
-                    </MotionFlex>
-                  </MotionFlex>
-                  <MotionFlex layout gridGap="2">
-                    {values.members.map((val) => {
-                      return (
-                        <Flex p="15px" borderRadius="10px" bg="rgb(27, 94, 32)">
-                          <Text color="white">{val}</Text>
-                        </Flex>
-                      );
-                    })}
-                  </MotionFlex>
-                </MotionFlex>
-              ) : (
-                ""
-              )}
-            </AnimateSharedLayout>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </MotionFlex>
+                    _hover={{ bg: "rgb(129, 199, 132)" }}
+                    onClick={addTeamMembers}
+                  />
+                  <IconButton
+                    flex={1}
+                    aria-label="Remove team member"
+                    icon={<MinusIcon />}
+                    bg="rgb(76, 175, 80)"
+                    color="white"
+                    _hover={{ bg: "rgb(129, 199, 132)" }}
+                    onClick={removeTeamMembers}
+                  />
+                </Flex>
+              </Flex>
+              <Flex gridGap="2">
+                {values.members.map((val) => {
+                  return (
+                    <Flex p="15px" borderRadius="10px" bg="rgb(27, 94, 32)">
+                      <Text color="white">{val}</Text>
+                    </Flex>
+                  );
+                })}
+              </Flex>
+            </Flex>
+          ) : (
+            ""
+          )}
+        </Flex>
+      </Collapse>
+    </Flex>
   );
 }
