@@ -29,7 +29,7 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { ViewIcon, EditIcon } from "@chakra-ui/icons";
-import Navbar from "../components/Navbar";
+import Layout from "../components/Layout";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
@@ -149,11 +149,14 @@ export default function Login(props) {
   async function updateAvatar() {
     var formData = new FormData();
     formData.append("file", avatar);
-    await axios.post("https://vgy.me/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(console.log).catch(console.log);
+    await axios
+      .post("https://vgy.me/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(console.log)
+      .catch(console.log);
   }
 
   async function updateProfile() {
@@ -195,146 +198,166 @@ export default function Login(props) {
         <title>Edit Profile | FACES-21</title>
       </Head>
       <VideoBackground />
-      <Navbar />
-      <Flex justifyContent="center" >
-        <Flex
-          direction="column"
-          bgColor="transparent"
-          backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
-          borderRadius={10}
-          position="relative"
-          p={5}
-          ml={2}
-          mr={2}
-          color="white"
-          zIndex={5}
-        >
-          <Tabs colorScheme="whiteAlpha" variant="soft-rounded" isFitted>
-            <TabList>
-              <Tab color="white">Profile</Tab>
-              <Tab color="white">My Events</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <Flex w="100%" justifyContent="center">
-                  <Avatar
-                    width="170px"
-                    height="170px"
-                    src={avatar ? URL.createObjectURL(avatar) : profile.avatar}
-                    borderWidth="3px"
-                    m={3}
-                    cursor="pointer"
-                  >
-                    <Flex justifyContent="center" alignItems="center">
-                      <Input
-                        variant="filled"
-                        style={{ display: "none" }}
-                        id="avatar-file-input"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setAvatar(e.target.files[0])}
-                        name="avatar"
-                        p="0"
-                        m="0"
-                      />
-                      <label
-                        htmlFor="avatar-file-input"
-                        style={{
-                          margin: 0,
-                          padding: 0,
-                          display: "inline",
-                        }}
-                      >
-                        <AvatarBadge
-                          boxSize="50px"
-                          borderWidth="0em"
-                          bgColor="red.500"
-                          cursor="pointer"
+      <Layout>
+        <Center w="100%" h="110vh" justifyContent="center">
+          <Flex
+            direction="column"
+            bgColor="transparent"
+            backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
+            borderRadius={10}
+            position="relative"
+            p={5}
+            ml={2}
+            mr={2}
+            color="white"
+            zIndex={0}
+          >
+            <Tabs colorScheme="whiteAlpha" variant="soft-rounded" isFitted>
+              <TabList>
+                <Tab color="white">Profile</Tab>
+                <Tab color="white">My Events</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Flex w="100%" justifyContent="center">
+                    <Avatar
+                      width="170px"
+                      height="170px"
+                      src={
+                        avatar ? URL.createObjectURL(avatar) : profile.avatar
+                      }
+                      borderWidth="3px"
+                      m={3}
+                      cursor="pointer"
+                    >
+                      <Flex justifyContent="center" alignItems="center">
+                        <Input
+                          variant="filled"
+                          style={{ display: "none" }}
+                          id="avatar-file-input"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setAvatar(e.target.files[0])}
+                          name="avatar"
+                          p="0"
+                          m="0"
+                        />
+                        <label
+                          htmlFor="avatar-file-input"
+                          style={{
+                            margin: 0,
+                            padding: 0,
+                            display: "inline",
+                          }}
                         >
-                          <EditIcon
-                            boxSize="25px"
-                            display="inline"
-                            variant="red"
-                          />
-                        </AvatarBadge>
-                      </label>
-                    </Flex>
-                  </Avatar>
-                </Flex>
-                <Flex direction={{ base: "column", md: "row" }}>
+                          <AvatarBadge
+                            boxSize="50px"
+                            borderWidth="0em"
+                            bgColor="red.500"
+                            cursor="pointer"
+                          >
+                            <EditIcon
+                              boxSize="25px"
+                              display="inline"
+                              variant="red"
+                            />
+                          </AvatarBadge>
+                        </label>
+                      </Flex>
+                    </Avatar>
+                  </Flex>
+                  <Flex direction={{ base: "column", md: "row" }}>
+                    <FormControl m={1}>
+                      <FormLabel>Name</FormLabel>
+                      <Input
+                        name="name"
+                        value={profile.name}
+                        onChange={handleChange}
+                        variant="filled"
+                        bg="#000000"
+                      />
+                    </FormControl>
+                    <FormControl m={1}>
+                      <FormLabel>Semester</FormLabel>
+                      <InputGroup>
+                        <InputLeftElement>
+                          <Button {...dec} color="black" bgColor="#FFFFFFAA">
+                            -
+                          </Button>
+                        </InputLeftElement>
+                        <Input
+                          bg="black"
+                          variant="filled"
+                          {...input}
+                          textAlign="center"
+                          name="semester"
+                        />
+                        <InputRightElement>
+                          <Button {...inc} color="black" bgColor="#FFFFFFAA">
+                            +
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+                  </Flex>
                   <FormControl m={1}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Department</FormLabel>
+                    <Flex wrap="wrap" {...group}>
+                      {departments.map((value) => {
+                        const radio = getRadioProps({ value });
+                        return (
+                          <RadioCard key={value} {...radio}>
+                            {value}
+                          </RadioCard>
+                        );
+                      })}
+                    </Flex>
+                  </FormControl>
+                  <FormControl m={1}>
+                    <FormLabel>Phone</FormLabel>
                     <Input
-                      name="name"
-                      value={profile.name}
-                      onChange={handleChange}
+                      name="phone"
+                      defaultValue={profile.phone}
+                      id="phone"
+                      variant="filled"
+                      color="white"
+                      bg="black"
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                    <Button onClick={login} m={3} color="black">
+                      Verify OTP
+                    </Button>
+                    <Flex
+                      id="recaptcha-container"
+                      p={3}
+                      display={OTPSent && "none"}
                     />
                   </FormControl>
-                  <FormControl m={1}>
-                    <FormLabel>Semester</FormLabel>
-                    <InputGroup>
-                      <InputLeftElement>
-                        <Button {...dec} color="black" bgColor="#FFFFFFAA">
-                          -
-                        </Button>
-                      </InputLeftElement>
-                      <Input {...input} textAlign="center" name="semester" />
-                      <InputRightElement>
-                        <Button {...inc} color="black" bgColor="#FFFFFFAA">
-                          +
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-                  </FormControl>
-                </Flex>
-                <FormControl m={1}>
-                  <FormLabel>Department</FormLabel>
-                  <Flex wrap="wrap" {...group}>
-                    {departments.map((value) => {
-                      const radio = getRadioProps({ value });
-                      return (
-                        <RadioCard key={value} {...radio}>
-                          {value}
-                        </RadioCard>
-                      );
-                    })}
-                  </Flex>
-                </FormControl>
-                <FormControl m={1}>
-                  <FormLabel>Phone</FormLabel>
-                  <Input
-                    name="phone"
-                    defaultValue={profile.phone}
-                    id="phone"
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                  <Button onClick={login} m={3} color="black">
-                    Verify OTP
+                  {!phoneSet && OTPSent && (
+                    <FormControl m={1}>
+                      <FormLabel>OTP</FormLabel>
+                      <Input
+                        id="otp"
+                        onChange={(e) => setOTP(e.target.value)}
+                        variant="filled"
+                        color="white"
+                        bg="black"
+                      />
+                      <Button onClick={verifyOTP} m={3} color="black">
+                        Submit OTP
+                      </Button>
+                    </FormControl>
+                  )}
+                  <Button onClick={updateProfile} m={3} color="black">
+                    Save Profile
                   </Button>
-                  <Flex
-                    id="recaptcha-container"
-                    p={3}
-                    display={OTPSent && "none"}
-                  />
-                </FormControl>
-                {!phoneSet && OTPSent && (
-                  <FormControl m={1}>
-                    <FormLabel>OTP</FormLabel>
-                    <Input id="otp" onChange={(e) => setOTP(e.target.value)} />
-                    <Button onClick={verifyOTP} m={3} color="black">
-                      Submit OTP
-                    </Button>
-                  </FormControl>
-                )}
-                <Button onClick={updateProfile} m={3} color="black">
-                  Save Profile
-                </Button>
-              </TabPanel>
-              <TabPanel></TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Flex>
-      </Flex>
+                </TabPanel>
+                <TabPanel></TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Flex>
+        </Center>
+      </Layout>
     </>
   );
 }
