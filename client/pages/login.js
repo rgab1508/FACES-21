@@ -45,10 +45,10 @@ export default function Login(props) {
           type: "ADD_USER",
           payload: { ...res.data.user, token: res.data.token },
         });
-        // cartDispatch({
-        //   type:"ADD_TO_CART",
-        //   payload:{}
-        // })
+        cartDispatch({
+          type: "INIT_CART",
+          payload: {},
+        });
         toast({
           title: "Successfully logged in",
           status: "success",
@@ -82,13 +82,13 @@ export default function Login(props) {
       <Center
         flexDirection="column"
         height="100vh"
-        bg="rgb(0,60,0,0.4)"
+        bg="rgb(0,0,0,0.4)"
         position="relative"
         zIndex="5"
       >
         <Flex
           direction="column"
-          bgGradient="radial(rgb(0, 105, 92,0.9),rgb(56, 142, 60,0.9))"
+          bgGradient="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
           p={12}
           borderRadius="10px"
           w={{ base: "auto", md: "50%" }}

@@ -102,7 +102,7 @@ export default function Events(props) {
                   setFilterQuery(event.target.value);
                 }}
                 w={{ base: "40vw", md: "30vw" }}
-                _focus={{ bg: "rgb(0,0,0,0.6)", color: "black" }}
+                _focus={{ bg: "rgb(0,0,0,0.6)", color: "white" }}
               >
                 <option value="Day">Day</option>
                 <option value="Participant">Participant type</option>
@@ -125,7 +125,7 @@ export default function Events(props) {
                   }}
                   bg="rgb(0,0,0,0.7)"
                   color="white"
-                  _focus={{ bg: "rgb(0,0,0,0.6)", color: "black" }}
+                  _focus={{ bg: "rgb(0,0,0,0.6)", color: "white" }}
                 >
                   {filterQuery == "Day" ? (
                     <>
@@ -147,7 +147,7 @@ export default function Events(props) {
                 </Select>
               )}
             </Flex>
-            {events.map(function(event, index) {
+            {events.map(function (event, index) {
               return (
                 <Flex
                   key={index}

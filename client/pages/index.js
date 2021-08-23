@@ -3,9 +3,11 @@ import {
   Flex,
   Text,
   Center,
-  Select,
+  HStack,
   Heading,
   Badge,
+  useRadio,
+  useRadioGroup,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
@@ -17,22 +19,67 @@ import { API_BASE_URL } from "../config";
 
 // ? Radio buttons for days.
 
+function CustomRadioButton(props) {
+  const { getInputProps, getCheckboxProps } = useRadio(props);
+
+  const input = getInputProps();
+  const checkbox = getCheckboxProps();
+
+  return (
+    <Box as="label">
+      <input {...input} />
+      <Box
+        {...checkbox}
+        cursor="pointer"
+        bg="rgb(0,0,0,0.4)"
+        borderRadius="md"
+        boxShadow="md"
+        _checked={{
+          bg: "linear-gradient(147deg, rgb(17, 82, 45) 0%, #000000 74%)",
+          color: "white",
+          borderColor: "black",
+        }}
+        _focus={{
+          outline: "none!important",
+        }}
+        px={5}
+        py={3}
+        color="white"
+        zIndex={1}
+        fontWeight="bold"
+      >
+        {props.children}
+      </Box>
+    </Box>
+  );
+}
+
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
   const [dayQuery, setDayQuery] = useState("1");
   const MotionHeading = motion(Heading);
   const MotionText = motion(Text);
-  const MotionFlex = motion(Flex);
+
+  const options = ["Day 1", "Day 2", "Day 3"];
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: "day",
+    defaultValue: "Day 1",
+    onChange: (value) => {
+      setDayQuery(value);
+    },
+  });
+
+  const group = getRootProps();
 
   useEffect(() => {
     let newEvents;
-    if (dayQuery == 1) {
+    if (dayQuery == "Day 1") {
       newEvents = props.events.filter((event) => event.day == 1);
       setEvents(newEvents);
-    } else if (dayQuery == 2) {
+    } else if (dayQuery == "Day 2") {
       newEvents = props.events.filter((event) => event.day == 2);
       setEvents(newEvents);
-    } else if (dayQuery == 3) {
+    } else if (dayQuery == "Day 3") {
       newEvents = props.events.filter((event) => event.day == 3);
       setEvents(newEvents);
     } else {
@@ -89,37 +136,23 @@ export default function Home(props) {
           </Center>
           <Center
             w="100%"
-            //bgGradient="radial(rgb(0, 105, 92,0.92),rgb(56, 142, 60,0.7))"
-            //bgGradient="linear(to-br,rgb(81, 45, 168,0.9),rgb(81, 45, 168,0.9),rgb(56, 142, 60,0.9))"
-            //bg="rgb(0,0,0,0.7)"
             bg="rgb(0,0,0,0.35)"
             py="60px"
             flexDirection="column"
             h="auto"
           >
-            <Box mb={10} w="50%">
-              <Select
-                placeholder="Select day"
-                position="relative"
-                value={dayQuery}
-                onChange={(e) => {
-                  setDayQuery(e.target.value);
-                }}
-                variant="filled"
-                bg="rgb(0,0,0,0.7)"
-                color="white"
-                _focus={{
-                  bg: "rgb(0,0,0,0.6)",
-                  color: "black",
-                  outline: "none!important",
-                }}
-                zIndex="0"
-              >
-                <option value="1">Day 1</option>
-                <option value="2">Day 2</option>
-                <option value="3">Day 3</option>
-              </Select>
-            </Box>
+            <Center mb={10} w="50%">
+              <HStack {...group}>
+                {options.map((option, index) => {
+                  const radio = getRadioProps({ value: option });
+                  return (
+                    <CustomRadioButton key={index} {...radio}>
+                      {option}
+                    </CustomRadioButton>
+                  );
+                })}
+              </HStack>
+            </Center>
             <Flex flexDirection="column" w="80%" gridGap="3">
               {events.map((evt, key) => (
                 <Flex key={key} flex={1}>
@@ -127,8 +160,6 @@ export default function Home(props) {
                   <Flex
                     borderRadius="10px"
                     w={{ base: "100%", md: "50%" }}
-                    //bg="rgb(126, 87, 194)"
-                    //bg="rgb(0,0,0)"
                     bgColor="#923cb5"
                     backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
                     boxShadow="xl"

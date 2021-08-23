@@ -163,7 +163,7 @@ export default function EventPopup(props) {
       size={"5xl"}
     >
       <ModalOverlay />
-      <ModalContent bg="rgb(46, 125, 50)">
+      <ModalContent bg="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)">
         <ModalHeader>
           <Text color="white">Event</Text>
         </ModalHeader>
