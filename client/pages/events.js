@@ -152,7 +152,7 @@ export default function Events(props) {
               )}
             </Flex>
             <AnimateSharedLayout type="crossfade">
-              {events.map(function(event, index) {
+              {events.map(function (event, index) {
                 return <EventCard key={index} event={event} />;
               })}
             </AnimateSharedLayout>
@@ -163,7 +163,7 @@ export default function Events(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const res = await fetch(`${API_BASE_URL}/api/e`).then((response) =>
     response.json()
   );
@@ -172,5 +172,6 @@ export async function getServerSideProps(context) {
     props: {
       events: res.events,
     },
+    revalidate: 10,
   };
 }
