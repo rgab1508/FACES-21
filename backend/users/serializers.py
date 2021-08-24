@@ -8,7 +8,7 @@ class TeamSerializer(serializers.ModelSerializer):
   event = EventSerializer2(read_only=True)
   class Meta:
     model = Team
-    fields = [ 'team_code', 'team_name', 'members', 'event']
+    fields = [ 'team_code', 'team_name', 'members', 'transaction_id', 'is_paid', 'is_verified', 'event']
 
 class UserSerializer(serializers.ModelSerializer):
   teams = TeamSerializer(many=True, read_only=True)
