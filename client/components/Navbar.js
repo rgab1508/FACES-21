@@ -92,15 +92,21 @@ function DrawerNavbar({ isOpen }) {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post(
-        `${API_BASE_URL}/api/u/auth/logout/`,
-        {},
-        {
-          headers: {
-            Authorization: "Token " + userState.userInfo.token,
-          },
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/api/u/auth/logout/`, {
+        method: "POST",
+        headers: {
+          Authorisation: "Token " + userState.userInfo.token,
+        },
+      });
+      // await axios.post(
+      //   `${API_BASE_URL}/api/u/auth/logout/`,
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: "Token " + userState.userInfo.token,
+      //     },
+      //   }
+      // );
       if (res.status == 200) {
         userDispatch({
           type: "REMOVE_USER",
@@ -208,7 +214,9 @@ function DrawerNavbar({ isOpen }) {
           </Box>
         </Stack>
       </ScaleFade>
-      <Cart isOpen={cart.isOpen} onClose={cart.onClose} loggedIn={loggedIn} />
+      {loggedIn && (
+        <Cart isOpen={cart.isOpen} onClose={cart.onClose} loggedIn={loggedIn} />
+      )}
     </Box>
   );
 }
