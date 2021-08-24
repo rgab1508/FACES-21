@@ -47,11 +47,11 @@ class EventRegiterView(APIView):
   permission_classes = [IsAuthenticated, IsProfileFilled]
 
   def post(self, request):
-    def update_criteria(user: User, event: Event) -> User:
-      user_criteria = json.loads(user.criteria)
-      user_criteria[str(event.day)] = True
-      user.criteria = json.dumps(user_criteria)
-      return user
+    # def update_criteria(user: User, event: Event) -> User:
+    #   user_criteria = json.loads(user.criteria)
+    #   user_criteria[str(event.day)] = True
+    #   user.criteria = json.dumps(user_criteria)
+    #   return user
     
     def check_event_clashes(user: User, event: Event) -> list:
       participations = user.teams.all()

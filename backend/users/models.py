@@ -31,7 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)
-  criteria = models.TextField(_("Criteria JSON"), default='{"1": false, "2": false, "3": false}')
+  criteria = models.TextField(_("Criteria JSON"), default='{"1": false, "2": false, "3": false, "C": 0, "S": 0}')
   cart = models.TextField(_("Cart JSON"), default="[]")
 
   is_staff = models.BooleanField(default=False)
