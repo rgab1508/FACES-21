@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-+!hgi7mynxzcvaimm2%+g)6u8bi04ow!50zh%!*h3n_kq0c9z^
 OTP_VERIFY_SECRET = os.getenv("OTP_VERIFY_SECRET", "BRUH")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DJANGO_DEBUG", True)
+DEBUG_ENV = os.getenv("DJANGO_DEBUG", 'True')
+DEBUG = DEBUG_ENV != 'False'
 
 
 ALLOWED_HOSTS = ['127.0.0.1', 'faces21.herokuapp.com', os.getenv("PUBLIC_IP", "localhost")]
@@ -177,7 +178,7 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, "static"),
 )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
