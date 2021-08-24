@@ -90,7 +90,7 @@ class EventRegiterView(APIView):
       # create a Team of One
       t = Team()
       t.event = event
-      t.team_name = user.name
+      t.team_name = user.roll_no
       t.save()
       t.members.add(user)
       
@@ -98,7 +98,7 @@ class EventRegiterView(APIView):
       user.money_owed += event.entry_fee
 
       # update criteria
-      user = update_criteria(user, event)
+      # user = update_criteria(user, event)
 
       # Update Event seats
       # now changed to after team verified
@@ -158,14 +158,13 @@ class EventRegiterView(APIView):
         t.save()
         event.save()
         # update criteria for members
-        print(t.members.all())
-        for m in t.members.all():
-          if m.roll_no == user.roll_no: continue
-          
-          m = update_criteria(m, event)
-          m.save()
+        # print(t.members.all())
+        # for m in t.members.all():
+        #   if m.roll_no == user.roll_no: continue
+        #   m = update_criteria(m, event)
+        #   m.save()
 
-        user = update_criteria(user, event)
+        # user = update_criteria(user, event)
         user.save()
         return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
       except:

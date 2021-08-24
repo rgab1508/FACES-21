@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 from django.db import models
 from django.db.models.signals import post_save
@@ -64,11 +65,28 @@ class Team(models.Model):
 # ADD POST_SAVE after getting verified and increment event seats
 @receiver(post_save, sender=Team)
 def update_seats(sender, instance, created, **kwargs):
+  def update_criteria(user: User, event: Event) -> User:
+    user_criteria = json.loads(user.criteria)
+    user_criteria[str(event.day)] = True
+    user.criteria = json.dumps(user_criteria)
+    return user
+
   print("post save bruh")
   if not created:
     if instance.is_paid and instance.is_verified:
       event = instance.event
-      print(event.seats)
+      # Inc Event Seats
       event.seats += 1
-      print(event.seats)
       event.save()
+
+      # Update Student Criteria
+      if event.team_size > 1:
+        # Team
+        for m in instance.members.all():
+          m = update_criteria(m, event)
+          m.save()
+      else:
+        # Solo
+        user = instance.members.first()
+        user = update_criteria(user, event)
+        user.save()
