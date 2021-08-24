@@ -90,39 +90,46 @@ function DrawerNavbar({ isOpen }) {
     setIsLoading(false);
   }, [userState.userInfo]);
 
-  const handleLogout = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/u/auth/logout/`, {
-        method: "POST",
-        headers: {
-          Authorisation: "Token " + userState.userInfo.token,
-        },
-      });
-      // await axios.post(
-      //   `${API_BASE_URL}/api/u/auth/logout/`,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: "Token " + userState.userInfo.token,
-      //     },
-      //   }
-      // );
-      if (res.status == 200) {
-        userDispatch({
-          type: "REMOVE_USER",
+  const handleLogout = () => {
+    fetch(`${API_BASE_URL}/api/u/auth/logout/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + userState.userInfo.token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          toast({
+            title: "Successfully Logged Out!",
+            status: "success",
+            duration: 2000,
+            position: "top-right",
+          });
+          userDispatch({
+            type: "REMOVE_USER",
+          });
+        } else {
+          toast({
+            title: "Error logging out, Please Try Again...",
+            status: "error",
+            duration: 2000,
+            position: "top-right",
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        toast({
+          title: "Error logging out",
+          status: "error",
+          duration: 2000,
+          position: "top-right",
         });
-      } else {
-        throw new Error(res.statusText);
-      }
-    } catch (e) {
-      console.log(e);
-      toast({
-        title: "Error logging out",
-        status: "error",
-        duration: 2000,
-        position: "top-right",
       });
-    }
   };
 
   return isLoading ? (
@@ -214,9 +221,8 @@ function DrawerNavbar({ isOpen }) {
           </Box>
         </Stack>
       </ScaleFade>
-      {loggedIn && (
-        <Cart isOpen={cart.isOpen} onClose={cart.onClose} loggedIn={loggedIn} />
-      )}
+
+      <Cart isOpen={cart.isOpen} onClose={cart.onClose} loggedIn={loggedIn} />
     </Box>
   );
 }

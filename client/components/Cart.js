@@ -27,7 +27,7 @@ import React, { useContext, useState } from "react";
 import { API_BASE_URL } from "../config";
 import { UserContext } from "../context/UserContext";
 
-const Cart = ({ isOpen, onClose, loggedIn }) => {
+const Cart = ({ isOpen, onClose }) => {
   const [userState, userDispatch] = useContext(UserContext);
 
   const [transactionId, setTransactionId] = useState("");
@@ -138,7 +138,7 @@ const Cart = ({ isOpen, onClose, loggedIn }) => {
           color="whitesmoke"
           pt={12}
         >
-          {loggedIn ? (
+          {JSON.stringify(userState.userInfo) != "{}" ? (
             <>
               {userState.userInfo.teams.length == 0 && (
                 <Text>
@@ -187,7 +187,7 @@ const Cart = ({ isOpen, onClose, loggedIn }) => {
           )}
         </DrawerBody>
         <DrawerFooter bgColor="black" color="whitesmoke">
-          {loggedIn &&
+          {JSON.stringify(userState.userInfo) != "{}" &&
             userState.userInfo.teams.filter((t) => !t.is_paid).length > 0 && (
               <Box gridGap={4} w="100%" display="flex" flexDir="column">
                 <Box>
