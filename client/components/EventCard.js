@@ -8,6 +8,7 @@ import {
   Collapse,
   Button,
   useToast,
+  Center,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useContext, useState } from "react";
@@ -278,86 +279,91 @@ export default function EventCard({ event, readOnly, key }) {
           </Flex>
         </Box>
       </Flex>
-      <Collapse in={isOpen} animateOpacity unmountOnExit>
+      <Collapse in={isOpen} animateOpacity>
         <Flex
           flexDirection="column"
           bg="linear-gradient(147deg, rgb(17,82,45,0.9) 0%, rgb(0,0,0,0.9) 74%)"
           w="100%"
           p="15px"
           borderRadius="10px"
+          gridGap="3"
         >
           <Flex flexDirection="column">
             <Text color="white" fontSize="17pt">
               {event.description}
             </Text>
           </Flex>
-          {event.team_size > 1 ? (
-            <Flex flexDirection="column" gridGap="3">
-              <Flex
-                bg="rgb(27, 94, 32)"
-                borderRadius="10px"
-                mt={4}
-                flexDirection="column"
-                p="20px"
-                gridGap="3"
-              >
-                <Text color="white" fontSize="15pt" fontWeight="bold">
-                  Enter teammates info
-                </Text>
-                <Input
-                  variant="filled"
-                  placeholder="Enter a team name"
-                  bg="white"
-                  _placeholder={{ fontSize: "14pt" }}
-                  _focus={{ color: "black", bg: "white" }}
-                  value={values.teamName}
-                  name="teamName"
-                  onChange={handleChange}
-                />
-                <Flex gridGap="4">
+          {JSON.stringify(userState.userInfo) != "{}" ? (
+            event.team_size > 1 ? (
+              <Flex flexDirection="column" gridGap="3">
+                <Flex
+                  bg="rgb(27, 94, 32)"
+                  borderRadius="10px"
+                  mt={4}
+                  flexDirection="column"
+                  p="20px"
+                  gridGap="3"
+                >
+                  <Text color="white" fontSize="15pt" fontWeight="bold">
+                    Enter teammates info
+                  </Text>
                   <Input
-                    flex={3}
                     variant="filled"
-                    placeholder="Enter team members (Roll no)"
-                    _placeholder={{ fontSize: "14pt" }}
+                    placeholder="Enter a team name"
                     bg="white"
+                    _placeholder={{ fontSize: "14pt" }}
                     _focus={{ color: "black", bg: "white" }}
-                    name="member"
-                    value={member}
-                    onChange={(event) => {
-                      setMember(event.target.value);
-                    }}
+                    value={values.teamName}
+                    name="teamName"
+                    onChange={handleChange}
                   />
-                  <IconButton
-                    flex={1}
-                    aria-label="Add team member"
-                    icon={<AddIcon />}
-                    bg="rgb(76, 175, 80)"
-                    color="white"
-                    _hover={{ bg: "rgb(129, 199, 132)" }}
-                    onClick={addTeamMembers}
-                  />
-                  <IconButton
-                    flex={1}
-                    aria-label="Remove team member"
-                    icon={<MinusIcon />}
-                    bg="rgb(76, 175, 80)"
-                    color="white"
-                    _hover={{ bg: "rgb(129, 199, 132)" }}
-                    onClick={removeTeamMembers}
-                  />
+                  <Flex gridGap="4">
+                    <Input
+                      flex={3}
+                      variant="filled"
+                      placeholder="Enter team members (Roll no)"
+                      _placeholder={{ fontSize: "14pt" }}
+                      bg="white"
+                      _focus={{ color: "black", bg: "white" }}
+                      name="member"
+                      value={member}
+                      onChange={(event) => {
+                        setMember(event.target.value);
+                      }}
+                    />
+                    <IconButton
+                      flex={1}
+                      aria-label="Add team member"
+                      icon={<AddIcon />}
+                      bg="rgb(76, 175, 80)"
+                      color="white"
+                      _hover={{ bg: "rgb(129, 199, 132)" }}
+                      onClick={addTeamMembers}
+                    />
+                    <IconButton
+                      flex={1}
+                      aria-label="Remove team member"
+                      icon={<MinusIcon />}
+                      bg="rgb(76, 175, 80)"
+                      color="white"
+                      _hover={{ bg: "rgb(129, 199, 132)" }}
+                      onClick={removeTeamMembers}
+                    />
+                  </Flex>
+                </Flex>
+                <Flex gridGap="2">
+                  {values.members.map((val) => {
+                    return (
+                      <Flex p="15px" borderRadius="10px" bg="rgb(27, 94, 32)">
+                        <Text color="white">{val}</Text>
+                      </Flex>
+                    );
+                  })}
                 </Flex>
               </Flex>
-              <Flex gridGap="2">
-                {values.members.map((val) => {
-                  return (
-                    <Flex p="15px" borderRadius="10px" bg="rgb(27, 94, 32)">
-                      <Text color="white">{val}</Text>
-                    </Flex>
-                  );
-                })}
-              </Flex>
-            </Flex>
+            ) : (
+              ""
+            )
           ) : (
             ""
           )}

@@ -129,12 +129,14 @@ class UserExistsView(APIView):
     roll_no = request.data['roll_no']
 
     try:
-      c = User.objects.filter(roll_no=roll_no).count()
+      users = User.objects.filter(roll_no=roll_no)
+      c = users.count()
+      user = users.first()
       
       if c < 1:
         return JsonResponse({"exists": False, "success": True}, status=200)
       else:
-        return JsonResponse({"exists": True, "success": True}, status=200)
+        return JsonResponse({"exists": True, "name": user.name or "","success": True}, status=200)
     except:
       return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
 

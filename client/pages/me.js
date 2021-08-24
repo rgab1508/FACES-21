@@ -1,7 +1,5 @@
 import Head from "next/head";
 import {
-  Heading,
-  Text,
   Box,
   InputGroup,
   Input,
@@ -56,7 +54,7 @@ function RadioCard(props) {
         borderRadius="md"
         boxShadow="md"
         _checked={{
-          bg: "teal.600",
+          bg: "linear-gradient(147deg, #000000 0%,rgb(69, 39, 160) 74%)",
           color: "white",
           borderColor: "teal.600",
         }}
@@ -67,6 +65,7 @@ function RadioCard(props) {
         py={2}
         display="flex"
         flexGrow={1}
+        fontWeight="bold"
       >
         {props.children}
       </Box>
@@ -324,7 +323,12 @@ export default function Login(props) {
                       bg="black"
                       onChange={(e) => setPhone(e.target.value)}
                     />
-                    <Button onClick={login} m={3} color="black">
+                    <Button
+                      bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
+                      onClick={login}
+                      m={3}
+                      color="white"
+                    >
                       Verify OTP
                     </Button>
                     <Flex
@@ -343,12 +347,22 @@ export default function Login(props) {
                         color="white"
                         bg="black"
                       />
-                      <Button onClick={verifyOTP} m={3} color="black">
+                      <Button
+                        bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
+                        onClick={verifyOTP}
+                        m={3}
+                        color="white"
+                      >
                         Submit OTP
                       </Button>
                     </FormControl>
                   )}
-                  <Button onClick={updateProfile} m={3} color="black">
+                  <Button
+                    bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
+                    onClick={updateProfile}
+                    m={3}
+                    color="white"
+                  >
                     Save Profile
                   </Button>
                 </TabPanel>

@@ -56,14 +56,14 @@ function CustomRadioButton(props) {
 
 export default function Home(props) {
   const [events, setEvents] = useState(props.events);
-  const [dayQuery, setDayQuery] = useState("1");
+  const [dayQuery, setDayQuery] = useState("Day 1");
   const MotionHeading = motion(Heading);
   const MotionText = motion(Text);
 
   const options = ["Day 1", "Day 2", "Day 3"];
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "day",
-    defaultValue: "Day 1",
+    defaultValue: options[0],
     onChange: (value) => {
       setDayQuery(value);
     },
