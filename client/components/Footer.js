@@ -19,10 +19,22 @@ export default function Footer() {
         flexDir={["column-reverse", "row", "row", "row"]}
       >
         <Text noOfLines={2} flex={2} color="rgb(179, 157, 219)">
-          Developed by <Link href="https://github.com/theabbie">Abhishek</Link>,{" "}
-          <Link href="https://www.adiunni.tech/">Aditya</Link>,{" "}
-          <Link href="https://github.com/rgab1508">Gabriel</Link> &{" "}
-          <Link href="https://github.com/dcostat04">Trevor</Link>
+          Developed by{" "}
+          <Link target="_blank" href="https://github.com/theabbie">
+            Abhishek
+          </Link>
+          ,{" "}
+          <Link target="_blank" href="https://www.adiunni.tech/">
+            Aditya
+          </Link>
+          ,{" "}
+          <Link target="_blank" href="https://github.com/rgab1508">
+            Gabriel
+          </Link>{" "}
+          &{" "}
+          <Link target="_blank" href="https://github.com/dcostat04">
+            Trevor
+          </Link>
         </Text>
         <Text
           flex={1}

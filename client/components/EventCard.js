@@ -197,7 +197,7 @@ export default function EventCard({ event, readOnly }) {
       }}
       sx={{ transition: "box-shadow 0.2s ease-in-out, height 1s" }}
     >
-      <Flex flexDirection="row" onClick={() => setOpen(!isOpen)}>
+      <Flex flexDirection="row" h="170px" onClick={() => setOpen(!isOpen)}>
         <Box sx={{ transition: "all 0.5s" }} p="15px" w="50%">
           <Text
             color="white"
@@ -233,6 +233,7 @@ export default function EventCard({ event, readOnly }) {
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
+          backgroundImage={`url(${API_BASE_URL}${event.image})`}
           borderRadius="10px"
           w="50%"
         >
