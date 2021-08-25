@@ -13,6 +13,7 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
+import ReactMarkdown from "react-markdown";
 
 export default function EventCard({ event, readOnly, key }) {
   const [userState, userDispatch] = useContext(UserContext);
@@ -286,10 +287,8 @@ export default function EventCard({ event, readOnly, key }) {
           borderRadius="10px"
           gridGap="3"
         >
-          <Flex flexDirection="column">
-            <Text color="white" fontSize="17pt">
-              {event.description}
-            </Text>
+          <Flex color="white" fontSize="17pt" flexDirection="column">
+            <ReactMarkdown children={event.description} />
           </Flex>
           {JSON.stringify(userState.userInfo) != "{}" ? (
             event.team_size > 1 ? (

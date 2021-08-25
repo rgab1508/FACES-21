@@ -39,6 +39,7 @@ function CustomRadioButton(props) {
         color="white"
         fontWeight="bold"
         w={{ base: "20vw", lg: "auto" }}
+        fontSize={{ base: "10pt", md: "13pt" }}
       >
         {props.children}
       </Box>

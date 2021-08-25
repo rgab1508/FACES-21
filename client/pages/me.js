@@ -3,13 +3,11 @@ import {
   Box,
   InputGroup,
   Input,
-  InputRightElement,
   Button,
   Flex,
   Center,
   FormControl,
   FormLabel,
-  Image,
   Tab,
   TabList,
   TabPanel,
@@ -17,21 +15,15 @@ import {
   Tabs,
   Avatar,
   AvatarBadge,
-  Radio,
-  RadioGroup,
   useRadio,
   useRadioGroup,
-  HStack,
-  useNumberInput,
   useToast,
-  InputLeftElement,
 } from "@chakra-ui/react";
-import { ViewIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import Layout from "../components/Layout";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import styles from "../components/Orenda.module.css";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
 import VideoBackground from "../components/VideoBackground";
@@ -46,7 +38,7 @@ function RadioCard(props) {
 
   return (
     <Box as="label" m={1}>
-      <input {...input} />
+      <input readOnly {...input} />
       <Box
         {...checkbox}
         cursor="pointer"
@@ -59,13 +51,14 @@ function RadioCard(props) {
           borderColor: "teal.600",
         }}
         _focus={{
-          boxShadow: "outline",
+          outline: "none!important",
         }}
         px={3}
         py={2}
         display="flex"
         flexGrow={1}
         fontWeight="bold"
+        isReadOnly
       >
         {props.children}
       </Box>
@@ -87,23 +80,9 @@ export default function Login(props) {
 
   const departments = ["COMP", "IT", "EXTC", "MECH", "ELEC", "OTHER"];
 
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
-    useNumberInput({
-      step: 1,
-      value: profile.semester,
-      onChange: (sem) => setProfile({ ...profile, semester: +sem }),
-      min: 1,
-      max: 8,
-    });
-
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
-  const input = getInputProps({ isReadOnly: true });
-
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "department",
     value: profile.department,
-    onChange: (val) => setProfile({ ...profile, department: val }),
   });
 
   const group = getRootProps();
@@ -279,23 +258,22 @@ export default function Login(props) {
                     <FormControl m={1}>
                       <FormLabel>Semester</FormLabel>
                       <InputGroup>
-                        <InputLeftElement>
-                          <Button {...dec} color="black" bgColor="#FFFFFFAA">
-                            -
-                          </Button>
-                        </InputLeftElement>
                         <Input
                           bg="black"
                           variant="filled"
-                          {...input}
+                          value={profile.semester}
                           textAlign="center"
                           name="semester"
+                          isReadOnly
+                          _focus={{
+                            bg: "transparent",
+                            border: "1px solid white",
+                          }}
+                          _hover={{
+                            bg: "transparent",
+                            border: "1px solid white",
+                          }}
                         />
-                        <InputRightElement>
-                          <Button {...inc} color="black" bgColor="#FFFFFFAA">
-                            +
-                          </Button>
-                        </InputRightElement>
                       </InputGroup>
                     </FormControl>
                   </Flex>
@@ -303,7 +281,7 @@ export default function Login(props) {
                     <FormLabel>Department</FormLabel>
                     <Flex wrap="wrap" {...group}>
                       {departments.map((value) => {
-                        const radio = getRadioProps({ value });
+                        const radio = getRadioProps({ value, disabled: true });
                         return (
                           <RadioCard key={value} {...radio}>
                             {value}
