@@ -228,9 +228,31 @@ function DrawerNavbar({ isOpen, cart }) {
               bg="transparent"
               fontSize="15pt"
               fontWeight="bold"
+              position="relative"
               onClick={cart.onOpen}
             >
               <Icon as={ShoppingCartIcon} />
+              <Flex
+                justifyContent="center"
+                alignItems="center"
+                w="20px"
+                h="20px"
+                as="span"
+                position="absolute"
+                top="0px"
+                right="-5px"
+                borderRadius="100px"
+                backgroundColor="red"
+                color="white"
+                fontWeight="bold"
+                fontSize="12px"
+              >
+                <Text color="white">
+                  {userState.userInfo.teams
+                    ? userState.userInfo.teams.length
+                    : 0}
+                </Text>
+              </Flex>
             </Button>
           </Box>
         </Stack>
@@ -262,7 +284,7 @@ const NavbarContainer = (props) => {
       as="nav"
       align="center"
       id="navbar"
-      justify="space-between"
+      justify={{ base: "flex-end", md: "space-between"}}
       wrap="wrap"
       p="20px"
       w="100%"
@@ -270,7 +292,7 @@ const NavbarContainer = (props) => {
       color="white"
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
       sx={{ transition: "background 0.2s " }}
-      position="fixed"
+      position={props.notFixed ? "relative" : "fixed"}
       zIndex="1"
       {...rest}
     >
@@ -283,6 +305,7 @@ export default function Navbar(props) {
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
   const [visible, setVisible] = useState(0);
+  const [userState, userDispatch] = useContext(UserContext);
 
   const cart = useDisclosure();
 
@@ -315,13 +338,32 @@ export default function Navbar(props) {
           bg="transparent"
           fontSize="15pt"
           fontWeight="bold"
+          position="relative"
           onClick={cart.onOpen}
         >
           <Icon as={ShoppingCartIcon} />
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            w="20px"
+            h="20px"
+            as="span"
+            position="absolute"
+            top="0px"
+            right="-5px"
+            borderRadius="100px"
+            backgroundColor="red"
+            color="white"
+            fontWeight="bold"
+            fontSize="12px"
+          >
+            <Text color="white">
+              {userState.userInfo.teams ? userState.userInfo.teams.length : 0}
+            </Text>
+          </Flex>
         </Button>
       </Box>
       <MenuToggle toggle={toggle} isOpen={isOpen} />
-
       <DrawerNavbar isOpen={isOpen} cart={cart} />
     </NavbarContainer>
   );

@@ -3,6 +3,7 @@ import {
   Box,
   InputGroup,
   Input,
+  InputRightElement,
   Button,
   Flex,
   Center,
@@ -15,6 +16,9 @@ import {
   Tabs,
   Avatar,
   AvatarBadge,
+  Alert,
+  AlertIcon,
+  AlertTitle,
   useRadio,
   useRadioGroup,
   useToast,
@@ -38,7 +42,7 @@ function RadioCard(props) {
 
   return (
     <Box as="label" m={1}>
-      <input readOnly {...input} />
+      <input {...input} disabled />
       <Box
         {...checkbox}
         cursor="pointer"
@@ -75,6 +79,7 @@ export default function Login(props) {
   const [OTP, setOTP] = useState("");
   const [OTPSent, setOTPSent] = useState(false);
   const [phoneSet, setPhoneSet] = useState(false);
+  const [editPhone, setEditPhone] = useState(false);
   const [profile, setProfile] = useState({});
   const router = useRouter();
 
@@ -120,6 +125,7 @@ export default function Login(props) {
           duration: 3000,
           status: "success",
         });
+        setEditPhone(false);
       })
       .catch(console.log);
   }
@@ -176,7 +182,7 @@ export default function Login(props) {
         <title>Edit Profile | FACES-21</title>
       </Head>
       <VideoBackground />
-      <Layout>
+      <Layout notFixed>
         <Center w="100%" minH="115vh" justifyContent="center">
           <Flex
             direction="column"
@@ -281,7 +287,7 @@ export default function Login(props) {
                     <FormLabel>Department</FormLabel>
                     <Flex wrap="wrap" {...group}>
                       {departments.map((value) => {
-                        const radio = getRadioProps({ value, disabled: true });
+                        const radio = getRadioProps({ value });
                         return (
                           <RadioCard key={value} {...radio}>
                             {value}
@@ -292,26 +298,41 @@ export default function Login(props) {
                   </FormControl>
                   <FormControl m={1}>
                     <FormLabel>Phone</FormLabel>
-                    <Input
-                      name="phone"
-                      defaultValue={profile.phone}
-                      id="phone"
-                      variant="filled"
-                      color="white"
-                      bg="black"
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                    <Button
-                      bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
-                      onClick={login}
-                      m={3}
-                      color="white"
-                    >
-                      Verify OTP
-                    </Button>
+                    <InputGroup>
+                      <Input
+                        name="phone"
+                        defaultValue={profile.phone}
+                        id="phone"
+                        variant="filled"
+                        color="white"
+                        bg="black"
+                        readOnly={!editPhone}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                      <InputRightElement>
+                        {editPhone || (
+                          <EditIcon
+                            onClick={() => setEditPhone(true)}
+                            color="white"
+                            display="inline"
+                            cursor="pointer"
+                          />
+                        )}
+                      </InputRightElement>
+                    </InputGroup>
+                    {editPhone && (
+                      <Button
+                        bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
+                        onClick={login}
+                        m={3}
+                        color="white"
+                      >
+                        Verify OTP
+                      </Button>
+                    )}
                     <Flex
                       id="recaptcha-container"
-                      p={3}
+                      pl={3}
                       display={OTPSent && "none"}
                     />
                   </FormControl>
@@ -334,6 +355,13 @@ export default function Login(props) {
                         Submit OTP
                       </Button>
                     </FormControl>
+                  )}
+                  {JSON.stringify(userState.userInfo) !=
+                    JSON.stringify(profile) && (
+                    <Alert background="transparent">
+                      <AlertIcon />
+                      You have Unsaved Changes, please save them
+                    </Alert>
                   )}
                   <Button
                     bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
