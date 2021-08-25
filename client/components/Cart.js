@@ -159,6 +159,7 @@ const Cart = ({ isOpen, onClose }) => {
                       key={t.team_code}
                       display="flex"
                       alignItems="center"
+                      borderRadius="10px"
                     >
                       <Box>
                         <Text px={5} fontSize="large" fontWeight="bold">

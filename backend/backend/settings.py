@@ -68,7 +68,7 @@ MIDDLEWARE = [
 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
@@ -115,15 +115,15 @@ if DEBUG:
     }
 else:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USERNAME"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': 'localhost',
-        'PORT': '',
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv("DB_NAME"),
+            'USER': os.getenv("DB_USERNAME"),
+            'PASSWORD': os.getenv("DB_PASSWORD"),
+            'HOST': 'localhost',
+            'PORT': '',
+        }
     }
-}
 
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -181,7 +181,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Default primary key field type
@@ -192,6 +192,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # MATOR SETTINGS
+
 # Choices are: "semantic", "bootstrap"
 MARTOR_THEME = 'bootstrap'
 
@@ -249,4 +250,4 @@ MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
 MARTOR_UPLOAD_URL = '/martor/uploader/' # default
 MARTOR_SEARCH_USERS_URL = '/martor/search-user/' # default
 
-MARTOR_MARKDOWN_BASE_MENTION_URL = 'http://127.0.0.1:8000/'                                      # please change this to your domain
+MARTOR_MARKDOWN_BASE_MENTION_URL = 'http://127.0.0.1:8000/' # please change this to your domain
