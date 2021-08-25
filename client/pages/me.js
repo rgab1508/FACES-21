@@ -3,6 +3,7 @@ import {
   Box,
   InputGroup,
   Input,
+  InputLeftElement,
   InputRightElement,
   Button,
   Flex,
@@ -74,7 +75,7 @@ export default function Login(props) {
   var [loading, setLoading] = useState(false);
   const toast = useToast();
   const [userState, userDispatch] = useContext(UserContext);
-  const [phone, setPhone] = useState(userState.userInfo.phone);
+  const [phone, setPhone] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [OTP, setOTP] = useState("");
   const [OTPSent, setOTPSent] = useState(false);
@@ -126,8 +127,22 @@ export default function Login(props) {
           status: "success",
         });
         setEditPhone(false);
+        firebase.auth().currentUser.getIdToken(true).then(async (user) => {
+          await axios({
+            url: "/api",
+            method: "POST",
+            data: { user, token: profile.token }
+          });
+        });
       })
-      .catch(console.log);
+      .catch((stuff) => {
+        toast({
+          title: "OTP Wrong, I guess",
+          position: "top-right",
+          duration: 3000,
+          status: "error",
+        });
+      });
   }
 
   async function updateAvatar() {
@@ -174,6 +189,7 @@ export default function Login(props) {
 
   useEffect(() => {
     setProfile(userState.userInfo);
+    setPhone(userState.userInfo.phone_no);
   }, [userState.userInfo]);
 
   return (
@@ -183,7 +199,7 @@ export default function Login(props) {
       </Head>
       <VideoBackground />
       <Layout notFixed>
-        <Center w="100%" minH="115vh" justifyContent="center">
+        <Center w="100%" justifyContent="center">
           <Flex
             direction="column"
             bgColor="transparent"
@@ -299,15 +315,18 @@ export default function Login(props) {
                   <FormControl m={1}>
                     <FormLabel>Phone</FormLabel>
                     <InputGroup>
+                      <InputLeftElement background="transparent">
+                        +91
+                      </InputLeftElement>
                       <Input
                         name="phone"
-                        defaultValue={profile.phone}
+                        defaultValue={phone && phone.substring(3)}
                         id="phone"
                         variant="filled"
                         color="white"
                         bg="black"
                         readOnly={!editPhone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone("+91" + e.target.value)}
                       />
                       <InputRightElement>
                         {editPhone || (
