@@ -15,7 +15,7 @@ import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
 import ReactMarkdown from "react-markdown";
 
-export default function EventCard({ event, readOnly, key }) {
+export default function EventCard({ event, readOnly }) {
   const [userState, userDispatch] = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
   const [values, setValues] = useState({
@@ -185,7 +185,6 @@ export default function EventCard({ event, readOnly, key }) {
 
   return (
     <Flex
-      key={key}
       w={{ base: "90%", lg: "60%" }}
       h="auto"
       flexDirection="column"
@@ -287,7 +286,12 @@ export default function EventCard({ event, readOnly, key }) {
           borderRadius="10px"
           gridGap="3"
         >
-          <Flex color="white" fontSize="17pt" flexDirection="column">
+          <Flex
+            color="white"
+            className="listMarginLeft"
+            fontSize="17pt"
+            flexDirection="column"
+          >
             <ReactMarkdown children={event.description} />
           </Flex>
           {JSON.stringify(userState.userInfo) != "{}" ? (
