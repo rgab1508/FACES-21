@@ -8,11 +8,9 @@ import {
   Collapse,
   Button,
   useToast,
-  Center,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useContext, useState } from "react";
-import { motion } from "framer-motion";
 import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
 
@@ -168,7 +166,7 @@ export default function EventCard({ event, readOnly, key }) {
     }
     if (!checkIfStudentExists(roll_no)) {
       toast({
-        title: "Roll No. Doesnt Exists!",
+        title: "Roll No. Doesn't Exist!",
         status: "error",
         position: "top-right",
         duration: 2000,
