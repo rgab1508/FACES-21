@@ -208,15 +208,15 @@ export default function EventCard({ event, readOnly }) {
           </Text>
           {!isOpen && (
             <>
-              <Text
+              <Flex
                 sx={{ transition: "font-size 0.3s" }}
                 w="100%"
                 noOfLines={2}
                 color="white"
                 fontSize="16pt"
               >
-                {event.description}
-              </Text>
+                <ReactMarkdown children={event.description} />
+              </Flex>
             </>
           )}
           <Text

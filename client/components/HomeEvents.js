@@ -9,6 +9,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
 function CustomRadioButton(props) {
   const { getInputProps, getCheckboxProps } = useRadio(props);
@@ -135,7 +136,7 @@ export default function HomeEvents({ events }) {
               </Flex>
               <Flex
                 w="50%"
-                background={`url(https://faces21.herokuapp.com${evt.image})`}
+                background={`url(${API_BASE_URL}${evt.image})`}
                 backgroundSize="cover"
                 backgroundPosition="center"
                 backgroundRepeat="no-repeat"
