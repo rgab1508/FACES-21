@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 
 export default function Footer() {
   return (
@@ -13,7 +13,10 @@ export default function Footer() {
       align="center"
     >
       <Text noOfLines={2} flex={2} color="rgb(179, 157, 219)">
-        Developed by Aditya, Abhishek, Trevor & Gabriel
+        Developed by <Link href="https://github.com/theabbie">Abhishek</Link>,{" "}
+        <Link href="https://www.adiunni.tech/">Aditya</Link>,{" "}
+        <Link href="https://github.com/rgab1508">Gabriel</Link> &{" "}
+        <Link href="https://github.com/dcostat04">Trevor</Link>
       </Text>
       <Text
         flex={1}
