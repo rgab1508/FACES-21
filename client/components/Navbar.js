@@ -43,8 +43,8 @@ function Logo(props) {
 function MenuToggle({ toggle, isOpen }) {
   return (
     <Box
-      align="center"
-      justify="center"
+      // align="center"
+      // justify="center"
       display={{ base: "block", md: "none" }}
       onClick={() => {
         if (isOpen == false) {
@@ -55,7 +55,7 @@ function MenuToggle({ toggle, isOpen }) {
           toggle();
         }
       }}
-      sx={{ transition: "0.3s" }}
+      // sx={{ transition: "0.3s" }}
       bg="green.600"
       borderRadius="5px"
       p="5px"
@@ -84,13 +84,11 @@ function MenuItems({ children, isLast, to = "/", ...rest }) {
   );
 }
 
-function DrawerNavbar({ isOpen }) {
+function DrawerNavbar({ isOpen, cart }) {
   const [userState, userDispatch] = useContext(UserContext);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
-
-  const cart = useDisclosure();
 
   useEffect(() => {
     console.log(userState.userInfo);
@@ -219,7 +217,11 @@ function DrawerNavbar({ isOpen }) {
               </Button>
             </Box>
           )}
-          <Box p="15px" borderRadius="10px">
+          <Box
+            display={["none", "none", "unset", "unset"]}
+            p="15px"
+            borderRadius="10px"
+          >
             <Button
               _hover={{ bg: "rgb(81, 45, 168)" }}
               color="white"
@@ -282,6 +284,8 @@ export default function Navbar(props) {
   const toggle = () => setIsOpen(!isOpen);
   const [visible, setVisible] = useState(0);
 
+  const cart = useDisclosure();
+
   useEffect(() => {
     window.onresize = () => {
       if (window.innerWidth >= 768) {
@@ -300,8 +304,25 @@ export default function Navbar(props) {
         visible={visible}
         color={["white", "white", "white", "white"]}
       />
+      <Box
+        display={["unset", "unset", "none", "none"]}
+        p="15px"
+        borderRadius="10px"
+      >
+        <Button
+          _hover={{ bg: "rgb(81, 45, 168)" }}
+          color="white"
+          bg="transparent"
+          fontSize="15pt"
+          fontWeight="bold"
+          onClick={cart.onOpen}
+        >
+          <Icon as={ShoppingCartIcon} />
+        </Button>
+      </Box>
       <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <DrawerNavbar isOpen={isOpen} />
+
+      <DrawerNavbar isOpen={isOpen} cart={cart} />
     </NavbarContainer>
   );
 }
