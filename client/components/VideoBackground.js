@@ -16,13 +16,6 @@ export default function VideoBackground() {
     };
   }, []);
 
-  // function handleScroll(event) {
-  //   console.log(event);
-  //   // if(windowRef.current){
-  //   //   window
-  //   // }
-  // }
-
   return (
     <>
       <Box
