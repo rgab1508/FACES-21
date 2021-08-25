@@ -233,6 +233,7 @@ export default function EventCard({ event, readOnly }) {
           backgroundSize="cover"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
+          backgroundImage={`url(${API_BASE_URL}${event.image})`}
           borderRadius="10px"
           w="50%"
         >
