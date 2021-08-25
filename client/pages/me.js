@@ -17,7 +17,6 @@ import {
   AvatarBadge,
   useRadio,
   useRadioGroup,
-  useNumberInput,
   useToast,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
@@ -80,17 +79,6 @@ export default function Login(props) {
   const router = useRouter();
 
   const departments = ["COMP", "IT", "EXTC", "MECH", "ELEC", "OTHER"];
-
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
-    useNumberInput({
-      step: 1,
-      value: profile.semester,
-      onChange: (sem) => setProfile({ ...profile, semester: +sem }),
-      min: 1,
-      max: 8,
-    });
-
-  const input = getInputProps({ isReadOnly: true });
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "department",
@@ -273,7 +261,7 @@ export default function Login(props) {
                         <Input
                           bg="black"
                           variant="filled"
-                          {...input}
+                          value={profile.semester}
                           textAlign="center"
                           name="semester"
                           isReadOnly
