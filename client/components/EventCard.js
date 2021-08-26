@@ -198,11 +198,15 @@ export default function EventCard({ event, readOnly }) {
       sx={{ transition: "box-shadow 0.2s ease-in-out, height 1s" }}
     >
       <Flex
-        flexDirection="row"
+        flexDirection={{ base: "column-reverse", md: "row" }}
         minH={{ md: "170px" }}
         onClick={() => setOpen(!isOpen)}
       >
-        <Box sx={{ transition: "all 0.5s" }} p="15px" w="50%">
+        <Box
+          sx={{ transition: "all 0.5s" }}
+          p="15px"
+          w={{ base: "100%", md: "50%" }}
+        >
           <Text
             color="white"
             fontWeight="bold"
@@ -214,12 +218,15 @@ export default function EventCard({ event, readOnly }) {
             {event.title}
           </Text>
           {!isOpen && (
-            <Flex w={{ md: "100%" }}>
+            <Flex w={{ md: "100%" }} overflow="hidden">
               <Text
                 sx={{ transition: "font-size 0.3s" }}
                 noOfLines={{ base: 2, md: 2 }}
+                w={{ base: "90%", md: "50%" }}
                 color="white"
                 fontSize={{ base: "9pt", md: "16pt" }}
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
               >
                 <ReactMarkdown children={event.description} />
               </Text>
@@ -241,7 +248,8 @@ export default function EventCard({ event, readOnly }) {
           backgroundRepeat="no-repeat"
           backgroundImage={`url(${API_BASE_URL}${event.image})`}
           borderRadius="10px"
-          w="50%"
+          w={{ base: "100%", md: "50%" }}
+          h={{ base: "15vh", md: "auto" }}
         >
           <Flex
             p="10px"
