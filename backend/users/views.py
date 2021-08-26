@@ -154,6 +154,12 @@ class UserAvatarUpdate(APIView):
     except ValueError:
       return JsonResponse({"detail": "Something went Wrong", "success": False}, status=400)
 
+class UserCriteria(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request):
+    user = request.user
+    return JsonResponse({"success": True, "criteria": user.criteria}, status=200)
 
 class UserCheckout(APIView):
   permission_classes = [IsAuthenticated, IsProfileFilled]
@@ -165,6 +171,15 @@ class UserCheckout(APIView):
     transaction_id = request.data['transaction_id']
     if len(transaction_id) < 12:
       return JsonResponse({"detail": "Enter a Valid Transaction ID", "success": False},status=400)
+    
+    criteria = json.loads(user.criteria)
+    criteria_fullfilled = True
+    for c in criteria.keys():
+      if not criteria[c]:
+        criteria_fullfilled = False
+    
+    if not criteria_fullfilled:
+      return JsonResponse({"detail": "Please Fullfill all the Criterias before Checkout", "success": False},status=400)
     
     teams = []
 

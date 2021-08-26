@@ -78,9 +78,17 @@ const Cart = ({ isOpen, onClose }) => {
               }),
             },
           });
+        } else {
+          toast({
+            title: res.detail,
+            status: "error",
+            position: "top-right",
+            duration: 3000,
+          });
         }
       })
       .catch((res) => {
+        console.log(res);
         toast({
           title: res.detail,
           status: "error",
