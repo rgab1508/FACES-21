@@ -197,35 +197,40 @@ export default function EventCard({ event, readOnly }) {
       }}
       sx={{ transition: "box-shadow 0.2s ease-in-out, height 1s" }}
     >
-      <Flex flexDirection="row" minH="170px" onClick={() => setOpen(!isOpen)}>
+      <Flex
+        flexDirection="row"
+        minH={{ md: "170px" }}
+        onClick={() => setOpen(!isOpen)}
+      >
         <Box sx={{ transition: "all 0.5s" }} p="15px" w="50%">
           <Text
             color="white"
             fontWeight="bold"
-            fontSize={isOpen ? "25pt" : "20pt"}
+            fontSize={{
+              base: isOpen ? "13pt" : "11pt",
+              md: isOpen ? "25pt" : "20pt",
+            }}
           >
             {event.title}
           </Text>
           {!isOpen && (
-            <>
+            <Flex w={{ md: "100%" }}>
               <Text
                 sx={{ transition: "font-size 0.3s" }}
-                w={{ md: "100%" }}
-                noOfLines={2}
+                noOfLines={{ base: 2, md: 2 }}
                 color="white"
-                fontSize="16pt"
-                isTruncated={{ base: true, md: false }}
+                fontSize={{ base: "9pt", md: "16pt" }}
               >
                 <ReactMarkdown children={event.description} />
               </Text>
-            </>
+            </Flex>
           )}
           <Text
             w="100%"
             noOfLines={2}
             color="white"
             fontWeight="bold"
-            fontSize="16pt"
+            fontSize={{ base: "9pt", md: "16pt" }}
           >
             {event.start} - {event.end}
           </Text>
@@ -249,9 +254,9 @@ export default function EventCard({ event, readOnly }) {
           >
             <Badge
               ml="auto"
-              bg="purple.700"
+              bg="purple.900"
               color="white"
-              fontSize="14pt"
+              fontSize={{ base: "10pt", md: "14pt" }}
               borderRadius="5px"
             >
               Day - {event.day}
@@ -260,17 +265,17 @@ export default function EventCard({ event, readOnly }) {
               ml="auto"
               bg={event.category == "S" ? "blue.700" : "red.700"}
               color="white"
-              fontSize="14pt"
+              fontSize={{ base: "10pt", md: "14pt" }}
               borderRadius="5px"
             >
-              {event.category == "S" ? "Sports" : "Cultural"}
+              {event.category == "S" ? "E-sports" : "Cultural"}
             </Badge>
             {event.team_size > 1 ? (
               <Badge
                 ml="auto"
                 bg="yellow.500"
                 color="white"
-                fontSize="14pt"
+                fontSize={{ base: "10pt", md: "14pt" }}
                 borderRadius="5px"
               >
                 Group
@@ -291,7 +296,7 @@ export default function EventCard({ event, readOnly }) {
           <Flex
             color="white"
             className="listMarginLeft"
-            fontSize="17pt"
+            fontSize={{ base: "12pt", md: "17pt" }}
             flexDirection="column"
           >
             <ReactMarkdown children={event.description} />
