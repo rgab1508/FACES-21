@@ -222,17 +222,18 @@ export default function EventCard({ event, readOnly }) {
               <Text
                 sx={{ transition: "font-size 0.3s" }}
                 noOfLines={{ base: 2, md: 2 }}
-                w={{ base: "90%", md: "50%" }}
                 color="white"
                 fontSize={{ base: "9pt", md: "16pt" }}
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
+                fontStyle="italic"
               >
-                <ReactMarkdown children={event.description} />
+                Click here to learn more
               </Text>
             </Flex>
           )}
           <Text
+            mt={3}
             w="100%"
             noOfLines={2}
             color="white"
@@ -308,6 +309,23 @@ export default function EventCard({ event, readOnly }) {
             flexDirection="column"
           >
             <ReactMarkdown children={event.description} />
+          </Flex>
+          <Flex p="15px" gridGap="5" flexDir="column">
+            <Text
+              fontSize={{ base: "12pt", md: "17pt" }}
+              color="white"
+              fontWeight="bold"
+            >
+              Seats booked: {event.seats} / {event.max_seats}
+            </Text>
+            <Text
+              fontSize={{ base: "12pt", md: "18pt" }}
+              color="white"
+              fontWeight="bold"
+            >
+              Event price:{" "}
+              {event.entry_fee != 0 ? `${event.entry_fee} Rs` : "Free"}
+            </Text>
           </Flex>
           {JSON.stringify(userState.userInfo) != "{}" ? (
             event.team_size > 1 ? (

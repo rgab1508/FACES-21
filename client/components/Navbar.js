@@ -91,7 +91,6 @@ function DrawerNavbar({ isOpen, cart }) {
   const toast = useToast();
 
   useEffect(() => {
-    console.log(userState.userInfo);
     if (JSON.stringify(userState.userInfo) == "{}") {
       setLoggedIn(false);
     } else {
@@ -284,7 +283,7 @@ const NavbarContainer = (props) => {
       as="nav"
       align="center"
       id="navbar"
-      justify={{ base: "flex-end", md: "space-between"}}
+      justify={{ base: "flex-end", md: "space-between" }}
       wrap="wrap"
       p="20px"
       w="100%"

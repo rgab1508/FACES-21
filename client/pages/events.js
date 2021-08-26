@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import Layout from "../components/Layout";
-import EventPopup from "../components/EventPopup";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 import VideoBackground from "../components/VideoBackground";
@@ -21,8 +20,6 @@ import EventCard from "../components/EventCard";
 import { AnimateSharedLayout } from "framer-motion";
 
 export default function Events(props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [event, setEvent] = useState();
   const [events, setEvents] = useState(props.events);
   const [filterQuery, setFilterQuery] = useState("");
   const [extraQuery, setExtraQuery] = useState("");
@@ -144,7 +141,7 @@ export default function Events(props) {
                     </>
                   ) : (
                     <>
-                      <option value="S">Sports</option>
+                      <option value="S">E - sports</option>
                       <option value="C">Cultural</option>
                     </>
                   )}
