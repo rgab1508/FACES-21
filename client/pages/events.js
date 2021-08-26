@@ -66,12 +66,12 @@ export default function Events(props) {
           <Center
             flexDirection="column"
             w="100%"
-            h={{ base: "80vh", md: "80vh" }}
+            h={{ base: "66vh", md: "80vh" }}
           >
             <Heading
               p="10px"
               color="white"
-              fontSize={{ base: "40pt", md: "60pt" }}
+              fontSize={{ base: "35pt", md: "60pt" }}
               textAlign="center"
             >
               Events we have
@@ -80,7 +80,7 @@ export default function Events(props) {
               w={{ base: "90%", md: "60%" }}
               p="10px"
               color="white"
-              fontSize={{ base: "15pt", md: "20pt" }}
+              fontSize={{ base: "13pt", md: "20pt" }}
             >
               FACES offers you a variety of events to choose from. Feel free to
               pick any event of your choice, but make sure you follow the
