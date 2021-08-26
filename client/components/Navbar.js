@@ -291,7 +291,7 @@ const NavbarContainer = (props) => {
       color="white"
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
       sx={{ transition: "background 0.2s " }}
-      position={props.notFixed ? "relative" : "fixed"}
+      position={props.notfixed ? "relative" : "fixed"}
       zIndex="1"
       {...rest}
     >
@@ -357,7 +357,9 @@ export default function Navbar(props) {
             fontSize="12px"
           >
             <Text color="white">
-              {userState.userInfo.teams ? userState.userInfo.teams.length : 0}
+              {userState.userInfo.teams
+                ? userState.userInfo.teams.filter((t) => !t.is_paid).length
+                : 0}
             </Text>
           </Flex>
         </Button>

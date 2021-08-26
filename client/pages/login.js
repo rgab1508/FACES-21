@@ -48,6 +48,9 @@ export default function Login(props) {
       });
       if (res.status == 200) {
         userDispatch({
+          type: "LOGIN_USER",
+        });
+        userDispatch({
           type: "ADD_USER",
           payload: { ...res.data.user, token: res.data.token },
         });
