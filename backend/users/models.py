@@ -32,7 +32,6 @@ class User(AbstractBaseUser, PermissionsMixin):
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)
   criteria = models.TextField(_("Criteria JSON"), default='{"1": false, "2": false, "3": false, "C": 0, "S": 0}')
-  cart = models.TextField(_("Cart JSON"), default="[]")
 
   is_staff = models.BooleanField(default=False)
   is_superuser = models.BooleanField(default=False)
@@ -68,6 +67,7 @@ def update_seats(sender, instance, created, **kwargs):
   def update_criteria(user: User, event: Event) -> User:
     user_criteria = json.loads(user.criteria)
     user_criteria[str(event.day)] = True
+    user_criteria[event.category] = user_criteria[event.category] + 1
     user.criteria = json.dumps(user_criteria)
     return user
 
