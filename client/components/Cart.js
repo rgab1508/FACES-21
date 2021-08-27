@@ -23,13 +23,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
 import { UserContext } from "../context/UserContext";
+import Image from "next/image";
+import CartEmptySvg from "../public/empty_cart.svg";
 
 const Cart = ({ isOpen, onClose }) => {
   const [userState, userDispatch] = useContext(UserContext);
-
+  const [cartItems, setCartItems] = useState([]);
   const [transactionId, setTransactionId] = useState("");
   const confirm = useDisclosure();
   const toast = useToast();
@@ -76,9 +78,17 @@ const Cart = ({ isOpen, onClose }) => {
               }),
             },
           });
+        } else {
+          toast({
+            title: res.detail,
+            status: "error",
+            position: "top-right",
+            duration: 3000,
+          });
         }
       })
       .catch((res) => {
+        console.log(res);
         toast({
           title: res.detail,
           status: "error",
@@ -86,7 +96,14 @@ const Cart = ({ isOpen, onClose }) => {
           duration: 3000,
         });
       });
+    confirm.onClose();
   };
+
+  useEffect(() => {
+    if (userState.isLoggedIn) {
+      setCartItems(userState.userInfo.teams.filter((t) => !t.is_paid));
+    }
+  }, [userState]);
 
   const ConfirmAlert = () => {
     return (
@@ -138,45 +155,59 @@ const Cart = ({ isOpen, onClose }) => {
           color="whitesmoke"
           pt={12}
         >
-          {JSON.stringify(userState.userInfo) != "{}" ? (
+          {userState.isLoggedIn ? (
             <>
-              {userState.userInfo.teams.length == 0 && (
-                <Text>
-                  Cart is Empty{" "}
-                  <Box as="span" textDecor="underline">
-                    <Link href={"/events"}>(Browse Events here)</Link>
-                  </Box>
-                </Text>
-              )}
-              {userState.userInfo.teams
-                .filter((t) => !t.is_paid)
-                .map((t, tIdx) => {
-                  // console.log(t);
-                  return (
-                    <Box
-                      bgImage="linear-gradient(147deg, rgb(0,0,0,0.9) 0%, rgb(17,82,45,0.9) 74%)"
-                      py={3}
-                      key={t.team_code}
-                      display="flex"
-                      alignItems="center"
-                      borderRadius="10px"
-                    >
-                      <Box>
-                        <Text px={5} fontSize="large" fontWeight="bold">
-                          {tIdx + 1}.
-                        </Text>
-                      </Box>
-                      <Box>
-                        <Text noOfLines={2}>{t.event.title}</Text>
-                        <Text>Day {t.event.day}</Text>
-                        {!t.event.team_size > 1 && (
-                          <Text>{t.members.join()}</Text>
-                        )}
-                        <Text>&#8377; {t.event.entry_fee}</Text>
-                      </Box>
+              {cartItems.length == 0 ? (
+                <Box display="flex" flexDir="column" w="100%" h="100%">
+                  <Text>
+                    Cart is Empty{" "}
+                    <Box as="span" textDecor="underline">
+                      <Link href={"/events"}>(Browse Events here)</Link>
                     </Box>
-                  );
-                })}
+                  </Text>
+                  <Box
+                    flex="1"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="80%"
+                    mx="auto"
+                    mb="15%"
+                  >
+                    <Image src={CartEmptySvg} alt="Empty Cart" />
+                  </Box>
+                </Box>
+              ) : (
+                <>
+                  {cartItems.map((t, tIdx) => {
+                    // console.log(t);
+                    return (
+                      <Box
+                        bgImage="linear-gradient(147deg, rgb(0,0,0,0.9) 0%, rgb(17,82,45,0.9) 74%)"
+                        py={3}
+                        key={t.team_code}
+                        display="flex"
+                        alignItems="center"
+                        borderRadius="10px"
+                      >
+                        <Box>
+                          <Text px={5} fontSize="large" fontWeight="bold">
+                            {tIdx + 1}.
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text noOfLines={2}>{t.event.title}</Text>
+                          <Text>Day {t.event.day}</Text>
+                          {!t.event.team_size > 1 && (
+                            <Text>{t.members.join()}</Text>
+                          )}
+                          <Text>&#8377; {t.event.entry_fee}</Text>
+                        </Box>
+                      </Box>
+                    );
+                  })}
+                </>
+              )}
             </>
           ) : (
             <Text>
