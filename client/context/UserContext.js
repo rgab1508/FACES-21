@@ -42,9 +42,9 @@ export function UserContextProvider(props) {
     let userData = JSON.parse(localStorage.getItem("userData"));
     dispatch({
       type: "ADD_USER",
-      payload: userData.userInfo || {},
+      payload: userData ? userData.userInfo || {} : {},
     });
-    if (userData.isLoggedIn) {
+    if (userData && userData.isLoggedIn) {
       dispatch({ type: "LOGIN_USER" });
     }
     setInit(true);

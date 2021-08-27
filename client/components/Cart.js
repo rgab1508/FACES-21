@@ -37,7 +37,6 @@ const Cart = ({ isOpen, onClose }) => {
   const toast = useToast();
 
   const handleCheckout = () => {
-    console.log("checkout");
     let data = {
       teams: [],
       transaction_id: transactionId,
