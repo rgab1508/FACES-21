@@ -105,10 +105,8 @@ class LoginView(ObtainAuthToken):
           user = serializer.validated_data['user']
           user_serializer = UserSerializer(user)
           token, created = Token.objects.get_or_create(user=user)
-          # user_teams = TeamSerializer(user.teams, many=True)
           return JsonResponse({
               'token': token.key,
-              # 'user': {**user_serializer.data, "teams": user_teams.data},
               'user': user_serializer.data,
               'success': True,
           }, status=200)
@@ -120,7 +118,8 @@ class LogoutView(APIView):
   permission_classes = [IsAuthenticated]
 
   def post(self,request):
-    request.user.auth_token.delete()
+    # Can delete this token from db but causes problem when using multiple devices
+    # request.user.auth_token.delete()
     return JsonResponse({"success": True},status=200)
 
 
