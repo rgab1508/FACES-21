@@ -172,14 +172,16 @@ class UserCheckout(APIView):
     if len(transaction_id) < 12:
       return JsonResponse({"detail": "Enter a Valid Transaction ID", "success": False},status=400)
     
-    criteria = json.loads(user.criteria)
-    criteria_fullfilled = True
-    for c in criteria.keys():
-      if not criteria[c]:
-        criteria_fullfilled = False
+    # checking criteria
+    # but this creates a deadlock as criteria cannot be update before verify and people cannot checkout before criteria satisfies
+    # criteria = json.loads(user.criteria)
+    # criteria_fullfilled = True
+    # for c in criteria.keys():
+    #   if not criteria[c]:
+    #     criteria_fullfilled = False
     
-    if not criteria_fullfilled:
-      return JsonResponse({"detail": "Please Fullfill all the Criterias before Checkout", "success": False},status=400)
+    # if not criteria_fullfilled:
+    #   return JsonResponse({"detail": "Please Fullfill all the Criterias before Checkout", "success": False},status=400)
     
     teams = []
 
