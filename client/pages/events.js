@@ -96,7 +96,7 @@ export default function Events(props) {
                 variant="filled"
                 bg="rgb(0,0,0,0.7)"
                 color="white"
-                placeholder="Select option"
+                placeholder="Select Filter"
                 onChange={(event) => {
                   setFilterQuery(event.target.value);
                 }}
@@ -149,7 +149,7 @@ export default function Events(props) {
               )}
             </Flex>
             <AnimateSharedLayout type="crossfade">
-              {events.map(function (event, index) {
+              {events.map(function(event, index) {
                 return <EventCard key={index} event={event} />;
               })}
             </AnimateSharedLayout>
