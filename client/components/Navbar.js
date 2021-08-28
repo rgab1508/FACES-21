@@ -310,8 +310,21 @@ export default function Navbar(props) {
   const toggle = () => setIsOpen(!isOpen);
   const [visible, setVisible] = useState(0);
   const [userState, userDispatch] = useContext(UserContext);
+  const [cartItemsLength, setCartItemsLength] = useState(0);
 
   const cart = useDisclosure();
+
+  useEffect(() => {
+    if (userState.isLoggedIn) {
+      console.log(userState.isLoggedIn);
+      let newCartItemsLength = 0;
+      userState.userInfo.teams.map((t) => {
+        console.log(t);
+        if (!t.is_paid) newCartItemsLength += 1;
+      });
+      setCartItemsLength(newCartItemsLength);
+    }
+  }, [userState.userInfo]);
 
   useEffect(() => {
     window.onresize = () => {
@@ -361,11 +374,7 @@ export default function Navbar(props) {
             fontWeight="bold"
             fontSize="12px"
           >
-            <Text color="white">
-              {userState.userInfo.teams
-                ? userState.userInfo.teams.filter((t) => !t.is_paid).length
-                : 0}
-            </Text>
+            <Text color="white">{cartItemsLength}</Text>
           </Flex>
         </Button>
       </Box>

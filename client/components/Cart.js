@@ -32,9 +32,24 @@ import CartEmptySvg from "../public/empty_cart.svg";
 const Cart = ({ isOpen, onClose }) => {
   const [userState, userDispatch] = useContext(UserContext);
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState();
   const [transactionId, setTransactionId] = useState("");
   const confirm = useDisclosure();
   const toast = useToast();
+
+  useEffect(() => {
+    if (userState.isLoggedIn) {
+      setCartItems(userState.userInfo.teams.filter((t) => !t.is_paid));
+    }
+  }, [userState]);
+
+  useEffect(() => {
+    let newTotalPrice = 0;
+    cartItems.map((t) => {
+      newTotalPrice += t.event.entry_fee;
+    });
+    setTotalPrice(newTotalPrice);
+  }, [cartItems]);
 
   const handleCheckout = () => {
     let data = {
@@ -98,12 +113,6 @@ const Cart = ({ isOpen, onClose }) => {
     confirm.onClose();
   };
 
-  useEffect(() => {
-    if (userState.isLoggedIn) {
-      setCartItems(userState.userInfo.teams.filter((t) => !t.is_paid));
-    }
-  }, [userState]);
-
   const ConfirmAlert = () => {
     return (
       <AlertDialog
@@ -115,7 +124,10 @@ const Cart = ({ isOpen, onClose }) => {
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent bgColor="black" color="white">
+        <AlertDialogContent
+          backgroundImage="linear-gradient(121deg, rgb(69, 39, 160) 0%, #000000 74%)"
+          color="white"
+        >
           <AlertDialogHeader>Proceed with Checkout?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
@@ -125,7 +137,9 @@ const Cart = ({ isOpen, onClose }) => {
               *Your Participantion will only be Considered when the admin
               verifies the Transaction. (you can check in{" "}
               <Box as="span" textDecor="underline">
-                <Link href={"/me"}>Profile</Link>{" "}
+                <Link href={"/me"}>
+                  <a target="_blank">Profile</a>
+                </Link>{" "}
               </Box>
               for status)
             </Text>
@@ -188,6 +202,7 @@ const Cart = ({ isOpen, onClose }) => {
                         display="flex"
                         alignItems="center"
                         borderRadius="10px"
+                        mb={2}
                       >
                         <Box>
                           <Text px={5} fontSize="large" fontWeight="bold">
@@ -218,9 +233,12 @@ const Cart = ({ isOpen, onClose }) => {
           )}
         </DrawerBody>
         <DrawerFooter bgColor="black" color="whitesmoke">
-          {JSON.stringify(userState.userInfo) != "{}" &&
+          {userState.isLoggedIn &&
             userState.userInfo.teams.filter((t) => !t.is_paid).length > 0 && (
               <Box gridGap={4} w="100%" display="flex" flexDir="column">
+                <Box>
+                  <Text>Total : &#8377;{totalPrice}</Text>
+                </Box>
                 <Box>
                   <FormControl>
                     <FormLabel>Enter Transaction ID :</FormLabel>
@@ -242,8 +260,7 @@ const Cart = ({ isOpen, onClose }) => {
                   <ConfirmAlert />
                   <Button
                     onClick={() => {
-                      // TODO: add more validation here
-                      if (transactionId == "") {
+                      if (transactionId.length < 12) {
                         toast({
                           title: "Please Enter a Valid Transaction ID",
                           status: "error",

@@ -31,8 +31,8 @@ const COVID = ({ isOpen, onOpen, onClose }) => {
         <ModalHeader>COVID Guidelines For FACES 2021</ModalHeader>
         <ModalBody>
           <Flex pl={4}>
-          <ReactMarkdown
-            children={`
+            <ReactMarkdown
+              children={`
 * It is mandatory for all participants to wear a mask.
 * Minimum 1st dosage of vaccination is compulsary for everyone. Also, please carry your certificate for COVID-19 Vaccination along with your proof else else you won't be allowed entry.
 * All participants in attendance must practice 2m (6 feet) physical distancing.
@@ -41,12 +41,18 @@ const COVID = ({ isOpen, onOpen, onClose }) => {
 * Participants are only allowed to be on college premises 15 minutes before the commencement of their respective events. They are supposed to leave as soon as their events are over unless told otherwise.
 * Participants are required to carry their College ID Cards along with them for ID Verification.
 `}
-          />
+            />
           </Flex>
         </ModalBody>
         <ModalFooter>
           <Button
             bg="linear-gradient(147deg, #000000 0%,rgb(17, 82, 45) 74%)"
+            _hover={{
+              opacity: 0.8,
+            }}
+            _active={{
+              opacity: 0.8,
+            }}
             m={3}
             onClick={onClose}
             color="white"
