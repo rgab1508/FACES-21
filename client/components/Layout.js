@@ -11,8 +11,8 @@ export default function Layout({ children, notFixed }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    window.addEventListener("load", onOpen);
-  }, []);
+    onOpen();
+  }, [userState.userInfo]);
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function Layout({ children, notFixed }) {
         {children}
       </Flex>
       <Footer />
-      {!userState.userInfo.COVID && (
+      {userState.userInfo.token && !userState.userInfo.COVID && (
         <COVID
           isOpen={isOpen}
           onOpen={onOpen}
