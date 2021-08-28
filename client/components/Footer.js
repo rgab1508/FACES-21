@@ -17,6 +17,7 @@ export default function Footer() {
         width="90%"
         mx="auto"
         flexDir={["column-reverse", "row", "row", "row"]}
+        align="center"
       >
         <Text noOfLines={2} flex={2} color="rgb(179, 157, 219)">
           Developed by{" "}

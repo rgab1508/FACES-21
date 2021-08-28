@@ -253,7 +253,7 @@ function DrawerNavbar({ isOpen, cart }) {
               >
                 <Text color="white">
                   {userState.userInfo.teams
-                    ? userState.userInfo.teams.length
+                    ? userState.userInfo.teams.filter((tm) => tm && !tm.is_paid).length
                     : 0}
                 </Text>
               </Flex>

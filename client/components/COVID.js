@@ -17,7 +17,7 @@ const COVID = ({ isOpen, onOpen, onClose }) => {
   return (
     <Modal
       isCentered
-      size="lg"
+      size="2xl"
       isOpen={isOpen}
       onClose={onClose}
       closeOnEsc={false}
@@ -27,6 +27,7 @@ const COVID = ({ isOpen, onOpen, onClose }) => {
       <ModalContent
         backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
         color="white"
+        m={2}
       >
         <ModalHeader>COVID Guidelines For FACES 2021</ModalHeader>
         <ModalBody>

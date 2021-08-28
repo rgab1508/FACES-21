@@ -39,7 +39,7 @@ const Cart = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (userState.isLoggedIn) {
-      setCartItems(userState.userInfo.teams.filter((t) => !t.is_paid));
+      setCartItems(userState.userInfo.teams.filter((t) => t && !t.is_paid));
     }
   }, [userState]);
 
