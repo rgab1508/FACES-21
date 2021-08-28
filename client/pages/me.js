@@ -545,7 +545,7 @@ export default function Login(props) {
 }
 
 export async function getServerSideProps({ req, res }) {
-  var token = cookie.parse(req.headers.cookie)["token"];
+  var token = cookie.parse(req.headers.cookie || "")["token"];
   if (!token) {
     res.writeHead(302, { Location: "/" });
     res.end();
