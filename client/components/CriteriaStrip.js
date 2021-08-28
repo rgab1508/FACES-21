@@ -164,6 +164,17 @@ const CriteriaStrip = () => {
       <CriteriaModal />
       {!smDevice ? (
         <>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            transform="skew(315deg)"
+            width="10%"
+            color="whitesmoke"
+            bgColor={"black"}
+          >
+            <Text transform="skew(-315deg)">Criteria</Text>
+          </Box>
           <CriteriaBoxes />
         </>
       ) : (
