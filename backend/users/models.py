@@ -26,13 +26,12 @@ class User(AbstractBaseUser, PermissionsMixin):
   avatar = models.CharField(_("Avatar Image"), max_length=256, blank=True ,null=True)
   department = models.CharField(_('Department'),max_length=10,blank=True, null=True, choices=DEPARTMENTS)
   semester = models.SmallIntegerField(_("Semester"),blank=True, null=True)
-  phone_no = models.CharField(_("Phone Number"),blank=True,  max_length=10)
+  phone_no = models.CharField(_("Phone Number"),blank=True,  max_length=32)
   is_phone_no_verified = models.BooleanField(_("Is Phone Number Verified"), default=False)
   
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)
   criteria = models.TextField(_("Criteria JSON"), default='{"1": false, "2": false, "3": false, "C": 0, "S": 0}')
-  cart = models.TextField(_("Cart JSON"), default="[]")
 
   is_staff = models.BooleanField(default=False)
   is_superuser = models.BooleanField(default=False)
@@ -68,6 +67,7 @@ def update_seats(sender, instance, created, **kwargs):
   def update_criteria(user: User, event: Event) -> User:
     user_criteria = json.loads(user.criteria)
     user_criteria[str(event.day)] = True
+    user_criteria[event.category] = user_criteria[event.category] + 1
     user.criteria = json.dumps(user_criteria)
     return user
 

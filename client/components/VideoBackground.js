@@ -1,56 +1,56 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function VideoBackground() {
-  const windowRef = useRef();
+  const [poster, setPoster] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth <= 768) {
       document.getElementById("videoBackground").autoplay = false;
+      setPoster(true);
     }
     window.onresize = () => {
       if (window.innerWidth <= 768) {
         document.getElementById("videoBackground").autoplay = false;
         document.getElementById("videoBackground").pause();
+      } else {
+        setPoster(false);
       }
     };
   }, []);
 
-  // function handleScroll(event) {
-  //   console.log(event);
-  //   // if(windowRef.current){
-  //   //   window
-  //   // }
-  // }
-
   return (
     <>
-      <Box
-        w="100%"
-        h="100vh"
-        as="video"
-        ref={windowRef}
-        id="videoBackground"
-        display={{ base: "none", md: "block" }}
-        autoPlay={true}
-        loop
-        zIndex="-1"
-        position="fixed"
-        controls={false}
-        muted
-        src="1comp.mp4"
-        objectFit="cover"
-      />
-      <Box
-        w="100%"
-        h="100vh"
-        as="img"
-        display={{ base: "block", md: "none" }}
-        zIndex="-1"
-        position="fixed"
-        src="poster.png"
-        objectFit="cover"
-      />
+      {!poster && (
+        <Box
+          w="100%"
+          h="100vh"
+          as="video"
+          id="videoBackground"
+          display={{ base: "none", md: "block" }}
+          autoPlay={true}
+          loop
+          zIndex="-1"
+          position="fixed"
+          controls={false}
+          muted
+          src="1comp.mp4"
+          objectFit="cover"
+        />
+      )}
+      {poster && (
+        <Box
+          w="100%"
+          h="100vh"
+          as="img"
+          display={{ base: "block", md: "none" }}
+          zIndex="-1"
+          bg="black"
+          position="fixed"
+          src="poster.jpeg"
+          objectFit="cover"
+        />
+      )}
     </>
   );
 }

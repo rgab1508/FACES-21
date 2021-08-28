@@ -9,6 +9,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../config";
 
 function CustomRadioButton(props) {
   const { getInputProps, getCheckboxProps } = useRadio(props);
@@ -109,12 +110,20 @@ export default function HomeEvents({ events }) {
               boxShadow="xl"
               _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
               sx={{ transition: "transform 0.2s, box-shadow 0.25s" }}
-              maxH="23vh"
+              minH="23vh"
+              flexDirection={{ base: "column-reverse", md: "row" }}
             >
-              <Flex flexDirection="column" w="50%" p="15px" gridGap="1">
+              <Flex
+                align={{ base: "center", md: "initial" }}
+                justify={{ base: "center", md: "initial" }}
+                flexDirection="column"
+                w={{ base: "100%", md: "50%" }}
+                p={{ base: "5px", md: "15px" }}
+                gridGap="1"
+              >
                 <Text
                   fontWeight="bold"
-                  fontSize={{ base: "auto", lg: "20pt" }}
+                  fontSize={{ base: "12pt", lg: "20pt" }}
                   color="white"
                 >
                   {evt.title}
@@ -123,23 +132,24 @@ export default function HomeEvents({ events }) {
                   <Badge
                     bg={evt.category == "S" ? "blue.700" : "red.700"}
                     color="white"
-                    fontSize="14pt"
+                    fontSize={{ base: "9pt", md: "14pt" }}
                     borderRadius="5px"
                   >
                     {evt.category == "S" ? "Sports" : "Cultural"}
                   </Badge>
                 </Box>
-                <Text fontSize={{ base: "auto", lg: "20pt" }} color="white">
+                <Text fontSize={{ base: "12pt", lg: "20pt" }} color="white">
                   {evt.start}
                 </Text>
               </Flex>
               <Flex
-                w="50%"
-                background={`url(https://faces21.herokuapp.com${evt.image})`}
+                w={{ base: "100%", md: "50%" }}
+                background={`url(${API_BASE_URL}${evt.image})`}
                 backgroundSize="cover"
                 backgroundPosition="center"
                 backgroundRepeat="no-repeat"
                 borderRadius="10px"
+                h={{ base: "15vh", md: "auto" }}
               >
                 <Box
                   h="100%"

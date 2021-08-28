@@ -14,19 +14,33 @@ export default function handler(req, res) {
     } else {
       admin.app();
     }
-    admin.auth().verifyIdToken(req.body.user).then(async (user) => {
-      await axios({
-        url: `${API_BASE_URL}/api/u/auth/otp-verify/`,
-        method: "POST",
-        body: {
-          phone_no: user.phone_number,
-          secret: process.env.OTP_SECRET
-        },
-        headers: {
-          Authorization: "Token " + req.body.token
-        }
-      }).then((x) => {console.log(x); res.json(x)}).catch((x) => {console.log(x); res.json(x)});
-    }).catch(res.json);
+    admin
+      .auth()
+      .verifyIdToken(req.body.user)
+      .then(async (user) => {
+        fetch(`${API_BASE_URL}/api/u/auth/otp-verify/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + req.body.token,
+          },
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
+          body: JSON.stringify({
+            phone_no: user.phone_number,
+            secret: process.env.OTP_SECRET,
+          }),
+        })
+          .then((x) => {
+            console.log(x);
+            res.json(x);
+          })
+          .catch((x) => {
+            console.log(x);
+            res.json(x);
+          });
+      })
+      .catch(res.json);
   } else {
     res.status(200).end("Method Not Found");
   }

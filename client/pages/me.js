@@ -127,13 +127,16 @@ export default function Login(props) {
           status: "success",
         });
         setEditPhone(false);
-        firebase.auth().currentUser.getIdToken(true).then(async (user) => {
-          await axios({
-            url: "http://206.189.142.182/submit_phone",
-            method: "POST",
-            data: { user, token: profile.token }
+        firebase
+          .auth()
+          .currentUser.getIdToken(true)
+          .then(async (user) => {
+            await axios({
+              url: "http://206.189.142.182/submit_phone",
+              method: "POST",
+              data: { user, token: profile.token },
+            });
           });
-        });
       })
       .catch((stuff) => {
         toast({
