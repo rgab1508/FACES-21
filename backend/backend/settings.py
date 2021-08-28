@@ -30,7 +30,7 @@ DEBUG_ENV = os.getenv("DJANGO_DEBUG", 'True')
 DEBUG = DEBUG_ENV != 'False'
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'faces21.herokuapp.com', os.getenv("PUBLIC_IP", "localhost")]
+ALLOWED_HOSTS = ['127.0.0.1', 'faces.fcrit.ac.in', 'faces21.herokuapp.com', os.getenv("PUBLIC_IP", "localhost")]
 
 CSRF_COOKIE_HTTPONLY = False
 
