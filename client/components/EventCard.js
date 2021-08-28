@@ -313,7 +313,7 @@ export default function EventCard({ event, readOnly }) {
           <Flex p="15px" gridGap="5" flexDir="column">
             <Text
               fontSize={{ base: "12pt", md: "17pt" }}
-              color="white"
+              color={event.max_seats - event.seats < 10 ? "red" : "white"}
               fontWeight="bold"
             >
               Seats booked: {event.seats} / {event.max_seats}

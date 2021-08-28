@@ -21,7 +21,7 @@ import styles from "../components/Orenda.module.css";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
 import VideoBackground from "../components/VideoBackground";
-import * as cookie from 'cookie';
+import * as cookie from "cookie";
 
 export default function Login(props) {
   var [rollNo, setRn] = useState("");
@@ -55,7 +55,7 @@ export default function Login(props) {
           type: "ADD_USER",
           payload: { ...res.data.user, token: res.data.token },
         });
-        window.document.cookie = cookie.serialize('token', res.data.token);
+        window.document.cookie = cookie.serialize("token", res.data.token);
         toast({
           title: "Successfully logged in",
           status: "success",
@@ -179,4 +179,15 @@ export default function Login(props) {
       </Center>
     </Box>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const cookies = cookie.parse(req.headers.cookie || "");
+  if (cookies.token) {
+    res.writeHead(302, {
+      Location: "/",
+    });
+    res.end();
+  }
+  return { props: {} };
 }

@@ -56,6 +56,11 @@ export default function Events(props) {
     <>
       <Head>
         <title>FACES-21 • Events</title>
+        <meta name="title" content="FACES-21 • Events" />
+        <meta
+          name="description"
+          content="Here is the list of events for this year"
+        />
       </Head>
       <VideoBackground />
       <Layout>

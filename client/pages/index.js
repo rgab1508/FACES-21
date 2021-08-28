@@ -17,6 +17,11 @@ export default function Home(props) {
     <>
       <Head>
         <title>FACES-21</title>
+        <meta name="title" content="FACES-21 • Events" />
+        <meta
+          name="description"
+          content="Annual sports and cultural festival organised at F.C.R.I.T"
+        />
       </Head>
       <VideoBackground />
       <Layout>
