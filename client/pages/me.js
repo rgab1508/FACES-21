@@ -20,6 +20,8 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
+  Badge,
+  Text,
   useRadio,
   useRadioGroup,
   useToast,
@@ -33,6 +35,7 @@ import { useRouter } from "next/router";
 import { API_BASE_URL } from "../config";
 import VideoBackground from "../components/VideoBackground";
 import { firebase } from "@firebase/app";
+import * as cookie from "cookie";
 import "@firebase/auth";
 
 function RadioCard(props) {
@@ -76,6 +79,7 @@ export default function Login(props) {
   const toast = useToast();
   const [userState, userDispatch] = useContext(UserContext);
   const [phone, setPhone] = useState("");
+  const [myEvents, setMyEvents] = useState([]);
   const [avatar, setAvatar] = useState(null);
   const [OTP, setOTP] = useState("");
   const [OTPSent, setOTPSent] = useState(false);
@@ -191,6 +195,8 @@ export default function Login(props) {
   }
 
   useEffect(() => {
+    // if (!userState.userInfo) location.href = "/";
+    // if (userState.userInfo && !userState.userInfo.email) location.href = "/";
     setProfile(userState.userInfo);
     setPhone(userState.userInfo.phone_no);
   }, [userState.userInfo]);
@@ -202,7 +208,7 @@ export default function Login(props) {
       </Head>
       <VideoBackground />
       <Layout notFixed>
-        <Center w="100%" justifyContent="center">
+        <Center w="100%" minH="100vh" justifyContent="center">
           <Flex
             direction="column"
             bgColor="transparent"
@@ -329,6 +335,7 @@ export default function Login(props) {
                         color="white"
                         bg="black"
                         readOnly={!editPhone}
+                        maxLength={10}
                         onChange={(e) => setPhone("+91" + e.target.value)}
                       />
                       <InputRightElement>
@@ -394,7 +401,87 @@ export default function Login(props) {
                     Save Profile
                   </Button>
                 </TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel>
+                  <Flex flexDirection="column">
+                    {props.profile.teams.map((item, key) => (
+                      <Flex
+                        borderRadius="10px"
+                        minW={{ base: "80vw", md: "50vw" }}
+                        bgColor="#923cb5"
+                        backgroundImage="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
+                        boxShadow="xl"
+                        _hover={{ boxShadow: "2xl", transform: "scale(1.1)" }}
+                        sx={{
+                          transition: "transform 0.2s, box-shadow 0.25s",
+                        }}
+                        minH="23vh"
+                        mb={2}
+                        flexDirection={{ base: "column-reverse", md: "row" }}
+                      >
+                        <Flex
+                          align={{ base: "center", md: "initial" }}
+                          justify={{ base: "center", md: "initial" }}
+                          flexDirection="column"
+                          w={{ base: "100%", md: "50%" }}
+                          p={{ base: "5px", md: "15px" }}
+                          gridGap="1"
+                        >
+                          <Text
+                            fontWeight="bold"
+                            fontSize={{ base: "12pt", lg: "20pt" }}
+                            color="white"
+                          >
+                            {item.event.title}
+                          </Text>
+                          <Flex>
+                            <Badge
+                              bg={item.is_paid ? "green.500" : "red.700"}
+                              m={1}
+                              color="white"
+                              fontSize={{ base: "9pt", md: "14pt" }}
+                              borderRadius="5px"
+                            >
+                              {item.is_paid ? "PAID" : "NOT PAID"}
+                            </Badge>
+                            <Badge
+                              bg={item.is_paid ? "green.500" : "red.700"}
+                              m={1}
+                              color="white"
+                              fontSize={{ base: "9pt", md: "14pt" }}
+                              borderRadius="5px"
+                            >
+                              {item.is_verified ? "VERIFIED" : "NOT VERIFIED"}
+                            </Badge>
+                          </Flex>
+                          {item.members.length > 0 && (
+                            <Text
+                              fontSize={{ base: "12pt", lg: "20pt" }}
+                              color="white"
+                            >
+                              <ul>{item.members}</ul>
+                            </Text>
+                          )}
+                        </Flex>
+                        <Flex
+                          w={{ base: "100%", md: "50%" }}
+                          background={`url(${API_BASE_URL}${item.event.image})`}
+                          backgroundSize="cover"
+                          backgroundPosition="center"
+                          backgroundRepeat="no-repeat"
+                          borderRadius="10px"
+                          h={{ base: "15vh", md: "auto" }}
+                        >
+                          <Box
+                            h="100%"
+                            w="100%"
+                            bg="rgb(0,0,0,0.4)"
+                            borderRadius="10px"
+                          />
+                        </Flex>
+                      </Flex>
+                    ))}
+                  </Flex>
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </Flex>
@@ -402,4 +489,30 @@ export default function Login(props) {
       </Layout>
     </>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  var token = cookie.parse(req.headers.cookie)["token"];
+  if (!token) {
+    res.writeHead(302, { Location: "/" });
+    res.end();
+    return { props: {} };
+  }
+  try {
+    var profile = await axios({
+      url: `${API_BASE_URL}/api/u/me/`,
+      headers: {
+        Authorization: "Token " + token,
+      },
+    });
+    return {
+      props: {
+        profile: profile.data.user,
+      },
+    };
+  } catch (e) {
+    res.writeHead(302, { Location: "/" });
+    res.end();
+    return { props: {} };
+  }
 }

@@ -77,7 +77,7 @@ const CriteriaStrip = () => {
           bgColor={criteria && criteria[2] ? "rgb(69, 39, 160)" : "black"}
           p={smDevice ? 3 : "unset"}
         >
-          <Text transform="skew(-315deg)">Day 3</Text>
+          <Text transform="skew(-315deg)">Day 2</Text>
         </Box>
         <Box
           display="flex"
