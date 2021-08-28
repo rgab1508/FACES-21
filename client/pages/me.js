@@ -173,7 +173,7 @@ export default function Login(props) {
           .currentUser.getIdToken(true)
           .then(async (user) => {
             await axios({
-              url: "http://206.189.142.182/submit_phone",
+              url: `${API_BASE_URL}/submit_phone`,
               method: "POST",
               data: { user, token: profile.token },
             });
