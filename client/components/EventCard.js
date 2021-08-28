@@ -9,8 +9,8 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { useContext, useState } from "react";
+import { AddIcon, CheckIcon, MinusIcon } from "@chakra-ui/icons";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
 import ReactMarkdown from "react-markdown";
@@ -23,8 +23,22 @@ export default function EventCard({ event, readOnly }) {
     members: [],
   });
   const [member, setMember] = useState("");
+  const [isRegistered, setIsRegitered] = useState(false);
 
   const toast = useToast();
+
+  useEffect(() => {
+    let newIsRegistered = false;
+    if (userState.isLoggedIn) {
+      userState.userInfo.teams.map((t) => {
+        console.log(t.event.event_code, event.event_code);
+        if (t.event.event_code == event.event_code) {
+          newIsRegistered = true;
+        }
+      });
+    }
+    setIsRegitered(newIsRegistered);
+  }, []);
 
   const handleChange = (e) => {
     setValues((prevValues) => {
@@ -185,7 +199,7 @@ export default function EventCard({ event, readOnly }) {
 
   return (
     <Flex
-      w={{ base: "90%", lg: "60%" }}
+      w={["90%", "90%", "75%", "60%"]}
       h="auto"
       flexDirection="column"
       bgColor="rgb(0,0,0,0.6)"
@@ -327,8 +341,9 @@ export default function EventCard({ event, readOnly }) {
               {event.entry_fee != 0 ? `${event.entry_fee} Rs` : "Free"}
             </Text>
           </Flex>
-          {JSON.stringify(userState.userInfo) != "{}" ? (
-            event.team_size > 1 ? (
+          {JSON.stringify(userState.userInfo) != "{}" &&
+            event.team_size > 1 &&
+            !isRegistered && (
               <Flex flexDirection="column" gridGap="3">
                 <Flex
                   bg="rgb(27, 94, 32)"
@@ -395,24 +410,34 @@ export default function EventCard({ event, readOnly }) {
                   })}
                 </Flex>
               </Flex>
-            ) : (
-              ""
-            )
-          ) : (
-            ""
-          )}
+            )}
           <Flex justifyContent="flex-end">
             {JSON.stringify(userState.userInfo) != "{}" ? (
-              <Button
-                bg="green.400"
-                color="white"
-                fontWeight="bold"
-                _focus={{ outline: "none!important" }}
-                _hover={{ opacity: 0.8 }}
-                onClick={handleRegister}
-              >
-                Register
-              </Button>
+              isRegistered ? (
+                <Box
+                  display="flex"
+                  p={2}
+                  // color="whitesmoke"
+                  gridGap={2}
+                  alignItems="center"
+                  bgColor="green.200"
+                  borderRadius="md"
+                >
+                  <Text>Registered</Text>
+                  <CheckIcon color="green" />
+                </Box>
+              ) : (
+                <Button
+                  bg="green.400"
+                  color="white"
+                  fontWeight="bold"
+                  _focus={{ outline: "none!important" }}
+                  _hover={{ opacity: 0.8 }}
+                  onClick={handleRegister}
+                >
+                  Register
+                </Button>
+              )
             ) : (
               <Text fontStyle="italic" mr={5} color="white" fontSize="large">
                 Login to register
