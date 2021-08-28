@@ -17,6 +17,7 @@ import Cart from "./Cart";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
+import * as cookie from "cookie";
 
 const ShoppingCartIcon = createIcon({
   displayName: "shopping cart",
@@ -120,6 +121,10 @@ function DrawerNavbar({ isOpen, cart }) {
           });
           userDispatch({
             type: "REMOVE_USER",
+          });
+          window.document.cookie = cookie.serialize("token", "", {
+            path: "/",
+            expires: new Date(0),
           });
         } else {
           toast({
@@ -291,7 +296,7 @@ const NavbarContainer = (props) => {
       color="white"
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
       sx={{ transition: "background 0.2s " }}
-      position={props.notfixed ? "relative" : "fixed"}
+      position={props.notFixed ? "relative" : "fixed"}
       zIndex="1"
       {...rest}
     >

@@ -16,6 +16,7 @@
     "@fontsource/paytone-one": "^4.5.0",
     "@fontsource/titillium-web": "^4.5.0",
     "axios": "^0.21.1",
+    "cookie": "^0.4.1",
     "firebase": "^8.10.0",
     "firebase-admin": "^9.11.1",
     "framer-motion": "^4.1.17",
