@@ -324,7 +324,7 @@ export default function Navbar(props) {
       console.log(userState.isLoggedIn);
       let newCartItemsLength = 0;
       userState.userInfo.teams.map((t) => {
-        if (!t.is_paid) newCartItemsLength += 1;
+        if (t && !t.is_paid) newCartItemsLength += 1;
       });
       setCartItemsLength(newCartItemsLength);
     }
