@@ -20,9 +20,9 @@ const AlertDialogBox = ({
   submitText,
 }) => {
   return (
-    <AlertDialog isOpen={open} size="sm">
+    <AlertDialog isOpen={open} size="sm" isCentered>
       <AlertDialogOverlay>
-        <AlertDialogContent>
+        <AlertDialogContent ml={2} mr={2} color="white" background="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)">
           <AlertDialogBody mt={2} fontWeight="600">
             <Flex direction="column-reverse" align="center">
               <Flex flexGrow={1} textAlign="center" direction="column" align="center">
@@ -48,6 +48,7 @@ const AlertDialogBox = ({
                 <Button
                   onClick={() => setOpen(false)}
                   ml={2}
+                  color="black"
                 >
                   Close
                 </Button>
