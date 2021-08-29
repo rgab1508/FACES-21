@@ -13,6 +13,7 @@ import { AddIcon, CheckIcon, MinusIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { API_BASE_URL } from "../config";
+import AlertDialogBox from "./AlertDialogBox";
 import ReactMarkdown from "react-markdown";
 
 export default function EventCard({ event, readOnly }) {
@@ -25,6 +26,8 @@ export default function EventCard({ event, readOnly }) {
   const [member, setMember] = useState("");
   const [isRegistered, setIsRegitered] = useState(false);
   const [names, setNames] = useState({});
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
 
   const toast = useToast();
 
@@ -214,6 +217,16 @@ export default function EventCard({ event, readOnly }) {
       cursor="pointer"
       sx={{ transition: "box-shadow 0.2s ease-in-out, height 1s" }}
     >
+      {alertContent && (
+        <AlertDialogBox
+          content={alertContent}
+          open={alertOpen}
+          setOpen={setAlertOpen}
+          closeBtn={true}
+          submitText="Confirm"
+          onClose={handleRegister}
+        />
+      )}
       <Flex
         flexDirection={{ base: "column-reverse", md: "row" }}
         minH={{ md: "170px" }}
@@ -445,7 +458,12 @@ export default function EventCard({ event, readOnly }) {
                   fontWeight="bold"
                   _focus={{ outline: "none!important" }}
                   _hover={{ opacity: 0.8 }}
-                  onClick={handleRegister}
+                  onClick={() => {
+                    setAlertContent([
+                      "Are you Sure you would like to register for this event? It can only be undone with admin intervention",
+                    ]);
+                    setAlertOpen(true);
+                  }}
                 >
                   Register
                 </Button>

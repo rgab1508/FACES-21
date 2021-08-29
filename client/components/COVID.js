@@ -17,7 +17,7 @@ const COVID = ({ isOpen, onOpen, onClose }) => {
   return (
     <Modal
       isCentered
-      size="2xl"
+      size={{ base: "md", md: "2xl" }}
       isOpen={isOpen}
       onClose={onClose}
       closeOnEsc={false}
