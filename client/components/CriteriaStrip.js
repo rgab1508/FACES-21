@@ -160,6 +160,7 @@ const CriteriaStrip = () => {
       display="flex"
       opacity="0.7"
       overflow="hidden"
+      zIndex="3"
     >
       <CriteriaModal />
       {!smDevice ? (

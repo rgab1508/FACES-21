@@ -57,7 +57,7 @@ const Cart = ({ isOpen, onClose }) => {
       transaction_id: transactionId,
     };
     userState.userInfo.teams
-      .filter((t) => !t.is_paid)
+      .filter((t) => t && !t.is_paid)
       .map((t) => data.teams.push(t.team_code));
 
     fetch(`${API_BASE_URL}/api/u/checkout/`, {
@@ -234,7 +234,8 @@ const Cart = ({ isOpen, onClose }) => {
         </DrawerBody>
         <DrawerFooter bgColor="black" color="whitesmoke">
           {userState.isLoggedIn &&
-            userState.userInfo.teams.filter((t) => !t.is_paid).length > 0 && (
+            userState.userInfo.teams.filter((t) => t && !t.is_paid).length >
+              0 && (
               <Box gridGap={4} w="100%" display="flex" flexDir="column">
                 <Box>
                   <Text>Total : &#8377;{totalPrice}</Text>
