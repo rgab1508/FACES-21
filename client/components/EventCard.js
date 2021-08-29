@@ -32,7 +32,6 @@ export default function EventCard({ event, readOnly }) {
     let newIsRegistered = false;
     if (userState.isLoggedIn) {
       userState.userInfo.teams.map((t) => {
-        console.log(t.event.event_code, event.event_code);
         if (t.event.event_code == event.event_code) {
           newIsRegistered = true;
         }
@@ -132,7 +131,6 @@ export default function EventCard({ event, readOnly }) {
           });
           clearValues();
         } else {
-          console.log(res);
           toast({
             title: res.detail,
             duration: 3000,
@@ -274,7 +272,7 @@ export default function EventCard({ event, readOnly }) {
             gridGap="2"
             position="absolute"
             right={0}
-            zIndex={10}
+            zIndex={1}
           >
             <Badge
               ml="auto"
@@ -337,6 +335,16 @@ export default function EventCard({ event, readOnly }) {
             <ReactMarkdown children={event.description} />
           </Flex>
           <Flex p="15px" gridGap="5" flexDir="column">
+            {event.team_size > 1 && (
+              <Text
+                color="white"
+                fontWeight="bold"
+                fontSize={{ base: "12pt", md: "17pt" }}
+              >
+                Team size : {event.team_size}{" "}
+                {event.is_team_size_strict ? "(Strict)" : "(Not Strict)"}
+              </Text>
+            )}
             <Text
               fontSize={{ base: "12pt", md: "17pt" }}
               color={event.max_seats - event.seats < 10 ? "red" : "white"}
@@ -366,7 +374,7 @@ export default function EventCard({ event, readOnly }) {
                   gridGap="3"
                 >
                   <Text color="white" fontSize="15pt" fontWeight="bold">
-                    Enter teammates info
+                    Enter team mate information
                   </Text>
                   <Input
                     variant="filled"
