@@ -18,7 +18,7 @@ class TeamAdmin(admin.ModelAdmin):
 
   actions = ['export_as_csv']
 
-  @admin.action(description="Download as Csvv")
+  @admin.action(description="Download Csv")
   def export_as_csv(self, request, queryset):
     model = queryset.model
     response = HttpResponse(content_type='text/csv')
