@@ -75,8 +75,8 @@ class UserUpdate(APIView):
     user.department = department
     user.semester = semester
     
-    if user.is_phone_no_verified:
-      user.has_filled_profile = True
+    # if user.is_phone_no_verified:
+    user.has_filled_profile = True
     
     try:
       user.save()
