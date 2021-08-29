@@ -132,6 +132,7 @@ function DrawerNavbar({ isOpen, cart }) {
             path: "/",
             expires: new Date(0),
           });
+          window.location.href = "/";
         } else {
           toast({
             title: "Error logging out, Please Try Again...",

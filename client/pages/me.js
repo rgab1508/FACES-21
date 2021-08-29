@@ -226,6 +226,12 @@ export default function Login(props) {
         });
       })
       .catch(console.log);
+    toast({
+      title: "Profile updated succesfully",
+      position: "top-right",
+      duration: 3000,
+      status: "success",
+    });
   }
 
   function handleChange(e) {
@@ -496,7 +502,9 @@ export default function Login(props) {
                               fontSize={{ base: "12pt", lg: "14pt" }}
                               color="white"
                             >
-                              <Text fontSize="16pt" fontWeight="bolder">Members</Text>
+                              <Text fontSize="16pt" fontWeight="bolder">
+                                Members
+                              </Text>
                               <Text pl={6}>
                                 <ul>
                                   {item.members.map((item) => (
