@@ -234,7 +234,8 @@ const Cart = ({ isOpen, onClose }) => {
         </DrawerBody>
         <DrawerFooter bgColor="black" color="whitesmoke">
           {userState.isLoggedIn &&
-            userState.userInfo.teams.filter((t) => t && !t.is_paid).length > 0 && (
+            userState.userInfo.teams.filter((t) => t && !t.is_paid).length >
+              0 && (
               <Box gridGap={4} w="100%" display="flex" flexDir="column">
                 <Box>
                   <Text>Total : &#8377;{totalPrice}</Text>

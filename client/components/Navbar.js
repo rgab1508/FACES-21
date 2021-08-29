@@ -158,7 +158,10 @@ function DrawerNavbar({ isOpen, cart }) {
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
       flexBasis={{ base: "100%", md: "auto" }}
-      background={{ base: "linear-gradient(147deg, #000000 0%,rgb(69, 39, 160) 74%)", md: "transparent" }}
+      background={{
+        base: "linear-gradient(147deg, #000000 0%,rgb(69, 39, 160) 74%)",
+        md: "transparent",
+      }}
       p={{ base: "20px", md: "0px" }}
       borderRadius="15px"
     >
@@ -302,7 +305,7 @@ const NavbarContainer = (props) => {
       maxH={{ base: "60vh", sm: "25vh", md: "19vh" }}
       sx={{ transition: "background 0.2s " }}
       position={props.notFixed ? "relative" : "fixed"}
-      zIndex="1"
+      zIndex="3"
       {...rest}
     >
       {props.children}
