@@ -1,3 +1,7 @@
+*:focus {
+  box-shadow: none !important;
+}
+
 select option {
   background: rgba(0, 0, 0, 0.7) !important;
   color: #fff !important;

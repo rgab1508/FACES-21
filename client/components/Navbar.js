@@ -43,26 +43,32 @@ function Logo(props) {
 
 function MenuToggle({ toggle, isOpen }) {
   return (
-    <Box
-      // align="center"
-      // justify="center"
-      display={{ base: "block", md: "none" }}
-      onClick={() => {
-        if (isOpen == false) {
-          document.getElementById("navbar").style.height = "60vh";
-          setTimeout(() => toggle(), 200);
-        } else {
-          document.getElementById("navbar").style.height = "17vh";
-          toggle();
-        }
-      }}
-      // sx={{ transition: "0.3s" }}
-      bg="green.600"
-      borderRadius="5px"
-      p="5px"
-    >
-      {isOpen ? <CloseIcon color="white" /> : <HamburgerIcon color="white" />}
-    </Box>
+    <Flex direction="column" justifyContent="flex-start" p="15px">
+      <Box
+        // align="center"
+        // justify="center"
+        display={{ base: "block", md: "none" }}
+        onClick={() => {
+          if (isOpen == false) {
+            document.getElementById("navbar").style.height = "60vh";
+            setTimeout(() => toggle(), 200);
+          } else {
+            document.getElementById("navbar").style.height = "17vh";
+            toggle();
+          }
+        }}
+        // sx={{ transition: "0.3s" }}
+        bg="green.600"
+        borderRadius="5px"
+        p="5px"
+      >
+        {isOpen ? (
+          <CloseIcon boxSize="25px" p={1} color="white" />
+        ) : (
+          <HamburgerIcon boxSize="25px" p={0.3} color="white" />
+        )}
+      </Box>
+    </Flex>
   );
 }
 
@@ -75,7 +81,7 @@ function MenuItems({ children, isLast, to = "/", ...rest }) {
         display="block"
         p="5px"
         borderRadius="10px"
-        bg={{ base: "green.600", sm: "transparent" }}
+        background={{ base: "transparent", sm: "transparent" }}
         cursor="pointer"
         {...rest}
       >
@@ -152,7 +158,7 @@ function DrawerNavbar({ isOpen, cart }) {
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
       flexBasis={{ base: "100%", md: "auto" }}
-      bg={{ base: "green.500", md: "transparent" }}
+      background={{ base: "linear-gradient(147deg, #000000 0%,rgb(69, 39, 160) 74%)", md: "transparent" }}
       p={{ base: "20px", md: "0px" }}
       borderRadius="15px"
     >
@@ -196,7 +202,7 @@ function DrawerNavbar({ isOpen, cart }) {
           </MenuItems>
 
           {!loggedIn ? (
-            <Box p="15px" borderRadius="10px">
+            <Box borderRadius="10px">
               <Button
                 _hover={{ bg: "rgb(81, 45, 168)" }}
                 color="white"
@@ -253,7 +259,8 @@ function DrawerNavbar({ isOpen, cart }) {
               >
                 <Text color="white">
                   {userState.userInfo.teams
-                    ? userState.userInfo.teams.length
+                    ? userState.userInfo.teams.filter((tm) => tm && !tm.is_paid)
+                        .length
                     : 0}
                 </Text>
               </Flex>
@@ -261,7 +268,6 @@ function DrawerNavbar({ isOpen, cart }) {
           </Box>
         </Stack>
       </ScaleFade>
-
       <Cart isOpen={cart.isOpen} onClose={cart.onClose} loggedIn={loggedIn} />
     </Box>
   );
@@ -286,7 +292,6 @@ const NavbarContainer = (props) => {
   return (
     <Flex
       as="nav"
-      align="center"
       id="navbar"
       justify={{ base: "flex-end", md: "space-between" }}
       wrap="wrap"

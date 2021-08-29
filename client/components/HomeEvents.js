@@ -142,22 +142,30 @@ export default function HomeEvents({ events }) {
                   {evt.start}
                 </Text>
               </Flex>
-              <Flex
+              <Box
+                overflow="hidden"
                 w={{ base: "100%", md: "50%" }}
-                background={`url(${API_BASE_URL}${evt.image})`}
-                backgroundSize="cover"
-                backgroundPosition="center"
-                backgroundRepeat="no-repeat"
-                borderRadius="10px"
                 h={{ base: "15vh", md: "auto" }}
+                borderRadius="10px"
               >
-                <Box
-                  h="100%"
+                <Flex
+                  background={`url(${API_BASE_URL}${evt.image})`}
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
                   w="100%"
-                  bg="rgb(0,0,0,0.4)"
-                  borderRadius="10px"
-                />
-              </Flex>
+                  h="100%"
+                  transition="0.2s all"
+                  _hover={{ transform: "scale(1.1)" }}
+                >
+                  <Box
+                    h="100%"
+                    w="100%"
+                    bg="rgb(0,0,0,0.4)"
+                    borderRadius="10px"
+                  />
+                </Flex>
+              </Box>
             </Flex>
           </Flex>
         ))}

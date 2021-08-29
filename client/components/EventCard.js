@@ -24,6 +24,7 @@ export default function EventCard({ event, readOnly }) {
   });
   const [member, setMember] = useState("");
   const [isRegistered, setIsRegitered] = useState(false);
+  const [names, setNames] = useState({});
 
   const toast = useToast();
 
@@ -87,8 +88,9 @@ export default function EventCard({ event, readOnly }) {
       },
       body: JSON.stringify({ roll_no: rollNo }),
     });
-    let res = response.json();
+    let res = await response.json();
     if (res.success) {
+      setNames({ ...names, [rollNo]: res.name });
       return res.exists;
     } else return false;
   }
@@ -150,7 +152,7 @@ export default function EventCard({ event, readOnly }) {
       });
   };
 
-  function addTeamMembers(event) {
+  async function addTeamMembers(event) {
     let roll_no = Number.parseInt(member);
     if (Number.isNaN(roll_no)) {
       toast({
@@ -179,7 +181,7 @@ export default function EventCard({ event, readOnly }) {
       });
       return;
     }
-    if (!checkIfStudentExists(roll_no)) {
+    if (!(await checkIfStudentExists(roll_no))) {
       toast({
         title: "Roll No. Doesn't Exist!",
         status: "error",
@@ -209,6 +211,7 @@ export default function EventCard({ event, readOnly }) {
       _hover={{
         boxShadow: "2xl",
       }}
+      cursor="pointer"
       sx={{ transition: "box-shadow 0.2s ease-in-out, height 1s" }}
     >
       <Flex
@@ -258,22 +261,20 @@ export default function EventCard({ event, readOnly }) {
           </Text>
         </Box>
         <Box
-          backgroundSize="cover"
-          backgroundPosition="center"
-          backgroundRepeat="no-repeat"
-          backgroundImage={`url(${API_BASE_URL}${event.image})`}
+          overflow="hidden"
           borderRadius="10px"
+          position="relative"
           w={{ base: "100%", md: "50%" }}
           h={{ base: "15vh", md: "auto" }}
         >
           <Flex
             p="10px"
-            bg="rgb(69, 39, 160,0.4)"
-            h="100%"
-            w="100%"
             flexDirection="column"
             borderRadius="10px"
             gridGap="2"
+            position="absolute"
+            right={0}
+            zIndex={10}
           >
             <Badge
               ml="auto"
@@ -305,6 +306,17 @@ export default function EventCard({ event, readOnly }) {
               </Badge>
             ) : null}
           </Flex>
+          <Box
+            backgroundSize="cover"
+            backgroundPosition="center"
+            backgroundRepeat="no-repeat"
+            backgroundImage={`url(${API_BASE_URL}${event.image})`}
+            borderRadius="10px"
+            w="100%"
+            h="100%"
+            transition="0.2s all"
+            _hover={{ transform: "scale(1.1)" }}
+          ></Box>
         </Box>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
@@ -400,11 +412,11 @@ export default function EventCard({ event, readOnly }) {
                     />
                   </Flex>
                 </Flex>
-                <Flex gridGap="2">
+                <Flex gridGap="2" wrap="wrap">
                   {values.members.map((val) => {
                     return (
                       <Flex p="15px" borderRadius="10px" bg="rgb(27, 94, 32)">
-                        <Text color="white">{val}</Text>
+                        <Text color="white">{names[val] || val}</Text>
                       </Flex>
                     );
                   })}

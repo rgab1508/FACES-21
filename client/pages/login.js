@@ -158,6 +158,8 @@ export default function Login(props) {
                   <ViewIcon
                     cursor="pointer"
                     onMouseDown={() => setShow(true)}
+                    onTouchStart={() => setShow(true)}
+                    onTouchMove={() => setShow(true)}
                   />
                 </InputRightElement>
               </InputGroup>
