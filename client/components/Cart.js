@@ -149,6 +149,41 @@ const Cart = ({ isOpen, onClose }) => {
     confirm.onClose();
   };
 
+  async function handleRemove(teamCode) {
+    try {
+      const res = await axios({
+        url: `${API_BASE_URL}/api/e/unregister/`,
+        method: "POST",
+        body: JSON.stringify({
+          team_code: teamCode,
+        }),
+        headers: {
+          Authorization: "Token " + userState.userInfo.token,
+        },
+      });
+      if (res.status == 200) {
+        userDispatch({
+          type: "ADD_USER",
+          payload: {
+            ...userState.userInfo,
+            teams: userState.userInfo.teams.filter(
+              (t) => t.team_code != teamCode
+            ),
+          },
+        });
+      } else {
+        throw new Error("User Not Logged In");
+      }
+    } catch (error) {
+      toast({
+        title: `${error}`,
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+      });
+    }
+  }
+
   const PaymentAlert = () => {
     return (
       <AlertDialog
@@ -316,6 +351,17 @@ const Cart = ({ isOpen, onClose }) => {
                             <Text>&#8377; {t.event.entry_fee}</Text>
                           </Box>
                         </Flex>
+                        <Box w="100%" p="10px">
+                          <Button
+                            color="white"
+                            isFullWidth
+                            bg="linear-gradient(147deg, rgb(17,82,45)  0%, rgb(0,0,0,0.9) 74%)"
+                            onClick={() => handleRemove(t.team_code)}
+                            _hover={{ opacity: 0.7 }}
+                          >
+                            Remove
+                          </Button>
+                        </Box>
                       </Box>
                     );
                   })}
