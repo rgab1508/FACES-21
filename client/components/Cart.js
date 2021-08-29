@@ -25,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { useContext, useEffect, useState, useRef } from "react";
+import axios from "axios";
 import { API_BASE_URL } from "../config";
 import { UserContext } from "../context/UserContext";
 import Image from "next/image";
@@ -39,6 +40,38 @@ const Cart = ({ isOpen, onClose }) => {
   const toast = useToast();
   const payment = useDisclosure();
   const cancelRef = useRef();
+
+  async function refreshCart() {
+    try {
+      const res = await axios({
+        url: `${API_BASE_URL}/api/u/me/`,
+        headers: {
+          Authorization: "Token " + userState.userInfo.token,
+        },
+      });
+      if (res.status == 200) {
+        userDispatch({
+          type: "ADD_USER",
+          payload: { ...userState.userInfo, ...res.data.user },
+        });
+      } else {
+        throw new Error("User Not Logged In");
+      }
+    } catch (error) {
+      toast({
+        title: `${error}`,
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+      });
+    }
+  }
+
+  useEffect(async () => {
+    if (userState.isLoggedIn) {
+      await refreshCart();
+    }
+  }, []);
 
   useEffect(() => {
     if (userState.isLoggedIn) {
