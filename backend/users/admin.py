@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.http.response import HttpResponse
+from django.template.defaultfilters import slugify
+import csv
 
 from .models import User, Team
 
@@ -12,3 +15,34 @@ class UserAdmin(admin.ModelAdmin):
 class TeamAdmin(admin.ModelAdmin):
   search_fields = ('team_code', 'team_name')
   list_filter = ('is_verified', 'is_paid')
+
+  actions = ['export_as_csv']
+
+  @admin.action(description="Download as Csvv")
+  def export_as_csv(self, request, queryset):
+    model = queryset.model
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(model.__name__)
+    writer = csv.writer(response)
+    fields= None
+    # Write headers to CSV file
+    if fields:
+        headers = fields
+    else:
+        headers = []
+        for field in model._meta.fields:
+            headers.append(field.name)
+    writer.writerow(headers)
+    # Write data to CSV file
+    for obj in queryset:
+      row = []
+      for field in headers:
+          if field in headers:
+              val = getattr(obj, field)
+              if callable(val):
+                  val = val()
+              row.append(val)
+
+      writer.writerow(row)
+    # Return CSV file to browser as download
+    return response
