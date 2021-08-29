@@ -28,6 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   semester = models.SmallIntegerField(_("Semester"),blank=True, null=True)
   phone_no = models.CharField(_("Phone Number"),blank=True,  max_length=32)
   is_phone_no_verified = models.BooleanField(_("Is Phone Number Verified"), default=False)
+  cart = models.TextField(_("DONT FILL THIS"), default="[]")
   
   money_owed = models.DecimalField(_("Money Owed"),decimal_places=2,max_digits=10, default=0.00)
   has_filled_profile = models.BooleanField(_("Has Filled Profile"), default=False)
