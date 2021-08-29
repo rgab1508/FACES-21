@@ -147,6 +147,7 @@ class EventRegiterView(APIView):
         
       for m in t.members.all():
         if not m.has_filled_profile or not m.is_phone_no_verified:
+          t.delete()
           return JsonResponse({"detail": "Some Member(s) have not filled their Profile", "success": False}, status=400)
       
       # add to moneyOwed
