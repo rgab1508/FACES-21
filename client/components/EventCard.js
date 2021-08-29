@@ -387,7 +387,10 @@ export default function EventCard({ event, readOnly }) {
                   gridGap="3"
                 >
                   <Text color="white" fontSize="15pt" fontWeight="bold">
-                    Enter team mate information
+                    Enter team mate information{" "}
+                    <span style={{ color: "red" }}>
+                      Enter your own ROLL NO as well !!
+                    </span>
                   </Text>
                   <Input
                     variant="filled"
