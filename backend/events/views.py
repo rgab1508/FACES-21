@@ -122,6 +122,8 @@ class EventRegiterView(APIView):
       team_name = request.data['team_name']
       members = request.data["members"]
 
+      if user.roll_no not in members:
+        members.add(user.roll_no)
 
       if event.is_team_size_strict and len(members) != event.team_size:        
         return JsonResponse({"detail": f"Event Has a Strict Team Size of {event.team_size}", "success": False}, status=400)
