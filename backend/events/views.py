@@ -173,4 +173,29 @@ class EventRegiterView(APIView):
         return JsonResponse({"detail": "Event Registered Sucessfully!", "team": team_serializer.data, "success": True}, status=200)
       except:
         t.delete()
-        return JsonResponse({"detail": "Something Went Wrong!", "team": team_serializer.data, "success": False}, status=400)
+        return JsonResponse({"detail": "Something Went Wrong!",  "success": False}, status=400)
+
+
+class EventUnregister(APIView):
+  permission_classes = [IsAuthenticated]
+  def post(self, request):
+    user = request.user
+    team_code = request.data["team_code"]
+
+
+    teams = user.teams.filter(team_code=team_code)
+    if teams.count() < 1:
+      return JsonResponse({"detail": "You have not Registered For the Event", "success": False}, status=400)
+    
+    team = teams.first()
+    if team.is_paid:
+      return JsonResponse({"detail": "You have Already Paid for the Event", "success": False}, status=400)
+          
+    try:
+      team.delete()
+      return JsonResponse({"detail": "Participation Successfully Deleted!", "success": True}, status=200)
+    except:
+      return JsonResponse({"detail": "Something Went Wrong!", "success": False}, status=400)
+
+
+    

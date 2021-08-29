@@ -150,18 +150,20 @@ const Cart = ({ isOpen, onClose }) => {
   };
 
   async function handleRemove(teamCode) {
-    try {
-      const res = await axios({
-        url: `${API_BASE_URL}/api/e/unregister/`,
-        method: "POST",
-        body: JSON.stringify({
-          team_code: teamCode,
-        }),
-        headers: {
-          Authorization: "Token " + userState.userInfo.token,
-        },
-      });
-      if (res.status == 200) {
+    fetch(`${API_BASE_URL}/api/e/unregister/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + userState.userInfo.token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify({
+        team_code: teamCode,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
         userDispatch({
           type: "ADD_USER",
           payload: {
@@ -171,17 +173,15 @@ const Cart = ({ isOpen, onClose }) => {
             ),
           },
         });
-      } else {
-        throw new Error("User Not Logged In");
-      }
-    } catch (error) {
-      toast({
-        title: `${error}`,
-        status: "error",
-        duration: 2000,
-        position: "top-right",
+      })
+      .catch((e) => {
+        toast({
+          title: `${e.detail}`,
+          status: "error",
+          duration: 2000,
+          position: "top-right",
+        });
       });
-    }
   }
 
   const PaymentAlert = () => {
@@ -353,7 +353,7 @@ const Cart = ({ isOpen, onClose }) => {
                         </Flex>
                         <Box w="100%" p="10px">
                           <Button
-                            color="white"
+                            color="red"
                             isFullWidth
                             bg="linear-gradient(147deg, rgb(17,82,45)  0%, rgb(0,0,0,0.9) 74%)"
                             onClick={() => handleRemove(t.team_code)}
@@ -420,7 +420,7 @@ const Cart = ({ isOpen, onClose }) => {
                   <PaymentAlert />
                   <Button
                     onClick={() => {
-                      if (transactionId.length < 12) {
+                      if (transactionId.length < 5) {
                         toast({
                           title: "Please Enter a Valid Transaction ID",
                           status: "error",

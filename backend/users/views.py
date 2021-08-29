@@ -168,7 +168,7 @@ class UserCheckout(APIView):
 
     team_codes = request.data['teams']
     transaction_id = request.data['transaction_id']
-    if len(transaction_id) < 12:
+    if len(transaction_id) < 5:
       return JsonResponse({"detail": "Enter a Valid Transaction ID", "success": False},status=400)
     
     # checking criteria
