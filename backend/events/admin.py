@@ -17,17 +17,17 @@ class SeatsFilterList(admin.SimpleListFilter):
         
         return (
             ('FULL', 'Seats Full'),
-            ('VACENT', 'Seats Vacent'),
+            ('VACENT', 'Seats Vacant'),
         )
 
     def queryset(self, request, queryset):
         if self.value() == 'FULL':
             return queryset.filter(seats=F('max_seats'))
-        if self.value() == 'VACENT':
+        if self.value() == 'VACANT':
             return queryset.filter(seats__lte=F('max_seats'))
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
   list_filter = ('day', 'category', SeatsFilterList)
-  search_fields = ('event_code', 'title', 'desciption', )
+  search_fields = ('event_code', 'title', 'description', )
   formfield_overrides = {MartorField: {'widget': AdminMartorWidget}}

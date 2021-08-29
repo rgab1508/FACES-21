@@ -122,6 +122,8 @@ class EventRegiterView(APIView):
       team_name = request.data['team_name']
       members = request.data["members"]
 
+      if user.roll_no not in members:
+        members.add(user.roll_no)
 
       if event.is_team_size_strict and len(members) != event.team_size:        
         return JsonResponse({"detail": f"Event Has a Strict Team Size of {event.team_size}", "success": False}, status=400)
@@ -145,6 +147,7 @@ class EventRegiterView(APIView):
         
       for m in t.members.all():
         if not m.has_filled_profile or not m.is_phone_no_verified:
+          t.delete()
           return JsonResponse({"detail": "Some Member(s) have not filled their Profile", "success": False}, status=400)
       
       # add to moneyOwed
@@ -166,7 +169,8 @@ class EventRegiterView(APIView):
 
         # user = update_criteria(user, event)
         user.save()
-        return JsonResponse({"detail": "Event Registered Sucessfully!", "success": True}, status=200)
+        team_serializer = TeamSerializer(t)
+        return JsonResponse({"detail": "Event Registered Sucessfully!", "team": team_serializer.data, "success": True}, status=200)
       except:
         t.delete()
-        return JsonResponse({"detail": "Something Went Wrong!", "success": False}, status=400)
+        return JsonResponse({"detail": "Something Went Wrong!", "team": team_serializer.data, "success": False}, status=400)
