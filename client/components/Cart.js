@@ -7,6 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Box,
+  Flex,
   Button,
   Drawer,
   DrawerBody,
@@ -23,7 +24,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { API_BASE_URL } from "../config";
 import { UserContext } from "../context/UserContext";
 import Image from "next/image";
@@ -36,6 +37,8 @@ const Cart = ({ isOpen, onClose }) => {
   const [transactionId, setTransactionId] = useState("");
   const confirm = useDisclosure();
   const toast = useToast();
+  const payment = useDisclosure();
+  const cancelRef = useRef();
 
   useEffect(() => {
     if (userState.isLoggedIn) {
@@ -111,6 +114,56 @@ const Cart = ({ isOpen, onClose }) => {
         });
       });
     confirm.onClose();
+  };
+
+  const PaymentAlert = () => {
+    return (
+      <AlertDialog
+        isOpen={payment.isOpen}
+        onClose={payment.onClose}
+        leastDestructiveRef={cancelRef}
+        isCentered
+        closeOnEsc={false}
+        closeOnOverlayClick={false}
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent
+          margin="15px"
+          bg="linear-gradient(147deg, rgb(69, 39, 160) 0%, #000000 74%)"
+        >
+          <AlertDialogHeader color="white" fontSize="2xl" fontWeight="bold">
+            Account details
+          </AlertDialogHeader>
+          <AlertDialogBody color="white" gridGap="3">
+            <Text fontSize="lg" fontWeight="bold">
+              ACCEPTED PAYMENT METHODS: NEFT
+            </Text>
+            <Text fontSize="lg" fontWeight="bold">
+              A/c Name- Fr.C.Rodrigues Institute of Technology
+            </Text>
+            <Text fontSize="lg" fontWeight="bold">
+              BANK - INDIAN OVERSEAS BANK BRANCH- VASHI (0596)
+            </Text>
+            <Text fontSize="lg" fontWeight="bold">
+              A/C NO- 059601000007942
+            </Text>
+            <Text fontSize="lg" fontWeight="bold">
+              IFSC Code - IOBA0000596
+            </Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button
+              bg="green.700"
+              color="white"
+              _hover={{ opacity: 0.7 }}
+              onClick={payment.onClose}
+            >
+              Close
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
   };
 
   const ConfirmAlert = () => {
@@ -200,23 +253,36 @@ const Cart = ({ isOpen, onClose }) => {
                         py={3}
                         key={t.team_code}
                         display="flex"
-                        alignItems="center"
+                        flexDirection="column"
+                        alignItems="flex-start"
                         borderRadius="10px"
                         mb={2}
                       >
-                        <Box>
-                          <Text px={5} fontSize="large" fontWeight="bold">
-                            {tIdx + 1}.
+                        <Box w="100%" px={5}>
+                          <Text
+                            textAlign="right"
+                            color="white"
+                            fontSize="lg"
+                            fontWeight="bold"
+                          >
+                            #{t.team_code.slice(-4)}
                           </Text>
                         </Box>
-                        <Box>
-                          <Text noOfLines={2}>{t.event.title}</Text>
-                          <Text>Day {t.event.day}</Text>
-                          {!t.event.team_size > 1 && (
-                            <Text>{t.members.join()}</Text>
-                          )}
-                          <Text>&#8377; {t.event.entry_fee}</Text>
-                        </Box>
+                        <Flex align="flex-start">
+                          <Box>
+                            <Text px={5} fontSize="large" fontWeight="bold">
+                              {tIdx + 1}.
+                            </Text>
+                          </Box>
+                          <Box>
+                            <Text noOfLines={2}>{t.event.title}</Text>
+                            <Text>Day {t.event.day}</Text>
+                            {!t.event.team_size > 1 && (
+                              <Text>{t.members.join()}</Text>
+                            )}
+                            <Text>&#8377; {t.event.entry_fee}</Text>
+                          </Box>
+                        </Flex>
                       </Box>
                     );
                   })}
@@ -238,8 +304,21 @@ const Cart = ({ isOpen, onClose }) => {
               0 && (
               <Box gridGap={4} w="100%" display="flex" flexDir="column">
                 <Box>
+                  <Button
+                    variant="ghost"
+                    color="white"
+                    isFullWidth
+                    fontWeight="bold"
+                    onClick={payment.onOpen}
+                    _hover={{ opacity: 0.85 }}
+                  >
+                    View payment details
+                  </Button>
+                </Box>
+                <Box>
                   <Text>Total : &#8377;{totalPrice}</Text>
                 </Box>
+
                 <Box>
                   <FormControl>
                     <FormLabel>Enter Transaction ID :</FormLabel>
@@ -259,6 +338,7 @@ const Cart = ({ isOpen, onClose }) => {
                     Cancel
                   </Button>
                   <ConfirmAlert />
+                  <PaymentAlert />
                   <Button
                     onClick={() => {
                       if (transactionId.length < 12) {

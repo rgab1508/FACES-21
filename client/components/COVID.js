@@ -29,7 +29,7 @@ const COVID = ({ isOpen, onOpen, onClose }) => {
         color="white"
         m={2}
       >
-        <ModalHeader>COVID Guidelines For FACES 2021</ModalHeader>
+        <ModalHeader>COVID Guidelines For offline events</ModalHeader>
         <ModalBody>
           <Flex pl={4}>
             <ReactMarkdown
