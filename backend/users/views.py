@@ -14,7 +14,7 @@ from rest_framework.authentication import TokenAuthentication
 
 
 from .models import Team, User
-from .serializers import TeamSerializer, UserSerializer
+from .serializers import TeamSerializer, TeamSerializer2, UserSerializer
 from .permissions import IsProfileFilled
 
 import csv
@@ -270,14 +270,13 @@ class TeamList(APIView):
   def get(self, request):
     data = Team.objects.filter(is_paid=True)
     
-    data_serializer = TeamSerializer(data, many=True)
+    data_serializer = TeamSerializer2(data, many=True)
     
     for d in data_serializer.data:
       event = d["event"]
-      d["event"] = {
-        "title": event["title"],
-        "day": event["day"],
-        "entry_fee": event["entry_fee"]
-      }
+      # members = d["members"]
+      
+      d["event"] = event["title"]
+        
 
     return JsonResponse({"data": data_serializer.data}, status=200)

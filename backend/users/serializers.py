@@ -4,6 +4,19 @@ from rest_framework.settings import import_from_string
 from .models import User, Team
 from events.serializers import EventSerializer2
 
+
+class UserSerializer2(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = [ 'roll_no', 'name']
+
+class TeamSerializer2(serializers.ModelSerializer):
+  event = EventSerializer2(read_only=True)
+  members = UserSerializer2(read_only=True, many=True)
+  class Meta:
+    model = Team
+    fields = [ 'team_code', 'team_name', 'members', 'transaction_id', 'is_paid', 'is_verified', 'event']
+
 class TeamSerializer(serializers.ModelSerializer):
   event = EventSerializer2(read_only=True)
   class Meta:
