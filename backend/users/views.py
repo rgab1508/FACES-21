@@ -262,3 +262,22 @@ class MakeUsersView(APIView):
           print(roll_no, email, text_password, department, semester)
           
     return JsonResponse({"success": True}, status=200)
+
+
+class TeamList(APIView):
+  permission_classes=[IsAdminUser]
+  
+  def get(self, request):
+    data = Team.objects.filter(is_paid=True)
+    
+    data_serializer = TeamSerializer(data, many=True)
+    
+    for d in data_serializer.data:
+      event = d["event"]
+      d["event"] = {
+        "title": event["title"],
+        "day": event["day"],
+        "entry_fee": event["entry_fee"]
+      }
+
+    return JsonResponse({"data": data_serializer.data}, status=200)
