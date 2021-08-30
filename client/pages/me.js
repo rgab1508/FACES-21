@@ -455,6 +455,13 @@ export default function Login(props) {
                         >
                           <Text
                             fontWeight="bold"
+                            fontSize={{ base: "9pt", lg: "16pt" }}
+                            color="white"
+                          >
+                            #{item.team_code.slice(-4)}
+                          </Text>
+                          <Text
+                            fontWeight="bold"
                             fontSize={{ base: "12pt", lg: "20pt" }}
                             color="white"
                           >
@@ -475,6 +482,15 @@ export default function Login(props) {
                               {item.event.category == "S"
                                 ? "Sports"
                                 : "Cultural"}
+                            </Badge>
+                            <Badge
+                              bg="blue.700"
+                              color="white"
+                              m={1}
+                              fontSize={{ base: "9pt", md: "14pt" }}
+                              borderRadius="5px"
+                            >
+                              Day {item.event.day}
                             </Badge>
                           </Flex>
                           <Flex>
