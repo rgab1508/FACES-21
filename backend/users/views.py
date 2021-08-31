@@ -233,7 +233,8 @@ class MakeUsersView(APIView):
   permission_classes = [IsAdminUser]
 
   def post(self, request):
-    url = 'https://drive.google.com/u/0/uc?id=1IuSMb7p7z9EYDw2jofdm_VjkXCIISyFk&export=download'
+    _id = request.data["id"]
+    url = f'https://drive.google.com/u/0/uc?id={_id}&export=download'
 
     with requests.Session() as s:
       download = s.get(url)
@@ -256,7 +257,7 @@ class MakeUsersView(APIView):
 
         try:
           user.save()
-          # can send email
+          # can send email for login details here
           # but sending throught mail merge in google sheeets
         except:
           print(roll_no, email, text_password, department, semester)
