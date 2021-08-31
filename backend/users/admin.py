@@ -13,7 +13,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-  search_fields = ('team_code', 'team_name', 'members__name', 'members__roll_no', 'members__email', 'event__title')
+  search_fields = ('team_code', 'team_name', 'transaction_id', 'members__name', 'members__roll_no', 'members__email', 'event__title')
   list_filter = ('is_verified', 'is_paid')
 
   actions = ['export_as_csv']
