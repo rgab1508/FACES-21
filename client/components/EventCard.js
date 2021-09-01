@@ -358,13 +358,13 @@ export default function EventCard({ event, readOnly }) {
                 {event.is_team_size_strict ? "(Strict)" : "(Not Strict)"}
               </Text>
             )}
-            <Text
+            {/* <Text
               fontSize={{ base: "12pt", md: "17pt" }}
               color={event.max_seats - event.seats < 10 ? "red" : "white"}
               fontWeight="bold"
             >
               Seats booked: {event.seats} / {event.max_seats}
-            </Text>
+            </Text> */}
             <Text
               fontSize={{ base: "12pt", md: "18pt" }}
               color="white"
