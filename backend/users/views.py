@@ -255,6 +255,11 @@ class MakeUsersView(APIView):
         user.semester = semester
         user.set_password(text_password)
 
+        if roll_no >= 9000000:
+          user.name = name
+          user.has_filled_profile = True
+          user.is_phone_no_verified = True
+
         try:
           user.save()
           # can send email for login details here
