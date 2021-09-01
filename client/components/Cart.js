@@ -296,7 +296,7 @@ const Cart = ({ isOpen, onClose }) => {
                   <Text>
                     Cart is Empty{" "}
                     <Box as="span" textDecor="underline">
-                      <Link href={"/events"}>(Browse Events here)</Link>
+                      <Link href={"/"}>(Browse Events here)</Link>
                     </Box>
                   </Text>
                   <Box
