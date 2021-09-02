@@ -6,7 +6,7 @@ import VideoBackground from "../components/VideoBackground";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../config";
 import HomeEvents from "../components/HomeEvents";
-
+import { Image } from "@chakra-ui/react"
 // ? Radio buttons for days.
 
 export default function Home(props) {
@@ -65,6 +65,11 @@ export default function Home(props) {
               Orenda
             </MotionText>
           </Center>
+<Box boxSize="sm">
+  <Image src="https://github.com/rgab1508/FACES-21/blob/master/client/public/Capture.PNG" alt="sponsor1" />
+</Box>
+                
+               
           <HomeEvents events={props.events} />
         </Flex>
       </Layout>
