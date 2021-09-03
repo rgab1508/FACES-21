@@ -1,12 +1,12 @@
 import { Flex, Text, Center, Heading } from "@chakra-ui/react";
 import Head from "next/head";
+import Image from "next/image";
 import Layout from "../components/Layout";
 import styles from "../components/Orenda.module.css";
 import VideoBackground from "../components/VideoBackground";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../config";
 import HomeEvents from "../components/HomeEvents";
-import Image from "next/image";
 import Sponsor1 from "../public/sp1.png";
 
 export default function Home(props) {
@@ -78,10 +78,9 @@ export default function Home(props) {
               mx="auto"
               flexDir={["column", "column", "row", "row"]}
             >
-              <Image src={Sponsor1} alt="sponsor1" />
+              <Image src={Sponsor1} alt="sponsor image" />
             </Flex>
           </Flex>
-
           <HomeEvents events={props.events} />
         </Flex>
       </Layout>
