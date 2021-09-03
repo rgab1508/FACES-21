@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../config";
 import HomeEvents from "../components/HomeEvents";
 
 import Sponsor1 from "../public/sp1.png";
+import Sponsor2 from "../public/sp2.jpg";
 
 export default function Home(props) {
   const MotionHeading = motion(Heading);
@@ -75,11 +76,12 @@ export default function Home(props) {
           </Center>
           <Flex bg="rgb(0,0,0,0.35)">
             <Flex
-              w="80%"
               mx="auto"
+              gridGap={2}
               flexDir={["column", "column", "row", "row"]}
             >
               <Image src={Sponsor1} alt="sponsor image" />
+              <Image src={Sponsor2} alt="sponsor image" />
             </Flex>
           </Flex>
           <HomeEvents events={props.events} />
