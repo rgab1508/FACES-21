@@ -1,5 +1,6 @@
 import { Flex, Text, Center, Heading } from "@chakra-ui/react";
 import Head from "next/head";
+import Image from "next/image";
 import Layout from "../components/Layout";
 import styles from "../components/Orenda.module.css";
 import VideoBackground from "../components/VideoBackground";
@@ -7,7 +8,7 @@ import { motion } from "framer-motion";
 import { API_BASE_URL } from "../config";
 import HomeEvents from "../components/HomeEvents";
 
-// ? Radio buttons for days.
+import Sponsor1 from "../public/sp1.png";
 
 export default function Home(props) {
   const MotionHeading = motion(Heading);
@@ -72,6 +73,15 @@ export default function Home(props) {
               REGISTRATIONS CLOSED
             </Text>
           </Center>
+          <Flex bg="rgb(0,0,0,0.35)">
+            <Flex
+              w="80%"
+              mx="auto"
+              flexDir={["column", "column", "row", "row"]}
+            >
+              <Image src={Sponsor1} alt="sponsor image" />
+            </Flex>
+          </Flex>
           <HomeEvents events={props.events} />
         </Flex>
       </Layout>
