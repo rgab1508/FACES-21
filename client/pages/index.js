@@ -6,8 +6,8 @@ import VideoBackground from "../components/VideoBackground";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../config";
 import HomeEvents from "../components/HomeEvents";
-import { Image } from "@chakra-ui/react"
-// ? Radio buttons for days.
+import Image from "next/image";
+import Sponsor1 from "../public/sp1.png";
 
 export default function Home(props) {
   const MotionHeading = motion(Heading);
@@ -65,11 +65,16 @@ export default function Home(props) {
               Orenda
             </MotionText>
           </Center>
-<Box boxSize="sm">
-  <Image src="https://github.com/rgab1508/FACES-21/blob/master/client/public/Capture.PNG" alt="sponsor1" />
-</Box>
-                
-               
+          <Flex bg="rgb(0,0,0,0.35)">
+            <Flex
+              w="80%"
+              mx="auto"
+              flexDir={["column", "column", "row", "row"]}
+            >
+              <Image src={Sponsor1} alt="sponsor1" />
+            </Flex>
+          </Flex>
+
           <HomeEvents events={props.events} />
         </Flex>
       </Layout>
