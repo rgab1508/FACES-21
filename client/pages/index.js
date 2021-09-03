@@ -7,7 +7,6 @@ import VideoBackground from "../components/VideoBackground";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "../config";
 import HomeEvents from "../components/HomeEvents";
-
 import Sponsor1 from "../public/sp1.png";
 import Sponsor2 from "../public/sp2.jpg";
 
