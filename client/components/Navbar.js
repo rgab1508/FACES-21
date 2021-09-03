@@ -239,12 +239,12 @@ function DrawerNavbar({ isOpen, cart }) {
           >
             <Button
               _hover={{ bg: "rgb(81, 45, 168)" }}
-              color="white"
+              color="gray"
               bg="transparent"
               fontSize="15pt"
               fontWeight="bold"
               position="relative"
-              onClick={cart.onOpen}
+              //onClick={cart.onOpen}
             >
               <Icon as={ShoppingCartIcon} />
               <Flex
