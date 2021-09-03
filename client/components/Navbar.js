@@ -196,11 +196,12 @@ function DrawerNavbar({ isOpen, cart }) {
           )}
 
           <MenuItems
-            _hover={{ bg: "rgb(81, 45, 168)" }}
+            _hover={{ opacity: 0.5 }}
             fontWeight="bold"
             fontSize="15pt"
-            to="/events"
+            to="/"
             sx={{ transition: "background 0.2s" }}
+            color="gray.600"
           >
             Events
           </MenuItems>

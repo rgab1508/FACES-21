@@ -64,6 +64,13 @@ export default function Home(props) {
             >
               Orenda
             </MotionText>
+            <Text
+              fontWeight="bold"
+              color="white"
+              fontSize={{ base: "large", md: "35pt" }}
+            >
+              REGISTRATIONS CLOSED
+            </Text>
           </Center>
           <Flex bg="rgb(0,0,0,0.35)">
             <Flex
