@@ -252,7 +252,7 @@ export default function Login(props) {
       </Head>
       <VideoBackground />
       <Layout notFixed>
-        <Center w="100%" minH="100vh" justifyContent="center" ml={2} mr={2}>
+        <Center minH="100vh" justifyContent="center" ml={2} mr={2}>
           <Flex
             direction="column"
             bgColor="transparent"
