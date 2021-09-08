@@ -6,7 +6,7 @@ College Event Registration Website.
 | Folder | Description |
 |:------:|:-----------:|
 | backend| Django App (Rest API)|
-| client | Next App (with SSR) |
+| client | Next App (with SSR and SSG) |
 
 
 ### Branches
