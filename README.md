@@ -102,6 +102,13 @@ College Event Registration Website.
 	npm run dev
 	```
   - Production
+  	Use production build to make website run faster
+	```bash
+	cd client/
+	npm install
+	npm run build
+	npm run start
+	```
 
 ### Nginx Config for running both apps in a Single Server
 
