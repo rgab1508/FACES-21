@@ -59,7 +59,7 @@ College Event Registration Website.
   Deploying in a Virtual Private Server
       1. Setting up all the environment Variables required
 			```bash
-			export DJANGO_DEBUG=True
+			export DJANGO_DEBUG=False
 			export OTP_VERIFY_SECRET='<RANDOM_LONG_STRING>'				
 			```
 
